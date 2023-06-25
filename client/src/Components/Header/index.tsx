@@ -63,18 +63,18 @@ function Header() {
 
 
                         <div className='flex items-center justify-between mx-2 font-medium'>
-                            <p className='block'>
+                            <div className='block'>
                                 <ICON className='mx-1' icon={IconSolid.faLocationDot} />
                                 Tìm 230+ cửa hàng
-                            </p>
+                            </div>
 
-                            <p className='flex items-center mx-2 font-medium'>
+                            <div className='flex items-center mx-2 font-medium'>
                                 <ICON className='mx-1' icon={IconSolid.faPhone} />
                                 1800 2086
                                 <p className=' mx-1 text-center bg-yellow-500 rounded-lg p-1'>
                                     Free
                                 </p>
-                            </p>
+                            </div>
                             <p className='block mx-1 font-medium'>
 
                                 -
@@ -82,11 +82,11 @@ function Header() {
                                 Đặt hàng gọi
                             </p>
 
-                            <p className='flex items-center mx-2 font-medium'>
+                            <div className='flex items-center mx-2 font-medium'>
                                 <ICON className='mx-2' icon={IconSolid.faPhone} />
                                 02499986999
 
-                            </p>
+                            </div>
 
 
                         </div>
@@ -106,7 +106,7 @@ function Header() {
                         </div>
 
                         <div className='flex items-center justify-between'>
-                            <p className='flex items-center '>
+                            <div className='flex items-center '>
                                 <div className='relative'>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
                                         0
@@ -115,7 +115,7 @@ function Header() {
                                 </div>
                                 {/* <ICON icon="fa-sharp fa-light fa-bag-shopping" /> */}
                                 GIỏ HÀNG
-                            </p>
+                            </div>
 
                             <p className='ml-7'>
                                 <ICON icon={IconRegular.faUser} />

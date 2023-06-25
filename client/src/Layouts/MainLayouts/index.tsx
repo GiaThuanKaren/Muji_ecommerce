@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header } from 'src/Components'
+import { Footer, Header } from 'src/Components'
 
 interface Props {
     children: React.ReactNode
@@ -10,8 +10,10 @@ function MainLayout({ children }: Props) {
     return (
         <>
             <Header />
-            {children}
-
+            <div className='mt-28'>
+                {children}
+            </div>
+            <Footer />
         </>
     )
 }
