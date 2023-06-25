@@ -34,7 +34,7 @@ function TabNavigationHome() {
   }
   ]
   return <>
-    <div className='w-full h-fit my-4'>
+    <div className='w-full h-fit my-4 ove'>
       <div className='flex items-center justify-center'>
         {
           ArrTab.map((item: Tab, index: number) => {
@@ -55,14 +55,14 @@ function TabNavigationHome() {
           clickable: true,
         }}
         modules={[Pagination, Navigation]}
-        className="mySwiper h-56 mt-10"
+        className="mySwiper h-56 mt-10 "
       >
         {
           data.map((item: any, index: number) => {
             return <>
               <SwiperSlide key={index}>
                 <div className='h-full  w-full p-2'>
-                  <div className='bg-red-500 rounded-full   h-32 w-32'>
+                  <div className=' bg-red-500 rounded-full   h-32 w-32'>
 
                   </div>
                 </div>
@@ -82,6 +82,12 @@ export default function Home() {
       <MainLayout >
         <SliderHome />
         <TabNavigationHome />
+        <HorizontalProductList link='' title='' />
+        <HorizontalProductList link='' title='' />
+        <HorizontalProductList link='' title='' />
+        <HorizontalProductList link='' title='' />
+        <HorizontalProductList link='' title='' />
+        <HorizontalProductList link='' title='' />
         <HorizontalProductList link='' title='' />
       </MainLayout>
     </>

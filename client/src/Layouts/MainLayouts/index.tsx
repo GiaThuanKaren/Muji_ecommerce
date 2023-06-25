@@ -10,7 +10,7 @@ function MainLayout({ children }: Props) {
     return (
         <>
             <Header />
-            <div className='mt-28 xl:mx-[200px]'>
+            <div className='mt-28 xl:mx-[200px] '>
                 {children}
             </div>
             <Footer />
