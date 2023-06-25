@@ -3,7 +3,7 @@ import React from 'react'
 function CardProduct() {
     return (
         <>
-            <div className='h-fit max-h-[500px] basis-1/2 md:basis-1/4 p-1'>
+            <div className='h-fit max-h-[500px] basis-1/2 md:basis-1/4 p-1 my-10'>
                 <div className='h-full w-full'>
                     <div className='h-[80%] w-full '>
                         <img

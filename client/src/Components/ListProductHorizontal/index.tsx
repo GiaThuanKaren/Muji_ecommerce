@@ -14,7 +14,7 @@ function HorizontalProductList({ link, title }: Props) {
     return (
         <>
             <div className='w -full h-fit mt-3 mb-10'>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between my-3'>
                     <p className='font-medium'>Breast Cancer Semantic Segmentation (BCSS) dataset</p>
                     <Link className='flex items-center' href={link}>
                         <p className='font-medium '>Xem Thêm </p>
@@ -28,7 +28,7 @@ function HorizontalProductList({ link, title }: Props) {
                             <img src="https://bizweb.dktcdn.net/100/438/408/themes/904142/assets/home_preivew_sanpham_2_image_desktop.jpg?1687694911598" alt="" />
                         </div>
                     </div>
-                    <div className='w-[80%]'>
+                    <div className='w-[80%] '>
                         <Swiper
                             slidesPerView={4}
                             spaceBetween={30}
@@ -36,7 +36,7 @@ function HorizontalProductList({ link, title }: Props) {
                                 clickable: true,
                             }}
                             modules={[Pagination]}
-                            className="mySwiper h-fit"
+                            className="mySwiper h-fit "
                         >
                             {
                                 Array.from(Array(10).keys()).map((item, index) => {
