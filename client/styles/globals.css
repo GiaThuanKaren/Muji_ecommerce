@@ -18,12 +18,12 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+.header_bg {
+  background: rgb(252, 238, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(252, 238, 0, 0.5452556022408963) 0%,
+    rgba(241, 241, 241, 1) 100%,
+    rgba(251, 251, 251, 0) 100%
+  );
 }
