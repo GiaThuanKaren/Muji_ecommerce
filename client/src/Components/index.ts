@@ -5,6 +5,7 @@ import HorizontalProductList from "./ListProductHorizontal";
 import Searchinput from "./SearchInput";
 import SliderHome from "./SliderHome";
 
-export { HorizontalProductList,
-     Header, Searchinput, Footer, CardProduct, SliderHome 
-    }
+export {
+    HorizontalProductList,
+    Header, Searchinput, Footer, CardProduct, SliderHome
+}

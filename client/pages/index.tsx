@@ -2,11 +2,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination ,Navigation } from "swiper";
+import { Pagination, Navigation } from "swiper";
 
 import styles from '../styles/Home.module.css'
 import { MainLayout } from 'src/Layouts'
-import { SliderHome } from 'src/Components'
+import { HorizontalProductList, SliderHome } from 'src/Components'
 
 
 type Tab = {
@@ -54,15 +54,15 @@ function TabNavigationHome() {
         pagination={{
           clickable: true,
         }}
-        modules={[Pagination,Navigation]}
+        modules={[Pagination, Navigation]}
         className="mySwiper h-56 mt-10"
       >
         {
           data.map((item: any, index: number) => {
             return <>
-              <SwiperSlide>
+              <SwiperSlide key={index}>
                 <div className='h-full  w-full p-2'>
-                  <div className='bg-red-500 rounded-full h-full w-full h-32 w-32'>
+                  <div className='bg-red-500 rounded-full   h-32 w-32'>
 
                   </div>
                 </div>
@@ -82,6 +82,7 @@ export default function Home() {
       <MainLayout >
         <SliderHome />
         <TabNavigationHome />
+        <HorizontalProductList link='' title='' />
       </MainLayout>
     </>
   )
