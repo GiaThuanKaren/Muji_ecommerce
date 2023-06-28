@@ -107,11 +107,31 @@ function Header() {
 
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center '>
-                                <div className='relative'>
+                                <div className='relative group:'>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
                                         0
                                     </p> */}
                                     <ICON className='mx-3' icon={IconSolid.faBagShopping} />
+
+                                    <div className='w-72 h-52 bg-white absolute top-full left-0 group-hover:bg-red-400'>
+                                        <div className="flex flex-col items-center">
+                                            <div>
+                                                <img
+                                                    src="http://bizweb.dktcdn.net/100/438/408/themes/904142/assets/blank_cart.svg?1687765708034"
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <p>Giỏ hàng của bạn đang trống</p>
+
+                                            <Link href={""} className='hover:text-yellow-300'>
+                                                <p>Đăng nhập / Đăng ký </p>
+                                            </Link>
+
+                                        </div>
+
+                                    </div>
+
+
                                 </div>
                                 {/* <ICON icon="fa-sharp fa-light fa-bag-shopping" /> */}
                                 GIỏ HÀNG
