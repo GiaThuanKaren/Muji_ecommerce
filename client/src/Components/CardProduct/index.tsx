@@ -26,9 +26,7 @@ function CardProduct() {
                         slidesPerView={3}
                         spaceBetween={30}
                         centeredSlides={true}
-                        pagination={{
-                            clickable: true,
-                        }}
+
                         modules={[Pagination, Navigation]}
                         className="mySwiper"
                     >

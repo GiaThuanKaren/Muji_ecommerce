@@ -2,6 +2,7 @@ import React from 'react'
 import Searchinput from '../SearchInput'
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 import Link from 'next/link';
+import { linkRouting } from 'src/utils/routelink';
 interface ItemNavBarHeaderCatologe {
     title: string;
     link: string;
@@ -49,6 +50,7 @@ function Header() {
         },
 
     ]
+    
     return (
         <>
             <div className='h-24 flex header_bg items-center justify-center   z-[2] fixed top-0 left-0 right-0 shadow-sm py-2'>
@@ -57,7 +59,9 @@ function Header() {
                     <div className='flex items-center justify-between'>
 
                         <div className=' flex items-center'>
-                            <img src="https://bizweb.dktcdn.net/100/438/408/themes/904142/assets/logo.svg?1687673070998" alt="" />
+                            <Link href={linkRouting.home}>
+                                <img src="https://bizweb.dktcdn.net/100/438/408/themes/904142/assets/logo.svg?1687673070998" alt="" />
+                            </Link>
                             <Searchinput />
                         </div>
 

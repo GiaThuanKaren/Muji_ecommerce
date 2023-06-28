@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react'
 import { ICON, IconSolid } from 'src/utils/icon';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
+import { Pagination ,Navigation} from "swiper";
 import CardProduct from '../CardProduct';
 
 interface Props {
@@ -32,10 +32,9 @@ function HorizontalProductList({ link, title }: Props) {
                         <Swiper
                             slidesPerView={4}
                             spaceBetween={30}
-                            pagination={{
-                                clickable: true,
-                            }}
-                            modules={[Pagination]}
+                         
+                            modules={[Pagination,Navigation]}
+                            navigation
                             className="mySwiper h-fit "
                         >
                             {
