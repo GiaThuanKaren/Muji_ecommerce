@@ -1,3 +1,6 @@
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react'
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
@@ -13,8 +16,43 @@ interface ItemSideBarInf {
 
 function AccountLayouts({ children }: Props) {
     const ItemsideBar: ItemSideBarInf[] = [
+        {
+            icon: <ICON className='mr-4' icon={IconRegular.faCircleUser} />,
+            text: "Tài khoản của tôi",
+            link: "/account"
+        },
+        {
+            icon: <ICON className='mr-4' icon={IconSolid.faBoxesPacking} />,
+            text: "Đơn hàng của tôi",
+            link: "/account/orders"
+        },
+        {
+            icon: <ICON className='mr-4' icon={IconSolid.faLock} />,
+            text: "Đổi Mật khẩu",
+            link: "/account/resetpassword"
+        },
+        {
+            icon: <ICON className='mr-4' icon={IconSolid.faLocationDot} />,
+            text: "Địa chỉ",
+            link: "/account/address"
+        },
+        {
+            icon: <ICON className='mr-4' icon={IconSolid.faBoxesStacked} />,
+            text: "Đã xem gần đây",
+            link: "/account/view_recently"
+        },
+        {
+            icon: <ICON className='mr-4' icon={IconRegular.faHeart} />,
+            text: "sản phẩm yêu thích ",
+            link: "/account/product_liked"
+        },
 
     ]
+
+
+    const router = useRouter();
+
+
     return (
         <>
             <div className='w-full   '>
@@ -33,32 +71,25 @@ function AccountLayouts({ children }: Props) {
                                     </div>
 
                                 </div>
-                                <p className='text-center font-medium'>Thuận Gia </p>
+                                <p className='text-center font-medium mt-10'>Thuận Gia </p>
                                 <p className='bg-yellow-500 text-white font-medium w-full py-1  text-center my-2 rounded-lg'>
                                     Đăng Xuất
                                 </p>
-                                <ul>
-                                    <li className='flex items-center py-2 px-2 hover:bg-red-100 hover:text-red-300'>
-                                        <ICON className='mr-4' icon={IconRegular.faCircleUser} />
-                                        <p>Tài Khoản Của Tôi</p>
-                                    </li>
-                                    <li className='flex items-center py-2 px-2 hover:bg-red-100 hover:text-red-300'>
-                                        <ICON className='mr-4' icon={IconSolid.faBoxesPacking} />
+                                <ul className='my-10'>
+                                    {
+                                        ItemsideBar.map((item: ItemSideBarInf, index: number) => {
+                                            return <>
+                                                <li className={`${router.asPath == item.link && " bg-[#feeeea] text-[#fcaf17]"}` + ' py-2 px-2 hover:bg-[#feeeea] hover:text-[#fcaf17] '}>
+                                                    <Link href={item.link as string} className='flex items-center'>
+                                                        {item.icon}
+                                                        <p>{item.text} </p>
+                                                    </Link>
+                                                </li>
+                                            </>
+                                        })
+                                    }
 
-                                        Đơn hàng của tôi
-                                    </li>
-                                    <li className='flex items-center py-2 px-2 hover:bg-red-100 hover:text-red-300'>
-                                        <ICON className='mr-4' icon={IconSolid.faLock} />
-                                        Đổi mật khẩu</li>
-                                    <li className='flex items-center py-2 px-2 hover:bg-red-100 hover:text-red-300'>
-                                        <ICON className='mr-4' icon={IconSolid.faLocationDot} />
-                                        Sổ địa chỉ</li>
-                                    <li className='flex items-center py-2 px-2 hover:bg-red-100 hover:cursor-pointer hover:text-red-300'>
-                                        <ICON className='mr-4' icon={IconSolid.faBoxesStacked} />
-                                        Đã xem gần đây</li>
-                                    <li className='flex items-center py-2 px-2 hover:bg-red-100 hover:text-red-300'>
-                                        <ICON className='mr-4' icon={IconRegular.faHeart} />
-                                        Sản phẩm yêu thích</li>
+
                                 </ul>
                             </div>
                         </div>

@@ -110,14 +110,14 @@ function Header() {
                         </div>
 
                         <div className='flex items-center justify-between'>
-                            <div className='flex items-center '>
-                                <div className='relative group:'>
+                            <div className='flex items-center group '>
+                                <div className='relative group'>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
                                         0
                                     </p> */}
                                     <ICON className='mx-3' icon={IconSolid.faBagShopping} />
 
-                                    <div className='w-72 h-52 bg-white absolute top-full left-0 group-hover:bg-red-400'>
+                                    <div className='w-72 h-52 hidden bg-white absolute top-full left-0 group-hover:block'>
                                         <div className="flex flex-col items-center">
                                             <div>
                                                 <img
