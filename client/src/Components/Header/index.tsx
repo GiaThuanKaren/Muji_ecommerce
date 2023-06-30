@@ -50,7 +50,7 @@ function Header() {
         },
 
     ]
-    
+
     return (
         <>
             <div className='h-24 flex header_bg items-center justify-center   z-[2] fixed top-0 left-0 right-0 shadow-sm py-2'>
@@ -142,8 +142,21 @@ function Header() {
                             </div>
 
                             <p className='ml-7'>
-                                <ICON icon={IconRegular.faUser} />
-                                Đăng ký / Đăng nhập
+                                <ICON className='mx-3' icon={IconRegular.faUser} />
+                                <span>
+                                    <Link href={linkRouting.register}>
+                                        Đăng ký
+                                    </Link>
+
+                                    <span className='mx-2'>
+                                        /
+                                    </span>
+
+                                    <Link href={linkRouting.login}>
+                                        Đăng nhập
+                                    </Link>
+
+                                </span>
                             </p>
                         </div>
 
