@@ -1,10 +1,29 @@
 import React from 'react'
-import { CardProduct } from 'src/Components'
+import { CardProduct, DropoutComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 
 function DisplayProductBySludPage2() {
     return <>
+        <div className='flex '>
+            <div className='basis-1/6 px-1'>
+                <div className='w-full min-h-[50vh] '>
+                    <DropoutComp title='Loại sản phẩm' >
+                        <div className='h-32 bg-red-200 w-full'>
 
+                        </div>
+                    </DropoutComp>
+                    <DropoutComp title='Loại sản phẩm' >
+
+                    </DropoutComp>
+                </div>
+            </div>
+
+            <div className='flex-1 px-1'>
+                <div className='w-full h-[80vh] bg-red-400'>
+
+                </div>
+            </div>
+        </div>
     </>
 }
 
@@ -54,19 +73,17 @@ function DisplayProductBySludPage1() {
         </div>
 
         <div className='w-full flex items-center justify-center my-4'>
-                <div className='min-w-[200px] px-3 py-1 bg-yellow-300 text-white m'>
-                    <p className='font-medium text-xl text-center'>Xem thêm </p>
-                </div>
+            <div className='min-w-[200px] px-3 py-1 bg-yellow-300 text-white m'>
+                <p className='font-medium text-xl text-center'>Xem thêm </p>
+            </div>
         </div>
-
-
 
     </>
 }
 
 
 function DisplayProductBySludPage() {
-    const [layoutPage, setlayoutPage] = React.useState<1 | 2>(1)
+    const [layoutPage, setlayoutPage] = React.useState<1 | 2>(2)
 
 
     return (
