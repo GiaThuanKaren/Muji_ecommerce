@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
+import { linkRouting } from 'src/utils/routelink';
 
 interface Props {
     children: React.ReactNode
@@ -24,27 +25,27 @@ function AccountLayouts({ children }: Props) {
         {
             icon: <ICON className='mr-4' icon={IconSolid.faBoxesPacking} />,
             text: "Đơn hàng của tôi",
-            link: "/account/orders"
+            link: linkRouting.donhangcuatoi
         },
         {
             icon: <ICON className='mr-4' icon={IconSolid.faLock} />,
             text: "Đổi Mật khẩu",
-            link: "/account/resetpassword"
+            link: linkRouting.changepassword
         },
         {
             icon: <ICON className='mr-4' icon={IconSolid.faLocationDot} />,
             text: "Địa chỉ",
-            link: "/account/address"
+            link: linkRouting.diachi
         },
         {
             icon: <ICON className='mr-4' icon={IconSolid.faBoxesStacked} />,
             text: "Đã xem gần đây",
-            link: "/account/view_recently"
+            link: linkRouting.viewrecently
         },
         {
             icon: <ICON className='mr-4' icon={IconRegular.faHeart} />,
             text: "sản phẩm yêu thích ",
-            link: "/account/product_liked"
+            link: linkRouting.productliked
         },
 
     ]
@@ -82,7 +83,7 @@ function AccountLayouts({ children }: Props) {
                                                 <li className={`${router.asPath == item.link && " bg-[#feeeea] text-[#fcaf17]"}` + ' py-2 px-2 hover:bg-[#feeeea] hover:text-[#fcaf17] '}>
                                                     <Link href={item.link as string} className='flex items-center'>
                                                         {item.icon}
-                                                        <p>{item.text} </p>
+                                                        <p className='capitalize'>{item.text} </p>
                                                     </Link>
                                                 </li>
                                             </>
