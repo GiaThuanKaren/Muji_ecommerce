@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Footer() {
+function  Footer() {
     return (
         <>
-            <div className='bg-[#2a2a86] h-[500px] w-screen'>
+            <div className='bg-[#2a2a86] h-[500px] '>
                 <div className='xl:mx-[200px]'>
                     <div className='flex items-center justify-between py-7'>
                         <div className="basis-1/4 text-white">

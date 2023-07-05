@@ -10,10 +10,11 @@ function CartProduct() {
             <MainLayout>
                 {
                     quantity.length > 0 ? <>
-                        <div className='flex min-h-[50vh] '>
+                        <div className='flex min-h-[50vh] mt-20'>
 
-                            <div className="basis-4/6 h-full  px-2">
-                                <div className='w-full h-full '>
+                            <div className="basis-4/6 h-full  px-2 ">
+                                <div className='w-full h-full bg-white px-3 py-4'>
+
                                     <div className='flex items-center '>
                                         <p className='uppercase font-medium text-black mr-2'>
                                             Giỏ hàng
@@ -22,10 +23,31 @@ function CartProduct() {
                                             ( {quantity.length + 1} ) sản phẩm
                                         </p>
                                     </div>
+                                    <div className='flex items-center justify-between my-3'>
+                                        <div className='basis-2/3'>
+                                            <p className='font-medium text-black'>
+                                                Sản phẩm
+                                            </p>
+                                        </div>
+
+                                        <div className='basis-1/3'>
+                                            <div className='flex items-center justify-between'>
+                                                <p className='font-medium text-black'>Đơn giá</p>
+                                                <p className='font-medium text-black'>Số lượng</p>
+                                                <p className='font-medium text-black'>Tổng tiền</p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
                                 </div>
                             </div>
-                            <div className="basis-2/6 h-full  px-2">
-                                <div className='w-full h-full '>
+                            <div className="basis-2/6 h-full  px-2 ">
+                                <div className='w-full h-full bg-white px-3 py-4'>
+
+
                                     <div className='flex items-center justify-between'>
                                         <p className='font-medium'>
                                             Tổng đơn hàng ( Tạm tính)
@@ -36,6 +58,13 @@ function CartProduct() {
                                         </p>
 
                                     </div>
+
+                                    <div className='bg-yellow-500 rounded-md my-8'>
+                                        <p className='text-center py-3 text-white font-medium'>
+                                            Đặt hàng ( {quantity.length + 1} )
+                                        </p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

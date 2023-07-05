@@ -10,9 +10,12 @@ function MainLayout({ children }: Props) {
     return (
         <>
             <Header />
-            <div className='mt-28 xl:mx-[200px] '>
-                {children}
+            <div className='bg-[#f8f8f8]'>
+                <div className='mt-24 xl:mx-[200px] '>
+                    {children}
+                </div>
             </div>
+
             <Footer />
         </>
     )
