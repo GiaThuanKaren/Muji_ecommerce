@@ -85,6 +85,7 @@ function DisplayProductBySludPage1() {
 function DisplayProductBySludPage() {
     const [layoutPage, setlayoutPage] = React.useState<1 | 2>(2)
 
+    // Lấy param trên url để xác định layout trong trả về của useState
 
     return (
         <>

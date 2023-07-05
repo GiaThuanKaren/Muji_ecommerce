@@ -61,7 +61,7 @@ function AccountLayouts({ children }: Props) {
                 <p className='uppercase text-center text-yellow-300 font-bold'>Tài Khoản</p>
                 <div className=' h-full'>
                     <div className=' h-full w-full flex justify-between min-h-[700px]'>
-                        <div className='basis-1/4 min-h-[700px]   px-3 py-2'>
+                        <div className='basis-1/5 min-h-[700px]   px-3 py-2'>
                             <div className='bg-gray-50 h-full w-full py-5 px-2'>
                                 <div className='flex items-center justify-center'>
                                     <div className='h-20 w-20 rounded-full overflow-hidden'>
