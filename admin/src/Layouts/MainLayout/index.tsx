@@ -1,4 +1,5 @@
 import React from 'react'
+import { Header } from 'src/Components'
 interface Props {
     children: React.ReactNode
 }
@@ -13,6 +14,7 @@ function MainLayout({ children }: Props) {
                     </div>
                 </div>
                 <div className='h-full overflow-y-auto  basis-5/6'>
+                    <Header />
                     <div className='w-full min-h-[100vh] bg-yellow-100'>
                         {children}
                     </div>
