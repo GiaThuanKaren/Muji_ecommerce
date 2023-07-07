@@ -4,7 +4,7 @@ import SearchInput from '../Search'
 function Header() {
     return (
         <>
-            <div className='flex items-center fixed w-full '>
+            <div className='flex items-center fixed w-full bg-white'>
                 <div className='basis-9/12 '>
                     <SearchInput />
                 </div>
