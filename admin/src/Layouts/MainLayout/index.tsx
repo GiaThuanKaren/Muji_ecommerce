@@ -24,6 +24,78 @@ function MainLayout({ children }: Props) {
                     icon: <ICON icon={IconSolid.faHome} />
                 }
             ]
+        },
+        {
+            icon: <ICON icon={IconSolid.faHome} />,
+            title: "User",
+            childrenItem: [
+                {
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />,
+                    title: "Get All User"
+                },
+                {
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />,
+                    title: "Create New User"
+                },
+                // {
+                //     childrenItem: [],
+                //     icon: <ICON icon={IconSolid.faHome} />,
+                //     title: "Get Detail;"
+                // },
+            ]
+        },
+        {
+            title: "Product",
+            childrenItem: [
+                {
+                    title: "Get All Product",
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />
+                }
+                ,
+                {
+                    title: "Add New Product",
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />
+                }
+            ],
+            icon: <ICON icon={IconSolid.faHome} />
+        },
+        {
+            title: "Product",
+            childrenItem: [
+                {
+                    title: "Get All Product",
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />
+                }
+                ,
+                {
+                    title: "Add New Product",
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />
+                }
+            ],
+            icon: <ICON icon={IconSolid.faHome} />
+        },
+        {
+            title: "Product",
+            childrenItem: [
+                {
+                    title: "Get All Product",
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />
+                }
+                ,
+                {
+                    title: "Add New Product",
+                    childrenItem: [],
+                    icon: <ICON icon={IconSolid.faHome} />
+                }
+            ],
+            icon: <ICON icon={IconSolid.faHome} />
         }
     ]
     return (

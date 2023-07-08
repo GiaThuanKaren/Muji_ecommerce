@@ -6,22 +6,24 @@ function DropOutItem({ childrenItem, icon, title }: DropOutSideBarItem) {
     const [open, setOpen] = React.useState(true);
     return (
         <>
-            <div className='flex items-center justify-between px-3 py-1'>
+            <div className='flex items-center justify-between px-3 py-1 w-full'>
                 {icon}
-                <p className='font-medium '>
+                <p className='font-medium text-center w-full '>
                     {title}
                 </p>
                 {
-                    open && childrenItem.length != 0 ? <>
-                        <ICON onClick={() => {
-                            setOpen(false)
-                        }} icon={IconSolid.faChevronRight} />
-                    </> :
-                        <>
+                    childrenItem.length > 0 && (
+                        open ? <>
                             <ICON onClick={() => {
-                                setOpen(true)
-                            }} icon={IconSolid.faChevronDown} />
-                        </>
+                                setOpen(false)
+                            }} icon={IconSolid.faChevronRight} />
+                        </> :
+                            <>
+                                <ICON onClick={() => {
+                                    setOpen(true)
+                                }} icon={IconSolid.faChevronDown} />
+                            </>
+                    )
                 }
             </div>
             {
@@ -30,7 +32,7 @@ function DropOutItem({ childrenItem, icon, title }: DropOutSideBarItem) {
                         {
                             childrenItem.map((item: DropOutSideBarItem, index: number) => {
                                 return <>
-                                    <div className='ml-1'>
+                                    <div className='ml-2 my-2'>
                                         <DropOutItem {...item} />
                                     </div>
                                 </>
