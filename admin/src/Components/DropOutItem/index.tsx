@@ -6,9 +6,9 @@ function DropOutItem({ childrenItem, icon, title }: DropOutSideBarItem) {
     const [open, setOpen] = React.useState(true);
     return (
         <>
-            <div className='flex items-center justify-between px-3 py-1 w-full'>
+            <div className='flex items-center justify-between px-3 py-3  w-full'>
                 {icon}
-                <p className='font-medium text-center w-full '>
+                <p className='font-medium text-center w-full text-sm '>
                     {title}
                 </p>
                 {
