@@ -6,7 +6,15 @@ function GetAllProduct() {
     return (
         <>
             <MainLayout >
-                <TableComp />
+                <TableComp data={[]} handleDelete={() => { }} handleEdit={() => { }} headerRow={[
+                    " #",
+                    "First",
+                    "Last",
+                    "Handle",
+                    
+                ]} >
+                    sdfsd
+                </TableComp>
             </MainLayout>
         </>
     )
