@@ -1,14 +1,18 @@
+import { useRouter } from 'next/router';
 import React from 'react'
 import { DropOutSideBarItem } from 'src/Model';
 import { ICON, IconSolid } from 'src/utils';
 
-function DropOutItem({ childrenItem, icon, title }: DropOutSideBarItem) {
+function DropOutItem({ childrenItem, icon, title, link }: DropOutSideBarItem) {
     const [open, setOpen] = React.useState(true);
+    const { push } = useRouter();
     return (
         <>
-            <div className='flex items-center justify-between px-3 py-3  w-full'>
+            <div onClick={() => {
+                push(link as string)
+            }} className='flex items-center justify-between px-3 py-3  w-full'>
                 {icon}
-                <p className='font-medium text-center w-full text-sm '>
+                <p className='font-medium w-full mx-3 text-sm capitalize '>
                     {title}
                 </p>
                 {

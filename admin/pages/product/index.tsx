@@ -11,10 +11,8 @@ function GetAllProduct() {
                     "First",
                     "Last",
                     "Handle",
-                    
-                ]} >
-                    sdfsd
-                </TableComp>
+
+                ]} totalData={12} displayEachPage={4} />
             </MainLayout>
         </>
     )

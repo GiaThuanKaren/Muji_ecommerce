@@ -19,7 +19,7 @@ function MainLayout({ children }: Props) {
         },
         {
             icon: <ICON icon={IconSolid.faHome} />,
-            title: "Danh mục sản phẩm",
+            title: "Quản Lý Danh mục sản phẩm",
             childrenItem: [
                 // {
                 //     childrenItem: [],
@@ -34,7 +34,7 @@ function MainLayout({ children }: Props) {
 
         {
             icon: <ICON icon={IconSolid.faHome} />,
-            title: "Danh mục thuộc tính",
+            title: "Quản lý Danh mục thuộc tính",
             childrenItem: [
                 // {
                 //     childrenItem: [],
@@ -56,7 +56,7 @@ function MainLayout({ children }: Props) {
         },
         {
             icon: <ICON icon={IconSolid.faHome} />,
-            title: "User",
+            title: "Quản lý người dùng ",
             childrenItem: [
                 // {
                 //     childrenItem: [],
@@ -77,7 +77,7 @@ function MainLayout({ children }: Props) {
             link: routingLink.nguoidung
         },
         {
-            title: "Product",
+            title: "Quản lý sản phẩm",
             childrenItem: [
                 // {
                 //     title: "Get All Product",
@@ -110,10 +110,12 @@ function MainLayout({ children }: Props) {
         },
 
     ]
+    const [openSideBarUser, setOpenSideBarUser] = React.useState(false);
+    console.log(openSideBarUser)
     return (
         <>
             <div className='flex max-w-screen h-screen'>
-                <div className='h-full overflow-y-auto basis-1/6'>
+                <div className={'h-full overflow-y-auto ' + `${openSideBarUser ? " basis-1/6" : " hidden"}`}>
                     <div className='w-full min-h-[100vh] py-3 '>
                         {
                             data.map((item: DropOutSideBarItem, index: number) => {
@@ -124,8 +126,8 @@ function MainLayout({ children }: Props) {
                         }
                     </div>
                 </div>
-                <div className='h-full overflow-y-auto  basis-5/6 relative'>
-                    <Header />
+                <div className={'h-full overflow-y-auto   relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}` }>
+                    <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
                     <div className='w-full min-h-[100vh] '>
                         {children}
                     </div>

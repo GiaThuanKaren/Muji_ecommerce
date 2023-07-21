@@ -4,14 +4,15 @@ import { ICON, IconSolid } from 'src/utils'
 interface Props {
     handleEdit: Function,
     handleDelete: Function
-    children: React.ReactNode
+
     headerRow: string[]
     data: any[]
-
+    totalData: number;
+    displayEachPage?: number
 }
 
-function TableComp({ children, data, handleDelete, handleEdit, headerRow }: Props) {
-
+function TableComp({ data, handleDelete, handleEdit, headerRow }: Props) {
+    const [openModal, setOpenModal] = React.useState(false);
     return (
         <>
             <div className="flex flex-col">
@@ -40,7 +41,7 @@ function TableComp({ children, data, handleDelete, handleEdit, headerRow }: Prop
                                 <tbody>
 
                                     {
-                                        Array.from(Array(10).keys()).map((item,index:number) => {
+                                        Array.from(Array(10).keys()).map((item, index: number) => {
                                             return <>
                                                 <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                                                     <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
@@ -60,6 +61,25 @@ function TableComp({ children, data, handleDelete, handleEdit, headerRow }: Prop
 
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+                <div className='flex items-center justify-center'>
+                    <div className='flex items-center justify-center'>
+                        <div className='flex items-center'>
+                            <ICON icon={IconSolid.faChevronLeft} />
+                            <p className='mx-2 font-medium'>
+                                Previouis
+                            </p>
+                        </div>
+                        <p className='mx-3 font-medium'>
+                            5
+                        </p>
+                        <div className='flex items-center'>
+                            <p className='mx-2 font-medium'>
+                                Next
+                            </p>
+                            <ICON icon={IconSolid.faChevronRight} />
                         </div>
                     </div>
                 </div>
