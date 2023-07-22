@@ -10,7 +10,7 @@ public class product_option {
     Product_Option_Key id;
 
     @ManyToOne
-    @MapsId("productId")
+    @MapsId("productID")
     @JoinColumn(name = "product_id")
     Product product;
 

@@ -2,6 +2,7 @@ package com.muji_ecomerce.server.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,6 +16,7 @@ public class Option {
     @OneToMany(mappedBy = "option")
     Set<product_option> options;
 
-
+    @OneToMany(mappedBy = "option1")
+    Set<Option_value> optionValues;
 
 }

@@ -11,7 +11,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productId;
 
-
     private String nameProduct;
     private int quantityStock;
 
@@ -21,9 +20,10 @@ public class Product {
     @JoinColumn(name="category_id")
     private Categories categories;
 
-
     @OneToMany(mappedBy = "product")
     Set<product_option> products;
 
+    @OneToMany(mappedBy = "product")
+    Set<Product_Sku> productSkus;
 
 }
