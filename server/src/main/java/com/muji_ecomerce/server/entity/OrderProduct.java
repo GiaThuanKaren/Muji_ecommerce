@@ -2,6 +2,7 @@ package com.muji_ecomerce.server.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
 
 
 @Entity
@@ -20,4 +21,10 @@ public class OrderProduct {
     @JoinColumn(name="status_order_id")
     private Status status_order;
 
+    @OneToMany(mappedBy = "orderProduct")
+    private Set<OrderDetail> productSet;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

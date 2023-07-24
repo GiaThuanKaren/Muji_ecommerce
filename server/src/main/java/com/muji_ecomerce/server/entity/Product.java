@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.muji_ecomerce.server.utils.Order_Product_Key;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -26,4 +27,6 @@ public class Product {
     @OneToMany(mappedBy = "product")
     Set<Product_Sku> productSkus;
 
+    @OneToMany(mappedBy = "product")
+    Set<OrderDetail> orderProducts;
 }
