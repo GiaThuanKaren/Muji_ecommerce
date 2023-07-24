@@ -1,22 +1,42 @@
 package com.muji_ecomerce.server.utils;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import com.muji_ecomerce.server.entity.Product_Sku;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class Sku_Values_Key {
+public class Sku_Values_Key implements Serializable {
 
     @Column(name = "product_id")
     private Long productId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "p")
+//    Product_Sku productSku;
 
     @Column(name = "sku_id")
     private Long skuId;
 
     @Column(name = "optionId")
     private Long optionId;
+
+//    @ManyToOne
+//
+//    @JoinColumns({
+//            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+//            @JoinColumn(name = "sku_id", referencedColumnName = "sku_id")
+//    })
+//    Product_Sku productSku;
+
+//    @JoinColumns({
+//            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+//            @JoinColumn(name = "sku_id", referencedColumnName = "sku_id")
+//    })
+
+
 
     @Override
     public boolean equals(Object o) {

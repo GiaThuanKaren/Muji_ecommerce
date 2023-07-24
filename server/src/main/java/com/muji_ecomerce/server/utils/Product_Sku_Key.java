@@ -1,9 +1,13 @@
 package com.muji_ecomerce.server.utils;
 
+import com.muji_ecomerce.server.entity.Sku_values;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Embeddable
@@ -13,6 +17,9 @@ public class Product_Sku_Key implements Serializable {
 
     @Column(name = "sku_id")
     private Long skuId;
+
+//    @OneToMany(mappedBy = "productSku", cascade = CascadeType.ALL)
+//    List<Sku_values> skuValues;
 
     @Override
     public boolean equals(Object o) {
