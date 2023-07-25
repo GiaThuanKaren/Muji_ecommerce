@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.controller;
 
+import com.muji_ecomerce.server.entity.Customer;
 import com.muji_ecomerce.server.model.CustomerModel;
 import com.muji_ecomerce.server.services.CustomerService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +16,10 @@ public class RegistrationController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/register")
-    public String registerNewCustomer(){
-//        System.out.println("lksjdflds");
+    @PostMapping("/register")
+    public String registerNewCustomer(@RequestBody CustomerModel customerModel){
+        Customer customer = customerService.registerNewCCustomer(customerModel);
+        System.out.println("lksjdflds");
         return "done";
     }
 
