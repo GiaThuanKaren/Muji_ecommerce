@@ -1,10 +1,12 @@
 package com.muji_ecomerce.server.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
+@Data
 public class Customer {
 
     @Id
@@ -17,6 +19,7 @@ public class Customer {
 
     private String customerPhone;
 
+    private String customerEmail;
     @OneToMany(mappedBy = "customer")
     private List<OrderProduct> orderProducts;
 
