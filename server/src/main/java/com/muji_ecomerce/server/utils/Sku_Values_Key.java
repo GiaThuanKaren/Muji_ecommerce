@@ -20,7 +20,7 @@ public class Sku_Values_Key implements Serializable {
     @Column(name = "sku_id")
     private Long skuId;
 
-    @Column(name = "optionId")
+    @Column(name = "option_id")
     private Long optionId;
 
 //    @ManyToOne

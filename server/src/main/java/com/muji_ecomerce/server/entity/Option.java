@@ -19,4 +19,7 @@ public class Option {
     @OneToMany(mappedBy = "option1")
     Set<Option_value> optionValues;
 
+    @OneToMany(mappedBy = "option")
+    List<Sku_values> skuValues;
+
 }

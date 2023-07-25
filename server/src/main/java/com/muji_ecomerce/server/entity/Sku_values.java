@@ -13,13 +13,18 @@ public class Sku_values {
 
 
     @ManyToOne
-
+    @MapsId("id")
 //
-//    @JoinColumns({
-//            @JoinColumn(name = "product_id_1", referencedColumnName = "product_id"),
-//            @JoinColumn(name = "sku_id", referencedColumnName = "sku_id")
-//    })
+    @JoinColumns({
+            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+            @JoinColumn(name = "sku_id", referencedColumnName = "sku_id")
+    })
     Product_Sku productSku;
+
+    @ManyToOne
+    @MapsId("optionID")
+            @JoinColumn(name = "option_id")
+    Option option;
 
 
 //    @ManyToOne
