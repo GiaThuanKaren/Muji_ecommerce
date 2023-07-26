@@ -23,5 +23,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<OrderProduct> orderProducts;
 
+    @OneToOne(mappedBy = "customer")
+    private VerificationTokenCustomer verificationTokenCustomer;
 
 }
