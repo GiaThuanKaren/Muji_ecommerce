@@ -16,8 +16,10 @@ public class EmployeeModel {
 
     private String employeeAdress;
 
-    private String employeeEmail;
+        private String employeeEmail;
 
     private String employeePassword;
+
+    private Long roleid;
 
 }

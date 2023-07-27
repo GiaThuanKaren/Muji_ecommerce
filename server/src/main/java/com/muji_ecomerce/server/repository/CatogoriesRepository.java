@@ -2,6 +2,8 @@ package com.muji_ecomerce.server.repository;
 
 import com.muji_ecomerce.server.entity.Categories;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface catogoriesRepository extends JpaRepository<Categories,Long> {
+@Repository
+public interface CatogoriesRepository extends JpaRepository<Categories,Long> {
 }

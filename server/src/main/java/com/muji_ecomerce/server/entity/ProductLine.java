@@ -1,10 +1,17 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProductLine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +23,7 @@ public class ProductLine {
     private String imageProductLine;
 
     @OneToMany(mappedBy = "productLine")
+    @JsonIgnore
     private List<Categories> categoriesList;
 
     public ProductLine(Long productLineId, String nameProductLine, String imageProductLine) {
