@@ -2,10 +2,14 @@ package com.muji_ecomerce.server.entity;
 
 import com.muji_ecomerce.server.utils.Order_Product_Key;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
+@Setter
+@Getter
 public class Product {
 
     @Id
