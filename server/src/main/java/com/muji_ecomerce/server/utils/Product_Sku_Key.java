@@ -5,18 +5,27 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Embeddable
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product_Sku_Key implements Serializable {
     @Column(name = "product_id")
     private Long productId;
 
     @Column(name = "sku_id")
     private Long skuId;
+
 
 //    @OneToMany(mappedBy = "productSku", cascade = CascadeType.ALL)
 //    List<Sku_values> skuValues;

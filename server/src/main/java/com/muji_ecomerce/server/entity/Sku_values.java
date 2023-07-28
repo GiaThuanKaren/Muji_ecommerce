@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muji_ecomerce.server.utils.Sku_Values_Key;
 import jakarta.persistence.*;
 
@@ -14,7 +15,7 @@ public class Sku_values {
 
     @ManyToOne
     @MapsId("id")
-//
+    @JsonIgnore
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
             @JoinColumn(name = "sku_id", referencedColumnName = "sku_id")
@@ -22,6 +23,7 @@ public class Sku_values {
     Product_Sku productSku;
 
     @ManyToOne
+    @JsonIgnore
     @MapsId("optionID")
             @JoinColumn(name = "option_id")
     Option option;
