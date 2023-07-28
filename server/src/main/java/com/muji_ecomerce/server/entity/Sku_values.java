@@ -9,8 +9,19 @@ public class Sku_values {
     @EmbeddedId
     Sku_Values_Key id;
 
-    @Column(name = "values_id")
-    private Long valuesId;
+    @ManyToOne
+    @MapsId("id")
+
+   @JoinColumns({
+           @JoinColumn(name = "value_id", referencedColumnName ="value_id"),
+           @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+           @JoinColumn(name = "option_id", referencedColumnName ="option_id")
+   }
+
+   )
+    private Option_value valuesId;
+
+
 
 
     @ManyToOne
