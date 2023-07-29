@@ -2,9 +2,17 @@ package com.muji_ecomerce.server.entity;
 
 import com.muji_ecomerce.server.utils.Product_Option_Key;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-public class product_option {
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Product_Option {
 
     @EmbeddedId
     Product_Option_Key id;

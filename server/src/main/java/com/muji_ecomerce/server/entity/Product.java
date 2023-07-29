@@ -1,6 +1,5 @@
 package com.muji_ecomerce.server.entity;
 
-import com.muji_ecomerce.server.utils.Order_Product_Key;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,13 +24,13 @@ public class Product {
     @JoinColumn(name="category_id")
     private Categories categories;
 
-    @OneToMany(mappedBy = "product")
-    Set<product_option> products;
+    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    Set<Product_Option> products;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
     Set<Product_Sku> productSkus;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
     Set<OrderDetail> orderProducts;
 
     @Override

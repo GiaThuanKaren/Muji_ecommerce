@@ -18,7 +18,7 @@ public class Option {
     private String optionName;
 
     @OneToMany(mappedBy = "option")
-    Set<product_option> options;
+    Set<Product_Option> options;
 
     @OneToMany(mappedBy = "option1")
     Set<Option_value> optionValues;

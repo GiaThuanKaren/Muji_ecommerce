@@ -4,6 +4,8 @@ package com.muji_ecomerce.server.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 public class ProductModal {
@@ -15,4 +17,6 @@ public class ProductModal {
     private String productDescription;
 
     private Long categories_id;
+
+    private List<Long> list_option;
 }

@@ -21,10 +21,7 @@ public class ProductController {
     private ProductService productService;
     @PostMapping("/create_new")
     private ResponeModelJson createNew(@RequestBody ProductModal productModal){
-        Product product = productService.createNew(productModal);
-        if(product!=null)
-            return new ResponeModelJson(HttpStatus.CREATED,"Done",product);
-        else
-            return new ResponeModelJson(HttpStatus.CREATED,"Error");
+        ResponeModelJson ResponeModelJsonproduct = productService.createNew(productModal);
+        return ResponeModelJsonproduct;
     }
 }

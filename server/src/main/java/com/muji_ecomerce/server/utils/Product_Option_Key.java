@@ -2,11 +2,15 @@ package com.muji_ecomerce.server.utils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product_Option_Key  implements Serializable {
     @Column(name = "product_id")
     private Long productId;
