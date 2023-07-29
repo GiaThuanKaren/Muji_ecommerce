@@ -10,4 +10,6 @@ public interface ProductService {
 
     ResponeModelJson updateVariantProduct(OptionValueModel optionValueModel);
 
+    ResponeModelJson FetchAllProduct();
+
 }

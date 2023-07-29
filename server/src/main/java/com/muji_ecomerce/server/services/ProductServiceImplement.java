@@ -78,5 +78,13 @@ public class ProductServiceImplement implements  ProductService{
         optionValue.setValuesName(optionValueModel.getValue_name());
 
         return new ResponeModelJson(HttpStatus.CREATED,"Done",optionValueRepsitory.save(optionValue));
+
+    }
+
+
+    @Override
+    public ResponeModelJson FetchAllProduct() {
+        List<Product> productList = productRepository.findAll();
+        return new ResponeModelJson(HttpStatus.OK,"Done",productList);
     }
 }

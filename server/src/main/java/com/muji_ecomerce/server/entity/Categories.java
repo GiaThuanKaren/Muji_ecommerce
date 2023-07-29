@@ -18,20 +18,20 @@ public class Categories {
     private Long catorgoryID;
 
     private String nameCategory;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @Nullable
     @JoinColumn(name = "parent_id")
     private Categories parentID;
 
-    @OneToMany(mappedBy = "parentID")
+    @OneToMany(mappedBy = "parentID",cascade=CascadeType.ALL)
     @JsonIgnore
     private Set<Categories> categoriesSet;
-    @ManyToOne
-
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JsonIgnore
     @JoinColumn(name="productline_id")
     private ProductLine  productLine;
 
-    @OneToMany(mappedBy = "categories")
+    @OneToMany(mappedBy = "categories",cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Product> productList;
 

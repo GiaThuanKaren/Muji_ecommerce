@@ -27,7 +27,7 @@ public class VerificationTokenCustomer {
         return new Date(calendar.getTime().getTime());
     }
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name ="customer_id")
     private Customer customer;
 

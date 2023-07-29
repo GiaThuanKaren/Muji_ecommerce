@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,13 +18,16 @@ public class Option {
 
     private String optionName;
 
-    @OneToMany(mappedBy = "option")
+    @OneToMany(mappedBy = "option",cascade=CascadeType.ALL)
+    @JsonIgnore
     Set<Product_Option> options;
 
-    @OneToMany(mappedBy = "option1")
+    @OneToMany(mappedBy = "option1",cascade=CascadeType.ALL)
+    @JsonIgnore
     Set<Option_value> optionValues;
 
-    @OneToMany(mappedBy = "option")
+    @OneToMany(mappedBy = "option",cascade=CascadeType.ALL)
+    @JsonIgnore
     List<Sku_values> skuValues;
 
 }

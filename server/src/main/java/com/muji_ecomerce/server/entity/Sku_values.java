@@ -9,7 +9,7 @@ public class Sku_values {
     @EmbeddedId
     Sku_Values_Key id;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("id")
 
    @JoinColumns({
@@ -24,17 +24,15 @@ public class Sku_values {
 
 
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("id")
-    @JsonIgnore
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
             @JoinColumn(name = "sku_id", referencedColumnName = "sku_id")
     })
     Product_Sku productSku;
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("optionID")
             @JoinColumn(name = "option_id")
     Option option;

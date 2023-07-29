@@ -8,12 +8,12 @@ public class OrderDetail {
     @EmbeddedId
     Order_Product_Key id;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
     private OrderProduct orderProduct;

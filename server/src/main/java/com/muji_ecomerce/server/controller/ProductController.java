@@ -27,4 +27,9 @@ public class ProductController {
     private ResponeModelJson updateVariantProduct(@RequestBody OptionValueModel optionValueModel){
         return productService.updateVariantProduct(optionValueModel);
     }
+
+    @GetMapping("/fetchAll")
+    private ResponeModelJson getAll(){
+        return productService.FetchAllProduct();
+    }
 }

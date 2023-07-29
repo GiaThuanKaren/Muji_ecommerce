@@ -19,7 +19,7 @@ public class Role {
 
     private String role_name;
 
-    @OneToMany(mappedBy = "roleid")
+    @OneToMany(mappedBy = "roleid",cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Employee> employeeList;
 }

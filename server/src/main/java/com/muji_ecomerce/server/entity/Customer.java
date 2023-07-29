@@ -24,11 +24,11 @@ public class Customer {
     private String customerPhone;
 
     private String customerEmail;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer",cascade=CascadeType.ALL)
     @JsonIgnore
     private List<OrderProduct> orderProducts;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer",cascade=CascadeType.ALL)
     @JsonIgnore
     private VerificationTokenCustomer verificationTokenCustomer;
 

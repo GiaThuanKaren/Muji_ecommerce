@@ -28,7 +28,7 @@ public class Employee {
 
 
     private String employeePassword;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
 
     @JoinColumn(name = "employee_role_id")
     private Role roleid;

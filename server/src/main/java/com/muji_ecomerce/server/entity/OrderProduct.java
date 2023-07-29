@@ -17,14 +17,14 @@ public class OrderProduct {
 
     private String shippedDate;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="status_order_id")
     private Status status_order;
 
-    @OneToMany(mappedBy = "orderProduct")
+    @OneToMany(mappedBy = "orderProduct",cascade=CascadeType.ALL)
     private Set<OrderDetail> productSet;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }

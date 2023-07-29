@@ -17,12 +17,12 @@ public class Product_Option {
     @EmbeddedId
     Product_Option_Key id;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("productID")
     @JoinColumn(name = "product_id")
     Product product;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("optionId")
     @JoinColumn(name = "option_id")
     Option option;

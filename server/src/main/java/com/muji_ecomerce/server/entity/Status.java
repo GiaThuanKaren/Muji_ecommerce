@@ -12,6 +12,6 @@ public class Status {
 
     private String nameStatus;
 
-    @OneToMany(mappedBy = "status_order")
+    @OneToMany(mappedBy = "status_order",cascade=CascadeType.ALL)
     private List<OrderProduct> order_Product_statuses;
 }

@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muji_ecomerce.server.utils.Option_Value_Key;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,13 @@ public class Option_value {
     private String valuesName;
 
     @OneToMany(mappedBy = "valuesId", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Sku_values> skuValuesSet;
 
 //
 //
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
+
     @MapsId("optionID")
     @JoinColumn(name = "option_id")
     Option option1;

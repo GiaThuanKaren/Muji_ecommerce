@@ -22,7 +22,7 @@ public class Product_Sku {
 
     private float price;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnore
     @MapsId("productId")
     @JoinColumn(name = "product_id")

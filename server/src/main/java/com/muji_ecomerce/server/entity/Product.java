@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,17 +21,20 @@ public class Product {
 
     private String productDescription;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="category_id")
     private Categories categories;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @JsonIgnore
     Set<Product_Option> products;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @JsonIgnore
     Set<Product_Sku> productSkus;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @JsonIgnore
     Set<OrderDetail> orderProducts;
 
     @Override

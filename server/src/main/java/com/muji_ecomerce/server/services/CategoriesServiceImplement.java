@@ -4,10 +4,13 @@ import com.muji_ecomerce.server.entity.Categories;
 import com.muji_ecomerce.server.entity.Option;
 import com.muji_ecomerce.server.entity.ProductLine;
 import com.muji_ecomerce.server.model.CategoriesModel;
+import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.repository.CatogoriesRepository;
 import com.muji_ecomerce.server.repository.ProductLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Optional;
 @Service
@@ -43,5 +46,12 @@ public class CategoriesServiceImplement implements  CatogoriesService{
 
         return null;
 
+    }
+
+
+
+    @Override
+    public ResponeModelJson fetchAll() {
+        return new  ResponeModelJson(HttpStatus.OK,"Done",catogoriesRepository.findAll());
     }
 }

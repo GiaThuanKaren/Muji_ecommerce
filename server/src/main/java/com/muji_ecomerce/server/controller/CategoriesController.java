@@ -7,10 +7,7 @@ import com.muji_ecomerce.server.services.CatogoriesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -29,6 +26,10 @@ public class CategoriesController {
             return new ResponeModelJson(HttpStatus.CREATED,"Done",categoriesCreated);
         else
             return new ResponeModelJson(HttpStatus.CONFLICT,"Done");
+    }
+    @GetMapping("/fetchAll")
+    private  ResponeModelJson fetchAll(){
+        return catogoriesService.fetchAll();
     }
 
 }
