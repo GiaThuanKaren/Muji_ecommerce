@@ -2,14 +2,17 @@ import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 import { ProductLineModel } from 'src/Model/apiModel'
-import { FetchAll, deleteProductLine } from 'src/services/api/productline'
+import { FetchAll, UpdateId, deleteProductLine } from 'src/services/api/productline'
 import { ICON, IconSolid } from 'src/utils'
 
 function ProductLineIndex() {
     const [properties, setProperties] = React.useState<ProductLineModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
-    const [value, setValue] = React.useState<ProductLineModel>()
-
+    const [value, setValue] = React.useState<ProductLineModel>({
+        imageProductLine:"",
+        nameProductLine:"",
+    })
+    console.log(value)
     async function FetchApi() {
         try {
             let result = await FetchAll();
@@ -26,6 +29,28 @@ function ProductLineIndex() {
 
         }
     }
+
+    const handleUpdate = async function () {
+        try {
+            await UpdateId(value as ProductLineModel);
+            
+            setOpenModal(false)
+            await FetchApi();
+        } catch (error) {
+
+        }
+    }
+
+
+    const handleInput = function (key: string, value1: any) {
+        console.log({
+            [key]: value
+        })
+        setValue({
+            ...value,
+            [key]: value1
+        })
+    }
     React.useEffect(() => {
 
         FetchApi()
@@ -40,11 +65,15 @@ function ProductLineIndex() {
                                 Chỉnh sửa thuộc tính
                             </h3>
 
-                            <InputComp valueInput={value?.productLineId} leftText='Option ID' widthFull />
-                            <InputComp valueInput={value?.nameProductLine} leftText='Option Name' widthFull />
-                            <InputComp valueInput={value?.imageProductLine} leftText='Option Name' widthFull />
+                            <InputComp disable valueInput={value?.productLineId} leftText='Option ID' widthFull />
+                            <InputComp handleOnchange={(e) => {
+                                handleInput("nameProductLine", e.target.value)
+                            }} valueInput={value?.nameProductLine} leftText='Option Name' widthFull />
+                            <InputComp handleOnchange={(e) => {
+                                handleInput("imageProductLine", e.target.value)
+                            }} valueInput={value?.imageProductLine} leftText='Option Name' widthFull />
                             <div className='flex items-center justify-end px-5'>
-                                <div className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
+                                <div onClick={handleUpdate} className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
                                     <p className='  text-white text-center  px-4'>
                                         Save
                                     </p>

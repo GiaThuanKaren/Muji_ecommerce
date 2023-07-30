@@ -12,4 +12,13 @@ public class ProductLineModel {
 
 
     private String imageProductLine;
+
+    @Override
+    public String toString() {
+        return "ProductLineModel{" +
+                "productLineId=" + productLineId +
+                ", nameProductLine='" + nameProductLine + '\'' +
+                ", imageProductLine='" + imageProductLine + '\'' +
+                '}';
+    }
 }

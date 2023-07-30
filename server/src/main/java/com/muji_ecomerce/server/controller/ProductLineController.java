@@ -29,6 +29,7 @@ public class ProductLineController {
 
     @PutMapping("/edit")
     public ResponeModelJson editById(@RequestBody ProductLineModel productLineModel){
+        System.out.println(productLineModel.toString());
         ProductLine productLineEdited = productLineService.edit(productLineModel);
         if(productLineEdited!=null)
             return new ResponeModelJson(HttpStatus.OK,"Oe",productLineEdited);

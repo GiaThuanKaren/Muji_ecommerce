@@ -5,11 +5,12 @@ interface PropsInputComp {
     leftText: string
     valueInput: string | number | readonly string[] | undefined
     placehorder?: string
-    handleOnchange: React.ChangeEventHandler<HTMLInputElement>
+    handleOnchange?: React.ChangeEventHandler<HTMLInputElement>
     widthFull?: boolean
+    disable?: boolean
 }
 
-function InputComp({ widthFull, handleOnchange, type, leftText, valueInput, placehorder }: PropsInputComp) {
+function InputComp({ disable, widthFull, handleOnchange, type, leftText, valueInput, placehorder }: PropsInputComp) {
     return (
         <>
             <div className='flex items-center   px-2 py-3 mb-3 flex-wrap'>
@@ -17,10 +18,11 @@ function InputComp({ widthFull, handleOnchange, type, leftText, valueInput, plac
                     {leftText}
                 </h3>
                 <input
+                    disabled={disable}
                     onChange={handleOnchange}
                     placeholder={placehorder}
                     value={valueInput}
-                    className={'outline-gray-400 border-[3px] rounded-sm py-1' + `${widthFull  ? " w-full" : " w-1/3 "}` }
+                    className={'outline-gray-400 border-[3px] rounded-sm py-1' + `${widthFull ? " w-full" : " w-1/3 "}`}
                     type={type || "text"}
                 />
             </div>
