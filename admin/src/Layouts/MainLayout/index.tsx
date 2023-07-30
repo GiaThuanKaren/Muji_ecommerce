@@ -36,11 +36,12 @@ function MainLayout({ children }: Props) {
             icon: <ICON icon={IconSolid.faHome} />,
             title: "Quản lý Danh mục thuộc tính",
             childrenItem: [
-                // {
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     title: "Get All User"
-                // },
+                {
+                    childrenItem: [],
+                    icon: <></>,
+                    title: "Tạo danh thuộc tính mới ",
+                    link:routingLink.taothuoctinh
+                },
                 // {
                 //     childrenItem: [],
                 //     icon: <ICON icon={IconSolid.faHome} />,
@@ -110,7 +111,7 @@ function MainLayout({ children }: Props) {
         },
 
     ]
-    const [openSideBarUser, setOpenSideBarUser] = React.useState(false);
+    const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
     console.log(openSideBarUser)
     return (
         <>

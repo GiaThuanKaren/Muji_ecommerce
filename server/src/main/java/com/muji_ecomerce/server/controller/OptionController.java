@@ -7,18 +7,37 @@ import com.muji_ecomerce.server.services.OptionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @Slf4j
 @RequestMapping("/option")
 public class OptionController {
 
     @Autowired
     private OptionService optionService;
+
+    @DeleteMapping("/delete/{id}")
+    public ResponeModelJson deleteByid(@PathVariable("id") Long optionID ){
+        boolean isDelete = optionService.deleteOptionById(optionID);
+        if(isDelete)
+            return new ResponeModelJson<>(HttpStatus.OK,"Done");
+        return new ResponeModelJson<>(HttpStatus.CONFLICT,"Error");
+
+    }
+
+    @PutMapping("/edit")
+    public ResponeModelJson editById(@RequestBody OptionModel optionModel){
+        Option optionEdited = optionService.EditOptionById(optionModel);
+        if(optionEdited != null)
+            return new ResponeModelJson(HttpStatus.OK,"Done",optionEdited);
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Error");
+    }
+    @GetMapping("/fetch_all")
+    public ResponeModelJson fetchAll(){
+        return new ResponeModelJson(HttpStatus.OK,"Done",optionService.fetchAll());
+    }
 
     @PostMapping("/create_new")
     public ResponeModelJson creatNew(@RequestBody OptionModel optionModel){

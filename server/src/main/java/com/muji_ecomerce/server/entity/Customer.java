@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Customer {
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

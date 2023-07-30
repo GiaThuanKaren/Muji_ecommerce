@@ -10,7 +10,7 @@ function DropOutItem({ childrenItem, icon, title, link }: DropOutSideBarItem) {
         <>
             <div onClick={() => {
                 push(link as string)
-            }} className='flex items-center justify-between px-3 py-3  w-full'>
+            }} className='text flex items-center justify-between px-3 py-3  w-full'>
                 {icon}
                 <p className='font-medium w-full mx-3 text-sm capitalize '>
                     {title}

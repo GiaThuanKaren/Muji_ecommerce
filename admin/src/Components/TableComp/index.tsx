@@ -1,17 +1,18 @@
 import React from 'react'
 import { ICON, IconSolid } from 'src/utils'
 
-interface Props {
+interface Props{
     handleEdit: Function,
     handleDelete: Function
 
     headerRow: string[]
-    data: any[]
+  
     totalData: number;
     displayEachPage?: number
+    children:React.ReactNode
 }
 
-function TableComp({ data, handleDelete, handleEdit, headerRow }: Props) {
+function TableComp({children,  handleDelete, handleEdit, headerRow }: Props) {
     const [openModal, setOpenModal] = React.useState(false);
     return (
         <>
@@ -38,28 +39,7 @@ function TableComp({ data, handleDelete, handleEdit, headerRow }: Props) {
 
 
                                 </thead>
-                                <tbody>
-
-                                    {
-                                        Array.from(Array(10).keys()).map((item, index: number) => {
-                                            return <>
-                                                <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                                                    <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                                                    <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                                                    <td className="whitespace-nowrap px-6 py-4">Mark</td>
-                                                    <td className="whitespace-nowrap px-6 py-4">Otto</td>
-                                                    <td className="whitespace-nowrap px-6 py-4">
-
-                                                        <ICON className='p-3 bg-yellow-300 mx-2 rounded-full' icon={IconSolid.faPenToSquare} />
-                                                        <ICON className='p-3 bg-red-300 rounded-full' icon={IconSolid.faTrash} />
-                                                    </td>
-                                                </tr>
-                                            </>
-                                        })
-                                    }
-
-
-                                </tbody>
+                                {children}
                             </table>
                         </div>
                     </div>
