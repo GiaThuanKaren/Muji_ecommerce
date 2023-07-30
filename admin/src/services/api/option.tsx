@@ -25,3 +25,11 @@ export const FetchAllOption = async function () {
     }
 }
 
+export const DeleteOptionById = async function (id: number) {
+    try {
+        let { data } = await axios.delete(`${BASE_DEV}/option/delete/${id}`)
+        ShowToast("Deleted Sucessfully", "INFO")
+    } catch (error) {
+        ShowToast("Failed To Delete This Option", "ERROR")
+    }
+}

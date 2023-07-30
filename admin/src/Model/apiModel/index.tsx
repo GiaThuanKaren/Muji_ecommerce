@@ -11,6 +11,17 @@ export interface OptionModelRespone {
 }
 
 
+export interface ProductLineModel {
+  productLineId?: number
+  nameProductLine: string
+  imageProductLine: string
+}
+
+export interface ProductLineResponeModel {
+  nameProductLine: string
+  imageProductLine: string
+}
+
 
 export interface OptionModel {
   optionName: string

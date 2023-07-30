@@ -40,7 +40,7 @@ function MainLayout({ children }: Props) {
                     childrenItem: [],
                     icon: <></>,
                     title: "Tạo danh thuộc tính mới ",
-                    link:routingLink.taothuoctinh
+                    link: routingLink.taothuoctinh
                 },
                 // {
                 //     childrenItem: [],
@@ -77,20 +77,24 @@ function MainLayout({ children }: Props) {
             ],
             link: routingLink.nguoidung
         },
+
         {
             title: "Quản lý sản phẩm",
             childrenItem: [
-                // {
-                //     title: "Get All Product",
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />
-                // }
-                // ,
-                // {
-                //     title: "Add New Product",
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />
-                // }
+                {
+                    title: "Quản lý dòng sản phẩm",
+                    childrenItem: [
+                        {
+                            title: "Thêm dòng sản phẩm",
+                            childrenItem: [],
+                            icon: <ICON icon={IconSolid.faHome} />,
+                            link: routingLink.addnewproductline
+                        }
+
+                    ],
+                    icon: <ICON icon={IconSolid.faHome} />,
+                    link: routingLink.productline
+                },
             ],
             icon: <ICON icon={IconSolid.faHome} />,
             link: routingLink.sanpham
@@ -127,7 +131,7 @@ function MainLayout({ children }: Props) {
                         }
                     </div>
                 </div>
-                <div className={'h-full overflow-y-auto   relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}` }>
+                <div className={'h-full overflow-y-auto   relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}`}>
                     <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
                     <div className='w-full min-h-[100vh] '>
                         {children}

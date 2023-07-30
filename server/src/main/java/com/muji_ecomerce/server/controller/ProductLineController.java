@@ -16,6 +16,25 @@ public class ProductLineController {
 
     @Autowired
     private ProductLineService productLineService;
+
+    @GetMapping("/fetch_all")
+    public ResponeModelJson fetchAll(){
+        return new ResponeModelJson(HttpStatus.OK,"OKe",productLineService.fetchAll());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponeModelJson delete(@PathVariable("id") Long id){
+        return new ResponeModelJson(HttpStatus.OK,"Oke",productLineService.delete(id));
+    }
+
+    @PutMapping("/edit")
+    public ResponeModelJson editById(@RequestBody ProductLineModel productLineModel){
+        ProductLine productLineEdited = productLineService.edit(productLineModel);
+        if(productLineEdited!=null)
+            return new ResponeModelJson(HttpStatus.OK,"Oe",productLineEdited);
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Failed");
+    }
+
     @PostMapping("/create_new")
     public ResponeModelJson createNew(@RequestBody ProductLineModel productLineModel){
         ProductLine productLinecreated = productLineService.createNew(productLineModel);

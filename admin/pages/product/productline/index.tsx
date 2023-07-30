@@ -1,30 +1,27 @@
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { OptionModel } from 'src/Model/apiModel'
-import { DeleteOptionById, FetchAllOption } from 'src/services/api/option'
+import { ProductLineModel } from 'src/Model/apiModel'
+import { FetchAll, deleteProductLine } from 'src/services/api/productline'
 import { ICON, IconSolid } from 'src/utils'
 
-
-function OptionIndexPage() {
-    const [properties, setProperties] = React.useState<OptionModel[]>([])
-
+function ProductLineIndex() {
+    const [properties, setProperties] = React.useState<ProductLineModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
-    const [openModalDelte, setOpenModalDelte] = React.useState(false)
-    const [value, setValue] = React.useState<OptionModel>()
+    const [value, setValue] = React.useState<ProductLineModel>()
 
-    const HandleDelete = async function (id: number) {
+    async function FetchApi() {
         try {
-            await DeleteOptionById(id)
-            await FetchApi();
+            let result = await FetchAll();
+            setProperties(result?.data as ProductLineModel[])
         } catch (error) {
 
         }
     }
-    async function FetchApi() {
+    const HandleDelete = async function (id: number) {
         try {
-            let result = await FetchAllOption();
-            setProperties(result?.data as OptionModel[])
+            await deleteProductLine(id)
+            await FetchApi();
         } catch (error) {
 
         }
@@ -33,8 +30,6 @@ function OptionIndexPage() {
 
         FetchApi()
     }, [])
-
-    // console.log(keys<OptionModel>())
     return (
         <>
             <MainLayout>
@@ -45,8 +40,9 @@ function OptionIndexPage() {
                                 Chỉnh sửa thuộc tính
                             </h3>
 
-                            <InputComp valueInput={value?.optionID} leftText='Option ID' widthFull />
-                            <InputComp valueInput={value?.optionName} leftText='Option Name' widthFull />
+                            <InputComp valueInput={value?.productLineId} leftText='Option ID' widthFull />
+                            <InputComp valueInput={value?.nameProductLine} leftText='Option Name' widthFull />
+                            <InputComp valueInput={value?.imageProductLine} leftText='Option Name' widthFull />
                             <div className='flex items-center justify-end px-5'>
                                 <div className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
                                     <p className='  text-white text-center  px-4'>
@@ -66,23 +62,26 @@ function OptionIndexPage() {
                     </>
                 }
                 <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
-                    "ID",
-                    "OptionName"
+                    "ProductLine ID",
+                    "ProductLine name",
+                    "ProductLine Image"
                 ]} totalData={properties.length} displayEachPage={4} >
 
                     <tbody>
 
                         {
-                            properties.map((item: OptionModel, index: number) => {
+                            properties.map((item: ProductLineModel, index: number) => {
                                 return <>
                                     <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.optionID}
+                                            {item.productLineId}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.optionName}
+                                            {item.nameProductLine}
                                         </td>
-
+                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                            {item.imageProductLine}
+                                        </td>
                                         <td className="whitespace-nowrap px-6 py-4">
 
                                             <ICON onClick={() => {
@@ -90,9 +89,10 @@ function OptionIndexPage() {
                                                 setValue(item)
                                             }} className='p-3 bg-yellow-300 mx-2 rounded-full' icon={IconSolid.faPenToSquare} />
                                             <ICON onClick={() => {
+
                                                 let result = confirm("Do you want to delete it ?")
                                                 if (result) {
-                                                    HandleDelete(item.optionID as number)
+                                                    HandleDelete(item.productLineId as number)
                                                 }
                                             }} className='p-3 bg-red-300 rounded-full' icon={IconSolid.faTrash} />
                                         </td>
@@ -109,4 +109,4 @@ function OptionIndexPage() {
     )
 }
 
-export default OptionIndexPage
+export default ProductLineIndex

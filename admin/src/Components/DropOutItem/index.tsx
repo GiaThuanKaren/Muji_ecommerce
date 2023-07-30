@@ -18,12 +18,15 @@ function DropOutItem({ childrenItem, icon, title, link }: DropOutSideBarItem) {
                 {
                     childrenItem.length > 0 && (
                         open ? <>
-                            <ICON onClick={() => {
+                            <ICON onClick={(e) => {
+                                e.stopPropagation()
                                 setOpen(false)
                             }} icon={IconSolid.faChevronRight} />
                         </> :
                             <>
-                                <ICON onClick={() => {
+                                <ICON onClick={(e) => {
+                                    e.stopPropagation()
+
                                     setOpen(true)
                                 }} icon={IconSolid.faChevronDown} />
                             </>

@@ -22,4 +22,5 @@ function ModalWrapper({ children, handleOpenModalState, openModalState }: Props)
     )
 }
 
+
 export default ModalWrapper
