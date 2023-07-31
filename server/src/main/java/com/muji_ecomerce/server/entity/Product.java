@@ -21,7 +21,7 @@ public class Product {
 
     private String productDescription;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="category_id")
     private Categories categories;
 

@@ -29,4 +29,18 @@ export interface OptionModel {
 }
 
 
+export interface CategoriesResponeModel {
+  catorgoryID?: number
+  nameCategory: string
+  parentID: CategoriesResponeModel | null
+  productList: any[]
+}
 
+
+
+export interface CategoriesModel {
+  catorgoryID?: number
+  nameCategory: string
+  product_lineid?: number
+  parentID?:number
+}

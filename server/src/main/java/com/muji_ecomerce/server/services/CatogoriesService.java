@@ -8,4 +8,8 @@ public interface CatogoriesService {
     Categories creatNew(CategoriesModel categoriesModel);
 
     ResponeModelJson fetchAll();
+
+    ResponeModelJson updateByID(CategoriesModel categoriesModel);
+
+    boolean DeleteByid(Long id);
 }

@@ -21,6 +21,27 @@ public class CategoriesServiceImplement implements  CatogoriesService{
     @Autowired
     CatogoriesRepository catogoriesRepository;
 
+    @Override
+    public boolean DeleteByid(Long id) {
+        Optional<Categories> categoriesFound = catogoriesRepository.findById(id);
+        if(categoriesFound.isPresent()){
+            catogoriesRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ResponeModelJson updateByID(CategoriesModel categoriesModel) {
+        Optional<Categories> categoriesFound = catogoriesRepository.findById(categoriesModel.getCatorgoryID());
+        if(categoriesFound.isPresent()){
+            categoriesFound.get().setNameCategory(categoriesModel.getNameCategory());
+            if(categoriesModel.getParentID()!=null)
+                categoriesFound.get().setCatorgoryID(categoriesModel.getCatorgoryID());
+            return new ResponeModelJson(HttpStatus.CREATED,"Oke",catogoriesRepository.save(categoriesFound.get()));
+        }
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Error");
+    }
 
     @Override
     public Categories creatNew(CategoriesModel categoriesModel) {

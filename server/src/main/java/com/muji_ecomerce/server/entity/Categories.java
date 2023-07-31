@@ -18,7 +18,7 @@ public class Categories {
     private Long catorgoryID;
 
     private String nameCategory;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @Nullable
     @JoinColumn(name = "parent_id")
     private Categories parentID;
@@ -26,13 +26,13 @@ public class Categories {
     @OneToMany(mappedBy = "parentID",cascade=CascadeType.ALL)
     @JsonIgnore
     private Set<Categories> categoriesSet;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name="productline_id")
     private ProductLine  productLine;
 
     @OneToMany(mappedBy = "categories",cascade=CascadeType.ALL)
-    @JsonIgnore
+
     private List<Product> productList;
 
 

@@ -33,4 +33,13 @@ public class CategoriesController {
         return catogoriesService.fetchAll();
     }
 
+    @PutMapping("/update")
+    private ResponeModelJson updateById(@RequestBody CategoriesModel categoriesModel){
+        return catogoriesService.updateByID(categoriesModel);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponeModelJson delete(@PathVariable("id") Long id){
+        return new ResponeModelJson(HttpStatus.OK,"OKe",catogoriesService.DeleteByid(id));
+    }
 }

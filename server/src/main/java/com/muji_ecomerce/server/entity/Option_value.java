@@ -29,7 +29,7 @@ public class Option_value {
 
 //
 //
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
 
     @MapsId("optionID")
     @JoinColumn(name = "option_id")

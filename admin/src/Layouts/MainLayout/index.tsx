@@ -21,11 +21,12 @@ function MainLayout({ children }: Props) {
             icon: <ICON icon={IconSolid.faHome} />,
             title: "Quản Lý Danh mục sản phẩm",
             childrenItem: [
-                // {
-                //     childrenItem: [],
-                //     title: "Thêm danh mục mới",
-                //     icon: <ICON icon={IconSolid.faHome} />
-                // }
+                {
+                    childrenItem: [],
+                    title: "Thêm danh mục mới",
+                    icon: <ICON icon={IconSolid.faHome} />,
+                    link:routingLink.addnewcateogories
+                }
             ],
             link: routingLink.danhmucsanpham
         },

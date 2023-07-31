@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { MainLayout } from 'src/Layouts'
 import { TableComp } from 'src/Components'
-import { ICON } from 'src/utils'
+import { ICON, IconSolid } from 'src/utils'
 
 
 export default function Home() {
