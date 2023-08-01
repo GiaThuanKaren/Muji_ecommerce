@@ -12,4 +12,7 @@ public interface ProductService {
 
     ResponeModelJson FetchAllProduct();
 
+    ResponeModelJson updateProductById(ProductModal productModal);
+
+    ResponeModelJson deleteProductById(Long productId);
 }

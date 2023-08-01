@@ -22,6 +22,7 @@ public class Product {
     private String productDescription;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="category_id")
     private Categories categories;
 
@@ -30,11 +31,11 @@ public class Product {
     Set<Product_Option> products;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
-    @JsonIgnore
+//    @JsonIgnore
     Set<Product_Sku> productSkus;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
-    @JsonIgnore
+//    @JsonIgnore
     Set<OrderDetail> orderProducts;
 
     @Override

@@ -42,5 +42,23 @@ export interface CategoriesModel {
   catorgoryID?: number
   nameCategory: string
   product_lineid?: number
-  parentID?:number
+  parentID?: number
+}
+
+
+export interface ProductResponeModel {
+  productId?: number
+  nameProduct?: string
+  quantityStock?: number
+  productDescription?: string
+  productSkus?: any[]
+  orderProducts?: any[]
+}
+
+export interface ProductModel {
+  nameProduct: string
+  quantityStock: number
+  productDescription: string
+  categories_id: number
+  list_option: number[]
 }

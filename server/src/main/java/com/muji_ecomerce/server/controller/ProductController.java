@@ -29,6 +29,16 @@ public class ProductController {
         return productService.updateVariantProduct(optionValueModel);
     }
 
+    @PutMapping("/updateProductByID")
+    private ResponeModelJson updateProductById(@RequestBody ProductModal productModal){
+        return productService.updateProductById(productModal);
+    }
+
+    @DeleteMapping("/deleteProduct/{id}")
+    private ResponeModelJson deleteProductById(@PathVariable("id") Long id){
+        return productService.deleteProductById(id);
+    }
+
     @GetMapping("/fetchAll")
     private ResponeModelJson getAll(){
         return productService.FetchAllProduct();

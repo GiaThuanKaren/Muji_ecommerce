@@ -9,8 +9,8 @@ function ProductLineIndex() {
     const [properties, setProperties] = React.useState<ProductLineModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
     const [value, setValue] = React.useState<ProductLineModel>({
-        imageProductLine:"",
-        nameProductLine:"",
+        imageProductLine: "",
+        nameProductLine: "",
     })
     console.log(value)
     async function FetchApi() {
@@ -33,7 +33,7 @@ function ProductLineIndex() {
     const handleUpdate = async function () {
         try {
             await UpdateId(value as ProductLineModel);
-            
+
             setOpenModal(false)
             await FetchApi();
         } catch (error) {

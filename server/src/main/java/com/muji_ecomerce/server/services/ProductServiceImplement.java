@@ -87,4 +87,54 @@ public class ProductServiceImplement implements  ProductService{
         List<Product> productList = productRepository.findAll();
         return new ResponeModelJson(HttpStatus.OK,"Done",productList);
     }
+
+    @Override
+    public ResponeModelJson updateProductById(ProductModal productModal) {
+        Optional<Product> productFound = productRepository.findById(productModal.getProductId());
+        if(productFound.isPresent()){
+            productFound.get().setNameProduct(productModal.getNameProduct());
+            productFound.get().setProductDescription(productModal.getProductDescription());
+            productFound.get().setQuantityStock(productModal.getQuantityStock());
+            Optional<Categories> categoriesFound = catogoriesRepository.findById(productModal.getCategories_id());
+            if(categoriesFound.isPresent()){
+                productFound.get().setCategories(categoriesFound.get());
+            }
+            else
+                return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Categories Id");
+
+
+            List<Product_Option> productOptionList = new ArrayList<>();
+            for (Long id : productModal.getList_option()){
+                Optional<Option> optionFound = optionRepository.findById(id);
+                if(!optionFound.isPresent())
+                    return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid OptionID ");
+
+                Product_Option_Key productOptionKey = new Product_Option_Key(productFound.get().getProductId(),id);
+                Product_Option  productOption1 = new Product_Option();
+                productOption1.setId(productOptionKey);
+                productOption1.setProduct(productFound.get());
+                productOption1.setOption(optionFound.get());
+                productOptionList.add(productOption1);
+
+            }
+
+            productOptionRepository.saveAll(productOptionList);
+            return new ResponeModelJson(
+                    HttpStatus.CREATED,"Done"   , productRepository.save(productFound.get())
+            );
+        }
+        return null;
+    }
+
+    @Override
+    public ResponeModelJson deleteProductById(Long productId) {
+        Optional<Product> productFound = productRepository.findById(productId);
+        if(productFound.isPresent()){
+            productRepository.deleteById(productId);
+            return new ResponeModelJson(HttpStatus.OK,"Done");
+        }
+        else
+            return new ResponeModelJson(HttpStatus.CONFLICT,"Can not Delte This Product");
+
+    }
 }

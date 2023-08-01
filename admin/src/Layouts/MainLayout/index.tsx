@@ -25,7 +25,7 @@ function MainLayout({ children }: Props) {
                     childrenItem: [],
                     title: "Thêm danh mục mới",
                     icon: <ICON icon={IconSolid.faHome} />,
-                    link:routingLink.addnewcateogories
+                    link: routingLink.addnewcateogories
                 }
             ],
             link: routingLink.danhmucsanpham
@@ -82,6 +82,12 @@ function MainLayout({ children }: Props) {
         {
             title: "Quản lý sản phẩm",
             childrenItem: [
+                {
+
+                    title: "Thêm Sản phẩm",
+                    icon: <ICON icon={IconSolid.faHome} />,
+                    childrenItem:[]
+                },
                 {
                     title: "Quản lý dòng sản phẩm",
                     childrenItem: [

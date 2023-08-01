@@ -27,11 +27,12 @@ public class Categories {
     @JsonIgnore
     private Set<Categories> categoriesSet;
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name="productline_id")
     private ProductLine  productLine;
 
     @OneToMany(mappedBy = "categories",cascade=CascadeType.ALL)
+    @JsonIgnore
 
     private List<Product> productList;
 

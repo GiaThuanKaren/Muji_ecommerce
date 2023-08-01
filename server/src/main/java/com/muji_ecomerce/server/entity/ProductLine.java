@@ -23,7 +23,7 @@ public class ProductLine {
     private String imageProductLine;
 
     @OneToMany(mappedBy = "productLine")
-//    @JsonIgnore
+    @JsonIgnore
     private List<Categories> categoriesList;
 
     public ProductLine(Long productLineId, String nameProductLine, String imageProductLine) {
