@@ -86,7 +86,8 @@ function MainLayout({ children }: Props) {
 
                     title: "Thêm Sản phẩm",
                     icon: <ICON icon={IconSolid.faHome} />,
-                    childrenItem:[]
+                    childrenItem:[],
+                    link:routingLink.addsanpham
                 },
                 {
                     title: "Quản lý dòng sản phẩm",
