@@ -101,8 +101,6 @@ public class ProductServiceImplement implements  ProductService{
             }
             else
                 return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Categories Id");
-
-
             List<Product_Option> productOptionList = new ArrayList<>();
             for (Long id : productModal.getList_option()){
                 Optional<Option> optionFound = optionRepository.findById(id);

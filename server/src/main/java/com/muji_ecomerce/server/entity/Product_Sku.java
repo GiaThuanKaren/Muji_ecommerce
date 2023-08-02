@@ -18,11 +18,12 @@ public class Product_Sku {
 //    private  Sku_values skuValues12;
     @EmbeddedId
     Product_Sku_Key id;
+    @Column(unique = true)
     private String skuName;
 
     private float price;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     @MapsId("productId")
     @JoinColumn(name = "product_id")
