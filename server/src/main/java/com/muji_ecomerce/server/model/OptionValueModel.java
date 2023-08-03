@@ -14,7 +14,17 @@ public class OptionValueModel {
 
     private Long  option_id;
 
-    private Long  value_id;
+        private Long  value_id;
 
     private String value_name;
+
+    @Override
+    public String toString() {
+        return "OptionValueModel{" +
+                "product_id=" + product_id +
+                ", option_id=" + option_id +
+                ", value_id=" + value_id +
+                ", value_name='" + value_name + '\'' +
+                '}';
+    }
 }

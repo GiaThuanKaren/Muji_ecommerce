@@ -25,10 +25,7 @@ public class Option_Value_Key implements Serializable {
     @Column(name = "value_id")
     private Long valueId;
 
-    public Option_Value_Key(Long productId, Long optionId) {
-        this.productId = productId;
-        this.optionId = optionId;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -41,5 +38,14 @@ public class Option_Value_Key implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(productId, optionId, valueId);
+    }
+
+    @Override
+    public String toString() {
+        return "Option_Value_Key{" +
+                "productId=" + productId +
+                ", optionId=" + optionId +
+                ", valueId=" + valueId +
+                '}';
     }
 }

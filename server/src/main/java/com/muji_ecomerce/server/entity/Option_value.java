@@ -35,5 +35,13 @@ public class Option_value {
     @JoinColumn(name = "option_id")
     Option option1;
 
-
+    @Override
+    public String toString() {
+        return "Option_value{" +
+                "id=" + id +
+                ", valuesName='" + valuesName + '\'' +
+                ", skuValuesSet=" + skuValuesSet +
+                ", option1=" + option1 +
+                '}';
+    }
 }
