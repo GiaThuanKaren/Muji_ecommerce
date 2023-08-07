@@ -35,7 +35,9 @@
 
 ## Features 
  - ## Done 🎉🎉🎉🎉
-   - [x]  sdfsdf
+    - [x]  Send mail to verify whether new user signed up
+    - [x]  Deploy server with dockerfile .
+    - [x]  Authentication with base rolling .  
    
 - ## Doing  🗒🗒🗒🗒
    - [ ] ákldj
