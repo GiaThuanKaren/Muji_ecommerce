@@ -53,7 +53,10 @@ export interface ProductResponeModel {
   productDescription?: string
   productSkus?: any[]
   orderProducts?: any[]
+  categories_id?: number
+  list_option?: number[]
 }
+
 
 export interface ProductModel {
   nameProduct: string

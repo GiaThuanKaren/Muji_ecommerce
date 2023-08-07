@@ -7,9 +7,24 @@ import { routingLink } from 'src/utils/routingLink'
 
 interface Props {
     children: React.ReactNode
+    errorFetch?: boolean
 }
 
-function MainLayout({ children }: Props) {
+
+function ErrorFetching() {
+    return <>
+        <div className='w-full min-h-[100vh] flex items-center justify-center '>
+            <div className='w-full h-full '>
+                <img
+                    className='h-full w-full object-cover'
+                    src="https://cdn.dribbble.com/users/2593544/screenshots/16395075/media/4a46fb5afcd61660301eb42c1194ea79.jpg?resize=1000x750&vertical=center" alt=""
+                />
+            </div>
+        </div>
+    </>
+}
+
+function MainLayout({ children, errorFetch }: Props) {
     let data: DropOutSideBarItem[] = [
         {
             icon: <ICON icon={IconSolid.faHome} />,
@@ -86,8 +101,8 @@ function MainLayout({ children }: Props) {
 
                     title: "Thêm Sản phẩm",
                     icon: <ICON icon={IconSolid.faHome} />,
-                    childrenItem:[],
-                    link:routingLink.addsanpham
+                    childrenItem: [],
+                    link: routingLink.addsanpham
                 },
                 {
                     title: "Quản lý dòng sản phẩm",
@@ -141,9 +156,12 @@ function MainLayout({ children }: Props) {
                 </div>
                 <div className={'h-full overflow-y-auto   relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}`}>
                     <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
-                    <div className='w-full min-h-[100vh] '>
-                        {children}
-                    </div>
+                    {
+                        errorFetch ? <ErrorFetching /> :
+                            <div className='w-full min-h-[100vh] '>
+                                {children}
+                            </div>
+                    }
                 </div>
             </div>
         </>

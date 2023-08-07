@@ -31,6 +31,7 @@ public class ProductController {
 
     @PutMapping("/updateProductByID")
     private ResponeModelJson updateProductById(@RequestBody ProductModal productModal){
+        System.out.println(productModal.toString());
         return productService.updateProductById(productModal);
     }
 
