@@ -65,3 +65,28 @@ export interface ProductModel {
   categories_id: number
   list_option: number[]
 }
+
+
+export interface ProductSkuResponeModel {
+  id: ProductSkuResponeModelId
+  skuName: string
+  quantityStock: number
+  imageProduct: string
+  price: number
+  skuValues: any[]
+}
+
+export interface ProductSkuResponeModelId {
+  productId: number
+  skuId: number
+}
+
+export interface ProductSkuModel {
+  product_id?: number
+  sku_id?: number
+  price?: number
+  sku_name?: string
+  quantityStock?: number
+  imageProduct?: string
+}
+

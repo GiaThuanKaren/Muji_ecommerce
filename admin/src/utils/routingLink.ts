@@ -2,14 +2,16 @@
 export const routingLink = {
     dashboard: "/",
     danhmucsanpham: "/categories",
-    addnewcateogories:"/categories/addnewcateogories",
+    addnewcateogories: "/categories/addnewcateogories",
     nguoidung: "/user",
-    thuoctinh:"/option",
-    taothuoctinh:`/option/createnew`,
+    thuoctinh: "/option",
+    taothuoctinh: `/option/createnew`,
     sanpham: "/product",
     addsanpham: "/product/addnewproduct",
-
-    productline:"/product/productline",
-    addnewproductline:"/product/productline/addnewproductline",
+    productsku: "/product/productsku",
+    addnewproductsku:"/product/productsku/addnewproductsku",
+    productline: "/product/productline",
+    addnewproductline: "/product/productline/addnewproductline",
     donhang: "/shipping",
 }
+

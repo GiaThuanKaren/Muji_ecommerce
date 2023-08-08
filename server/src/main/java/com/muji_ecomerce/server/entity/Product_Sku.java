@@ -17,10 +17,14 @@ public class Product_Sku {
 
 //    private  Sku_values skuValues12;
     @EmbeddedId
+
     Product_Sku_Key id;
     @Column(unique = true)
     private String skuName;
 
+    private int quantityStock;
+
+    private String imageProduct;
     private float price;
 
     @ManyToOne

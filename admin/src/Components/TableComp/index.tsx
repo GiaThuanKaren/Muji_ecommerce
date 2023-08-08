@@ -26,7 +26,7 @@ function TableComp({children,  handleDelete, handleEdit, headerRow }: Props) {
                                         {
                                             headerRow.map((item) => {
                                                 return <>
-                                                    <th scope="col" className="px-6 py-4">
+                                                    <th scope="col" className="px-6 py-4 capitalize">
                                                         {item}
                                                     </th>
                                                 </>

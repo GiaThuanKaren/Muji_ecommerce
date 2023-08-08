@@ -105,6 +105,14 @@ function MainLayout({ children, errorFetch }: Props) {
                     link: routingLink.addsanpham
                 },
                 {
+
+                    title: "Quản lý mã Sản phẩm",
+                    icon: <ICON icon={IconSolid.faHome} />,
+                    childrenItem: [],
+                    link: routingLink.productsku
+                },
+
+                {
                     title: "Quản lý dòng sản phẩm",
                     childrenItem: [
                         {

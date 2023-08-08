@@ -92,7 +92,7 @@ function GetAllProduct() {
                                                 {item.optionName} - {item.optionID}
                                             </option>
                                         </>
-                                    })
+                                    })  
                                 }
                             </SelectInputComp>
 

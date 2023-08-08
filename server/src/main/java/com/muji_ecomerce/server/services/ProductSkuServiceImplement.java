@@ -32,6 +32,9 @@ public class ProductSkuServiceImplement implements ProductSkuService{
             productSku.setPrice(productSkuModel.getPrice());
             productSku.setSkuName(productSkuModel.getSku_name());
             productSku.setProduct(productFound.get());
+            productSku.setImageProduct(productSkuModel.getImageProduct());
+            productSku.setQuantityStock(productSkuModel.getQuantityStock());
+
 
             return productSkuRepository.save(productSku);
         }

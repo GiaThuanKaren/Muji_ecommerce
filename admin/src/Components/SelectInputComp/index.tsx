@@ -15,10 +15,11 @@ interface PropsInputComp {
     value?: any[]
     primaryfield?: string
     secondField?: string
+    listResultChoose?: boolean
 }
 
 
-function SelectInputComp({ handleUpdateListMulti, primaryfield, secondField, value, children, leftText, handleOnchange, type, widthFull }: PropsInputComp) {
+function SelectInputComp({ listResultChoose, handleUpdateListMulti, primaryfield, secondField, value, children, leftText, handleOnchange, type, widthFull }: PropsInputComp) {
     // const [valueSelected, SetvalueSelected] = React.useState<any[]>([])
     const handleListArr = function (item1: any) {
         console.log(item1)
@@ -44,7 +45,7 @@ function SelectInputComp({ handleUpdateListMulti, primaryfield, secondField, val
                 {leftText}
             </h3>
             {
-                value && value.length > 0 &&
+                listResultChoose && value && value.length > 0 &&
 
                 <div className='flex flex-wrap  border-[2px] my-3 py-4 px-3'>
                     {

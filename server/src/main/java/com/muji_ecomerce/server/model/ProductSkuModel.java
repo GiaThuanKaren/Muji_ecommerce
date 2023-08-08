@@ -13,6 +13,10 @@ public class ProductSkuModel {
 
     private float price;
 
+    private int quantityStock;
+
+    private String imageProduct;
+
     private String sku_name;
 
     @Override
@@ -21,6 +25,8 @@ public class ProductSkuModel {
                 "product_id=" + product_id +
                 ", sku_id=" + sku_id +
                 ", price=" + price +
+                ", quantityStock=" + quantityStock +
+                ", imageProduct='" + imageProduct + '\'' +
                 ", sku_name='" + sku_name + '\'' +
                 '}';
     }

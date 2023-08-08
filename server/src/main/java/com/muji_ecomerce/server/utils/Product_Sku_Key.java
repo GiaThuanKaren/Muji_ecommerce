@@ -1,10 +1,7 @@
 package com.muji_ecomerce.server.utils;
 
 import com.muji_ecomerce.server.entity.Sku_values;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +21,7 @@ public class Product_Sku_Key implements Serializable {
     private Long productId;
 
     @Column(name = "sku_id")
+
     private Long skuId;
 
 

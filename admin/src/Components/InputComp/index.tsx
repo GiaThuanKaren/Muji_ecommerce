@@ -3,7 +3,7 @@ import React from 'react'
 interface PropsInputComp {
     type?: React.HTMLInputTypeAttribute
     leftText: string
-    valueInput: string | number | readonly string[] | undefined
+    valueInput?: string | number | readonly string[] | undefined
     placehorder?: string
     handleOnchange?: React.ChangeEventHandler<HTMLInputElement>
     widthFull?: boolean
