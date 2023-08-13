@@ -8,11 +8,11 @@ import { ICON, IconSolid } from 'src/utils';
 function CatogoriesIndex() {
     const [properties, setProperties] = React.useState<CategoriesResponeModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
-    const [value, setValue] = React.useState<CategoriesResponeModel>({
+    const [value, setValue] = React.useState<CategoriesModel>({
         catorgoryID: 1,
         nameCategory: "",
         parentID: undefined,
-        productList: []
+
     })
 
     const HandleDelete = async function (id: number) {
@@ -23,7 +23,7 @@ function CatogoriesIndex() {
 
         }
     }
-    const HandleUpdate = async function (categoriesModel: CategoriesResponeModel) {
+    const HandleUpdate = async function (categoriesModel: CategoriesModel) {
         try {
             await UpdateCategoriesById(categoriesModel);
             await FetchApi();
@@ -63,18 +63,22 @@ function CatogoriesIndex() {
                             }} valueInput={value?.nameCategory} leftText='Option Name' widthFull />
                             {/* <InputComp valueInput={value?.parentID ? value?.parentID : "Không Có"} leftText='Option Name' widthFull /> */}
                             <h3 className='font-medium mr-5 mb-4 px-2'>Parent ID</h3>
-                            <select defaultValue={value?.catorgoryID} onChange={(e) => {
+                            <select defaultValue={value?.parentID} onChange={(e) => {
                                 let id = parseInt(e.target.value)
                                 setValue({
                                     ...value,
-                                    catorgoryID: parseInt(e.target.value) as number
+                                    parentID: id
                                 })
 
                             }} className='w-full mb-5 h-12' name="" id="">
+                                <option value="0">
+                                    Không
+                                </option>
                                 {
 
                                     properties.filter(function (item: CategoriesResponeModel) { return item.catorgoryID !== value?.catorgoryID }).map((item: CategoriesResponeModel, index: number) => {
                                         return <>
+                                            
                                             <option value={item.catorgoryID}>
                                                 {item.catorgoryID} - {item.nameCategory}
                                             </option>
@@ -127,7 +131,11 @@ function CatogoriesIndex() {
 
                                             <ICON onClick={() => {
                                                 setOpenModal(true)
-                                                setValue(item)
+                                                setValue({
+                                                    nameCategory: item.nameCategory,
+                                                    catorgoryID: item.catorgoryID,
+                                                    parentID: item.parentID ? item.parentID.catorgoryID : undefined
+                                                })
                                             }} className='p-3 bg-yellow-300 mx-2 rounded-full' icon={IconSolid.faPenToSquare} />
                                             <ICON onClick={() => {
                                                 let result = confirm("Do you want to delete it ?")

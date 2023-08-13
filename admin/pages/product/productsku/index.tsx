@@ -42,14 +42,15 @@ function ProductSkuIndex() {
                             <h3 className='text-center font-medium py-2'>
                                 Chỉnh sửa thuộc tính
                             </h3>
-                            <InputComp valueInput={value?.skuName} leftText='Sku Name' widthFull />
+                            <InputComp disable valueInput={value?.skuName} leftText='Sku Name' widthFull />
                             <InputComp valueInput={value?.quantityStock} type='number' leftText='Quantity Stock' widthFull />
                             <InputComp valueInput={value?.price} type='number' leftText='Price' widthFull />
                             <div className='max-h-30 w-[100px]'>
                                 {
-                                    (imageProduct.file || value?.imageProduct != "") && <img
+                                    imageProduct.file ? <img
                                         src={imageProduct.imgurl}
-                                        alt="" />
+                                        alt="" /> :
+                                        <img src={value?.imageProduct} alt="" />
                                 }
                             </div>
                             <InputComp handleOnchange={(e) => {

@@ -24,9 +24,12 @@ export const DeleteCatorgiesById = async function (id: number) {
 }
 
 
-export const UpdateCategoriesById = async function (categoriesModel: CategoriesResponeModel) {
+export const UpdateCategoriesById = async function (categoriesModel1: CategoriesModel) {
     try {
-        let { data } = await axios.put(`${BASE_DEV}/categories/update`, categoriesModel)
+        if(categoriesModel1.parentID == 0){
+            categoriesModel1.parentID = undefined
+        }
+        let { data } = await axios.put<CategoriesModel>(`${BASE_DEV}/categories/update`, categoriesModel1)
         ShowToast("Update Sucessfully", "INFO")
     } catch (error) {
         ShowToast("Failed To Update", "ERROR")

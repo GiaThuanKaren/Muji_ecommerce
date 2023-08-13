@@ -16,7 +16,13 @@ function Addnewproductsku() {
             [key]: value1,
         })
     }
-
+    const handleCreateNewProductSku = async function(){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
     async function FetchApi() {
         try {
             let dataListProduct = await FetchAllProduct();
