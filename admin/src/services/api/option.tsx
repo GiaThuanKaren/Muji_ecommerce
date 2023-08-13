@@ -33,3 +33,13 @@ export const DeleteOptionById = async function (id: number) {
         ShowToast("Failed To Delete This Option", "ERROR")
     }
 }
+
+export const UpdateOptionById = async function(option:OptionModel){
+    try {
+        
+        await axios.put(`${BASE_DEV}/option/edit`,option)
+        ShowToast("Update Option Sucessfully","INFO")
+    } catch (error) {
+        ShowToast("Error To Update This Option","ERROR")
+    }
+}

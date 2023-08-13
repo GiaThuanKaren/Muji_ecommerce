@@ -2,7 +2,7 @@ import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 import { OptionModel } from 'src/Model/apiModel'
-import { DeleteOptionById, FetchAllOption } from 'src/services/api/option'
+import { DeleteOptionById, FetchAllOption, UpdateOptionById } from 'src/services/api/option'
 import { ICON, IconSolid } from 'src/utils'
 
 
@@ -11,7 +11,27 @@ function OptionIndexPage() {
 
     const [openModal, setOpenModal] = React.useState(false)
     const [openModalDelte, setOpenModalDelte] = React.useState(false)
-    const [value, setValue] = React.useState<OptionModel>()
+    const [value, setValue] = React.useState<OptionModel>({
+        optionName: "",
+        optionID: undefined
+    })
+
+
+    const handleInput = function (key: string, value1: any) {
+        setValue({
+            ...value,
+            [key]: value1
+        })
+    }
+    const handleUpdate = async function () {
+        try {
+            await UpdateOptionById(value)
+            await FetchApi();
+            setOpenModal(false)
+        } catch (error) {
+
+        }
+    }
 
     const HandleDelete = async function (id: number) {
         try {
@@ -45,10 +65,12 @@ function OptionIndexPage() {
                                 Chỉnh sửa thuộc tính
                             </h3>
 
-                            <InputComp valueInput={value?.optionID} leftText='Option ID' widthFull />
-                            <InputComp valueInput={value?.optionName} leftText='Option Name' widthFull />
+                            <InputComp disable valueInput={value?.optionID} leftText='Option ID' widthFull />
+                            <InputComp handleOnchange={(e) => {
+                                handleInput("optionName", e.target.value)
+                            }} valueInput={value?.optionName} leftText='Option Name' widthFull />
                             <div className='flex items-center justify-end px-5'>
-                                <div className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
+                                <div onClick={handleUpdate} className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
                                     <p className='  text-white text-center  px-4'>
                                         Save
                                     </p>
