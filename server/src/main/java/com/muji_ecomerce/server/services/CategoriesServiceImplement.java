@@ -36,8 +36,23 @@ public class CategoriesServiceImplement implements  CatogoriesService{
         Optional<Categories> categoriesFound = catogoriesRepository.findById(categoriesModel.getCatorgoryID());
         if(categoriesFound.isPresent()){
             categoriesFound.get().setNameCategory(categoriesModel.getNameCategory());
-            if(categoriesModel.getParentID()!=null)
-                categoriesFound.get().setCatorgoryID(categoriesModel.getCatorgoryID());
+            if(categoriesModel.getParentID()!=null){
+
+                Optional<Categories> parentCategories = catogoriesRepository.findById(categoriesModel.getParentID());
+                if(parentCategories.isPresent())
+
+                    categoriesFound.get().setParentID(parentCategories.get());
+
+                else {
+
+                    return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Parent ID");
+
+                }
+
+            }else {
+                categoriesFound.get().setParentID(null);
+            }
+
             return new ResponeModelJson(HttpStatus.CREATED,"Oke",catogoriesRepository.save(categoriesFound.get()));
         }
         return new ResponeModelJson(HttpStatus.CONFLICT,"Error");

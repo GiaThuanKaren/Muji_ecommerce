@@ -35,6 +35,7 @@ public class CategoriesController {
 
     @PutMapping("/update")
     private ResponeModelJson updateById(@RequestBody CategoriesModel categoriesModel){
+        System.out.println(categoriesModel.toString());
         return catogoriesService.updateByID(categoriesModel);
     }
 

@@ -1,9 +1,12 @@
 import React from 'react'
+import { MainLayout } from 'src/Layouts'
 
 function GetAllUser() {
     return (
         <>
-            <div>GetAllUser</div>
+            <MainLayout>
+                <div>GetAllUser</div>
+            </MainLayout>
         </>
     )
 }

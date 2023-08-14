@@ -25,6 +25,8 @@ public class Customer {
     private String customerPhone;
 
     private String customerEmail;
+
+    private boolean enableStatus;
     @OneToMany(mappedBy = "customer",cascade=CascadeType.ALL)
     @JsonIgnore
     private List<OrderProduct> orderProducts;
