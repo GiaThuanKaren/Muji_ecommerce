@@ -10,11 +10,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerModel {
 
+    private Long customerId;
     private String customerLastName;
 
     private String customerFirstName;
 
     private String customerPhone;
-    private String customerEmail;
+    private String  customerEmail;
 
+    private boolean enableStatus;
+
+
+    @Override
+    public String toString() {
+        return "CustomerModel{" +
+                "customerId=" + customerId +
+                ", customerLastName='" + customerLastName + '\'' +
+                ", customerFirstName='" + customerFirstName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", enableStatus=" + enableStatus +
+                '}';
+    }
 }

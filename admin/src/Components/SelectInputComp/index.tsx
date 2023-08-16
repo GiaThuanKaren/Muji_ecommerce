@@ -16,10 +16,11 @@ interface PropsInputComp {
     primaryfield?: string
     secondField?: string
     listResultChoose?: boolean
+    defaultValue?: string | number | readonly string[] | undefined
 }
 
 
-function SelectInputComp({ listResultChoose, handleUpdateListMulti, primaryfield, secondField, value, children, leftText, handleOnchange, type, widthFull }: PropsInputComp) {
+function SelectInputComp({ defaultValue, listResultChoose, handleUpdateListMulti, primaryfield, secondField, value, children, leftText, handleOnchange, type, widthFull }: PropsInputComp) {
     // const [valueSelected, SetvalueSelected] = React.useState<any[]>([])
     const handleListArr = function (item1: any) {
         console.log(item1)
@@ -70,6 +71,7 @@ function SelectInputComp({ listResultChoose, handleUpdateListMulti, primaryfield
                 </div>
             }
             <select
+                defaultValue={defaultValue}
                 onChange={(e) => {
 
                     handleOnchange && handleOnchange(e)

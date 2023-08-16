@@ -14,5 +14,10 @@ public interface CustomerService {
 
     ResponeModelJson validateToken(String token);
 
-    ResponeModelJson resendEmailVerifyCation(String token);
+    ResponeModelJson resendEmailVerifyCation(String token) throws MessagingException;
+
+    ResponeModelJson updateCustomerById(CustomerModel customerModel);
+
+
+    ResponeModelJson deleteCustomerById(Long id);
 };

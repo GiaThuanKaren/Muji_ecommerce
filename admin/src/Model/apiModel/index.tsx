@@ -90,3 +90,21 @@ export interface ProductSkuModel {
   imageProduct?: string
 }
 
+
+
+
+export interface CustomerResponeModel {
+  customerId: number
+  customerLastName: string
+  customerFirstName: string
+  customerPhone: string
+  customerEmail: string
+  enableStatus: boolean
+}
+
+export interface CustomerModel {
+  customerLastName: string
+  customerFirstName: string
+  customerPhone: string
+  customerEmail: string
+}

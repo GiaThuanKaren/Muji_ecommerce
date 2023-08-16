@@ -68,15 +68,48 @@ public class CustomerServiceImplement implements CustomerService{
         }
         customerFromToken.setEnableStatus(true);
         customerRepository.save(customerFromToken);
-        return new ResponeModelJson(HttpStatus.OK,"Done");
 
+        return new ResponeModelJson(HttpStatus.OK,"Done");
+    }
+
+
+    @Override
+    public ResponeModelJson resendEmailVerifyCation(String token) throws MessagingException {
+        VerificationTokenCustomer verificationTokenCustomerFound = verifyTokenRepository.findByToken(token);
+        if(verificationTokenCustomerFound == null)
+            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Invalid Token");
+        String newToken  = UUID.randomUUID().toString();
+        verificationTokenCustomerFound.setToken(newToken);
+        verifyTokenRepository.save(verificationTokenCustomerFound);
+        emailService.sendMail(verificationTokenCustomerFound.getCustomer().getCustomerEmail(),"Account Verification ",newToken);
+        return new ResponeModelJson(HttpStatus.OK,"Generated new token sucessfully");
+    }
+
+    @Override
+    public ResponeModelJson updateCustomerById(CustomerModel customerModel) {
+        Optional<Customer> customerFound= customerRepository.findById(customerModel.getCustomerId());
+        if(customerFound.isPresent()){
+            customerFound.get().setCustomerLastName(customerModel.getCustomerLastName());
+            customerFound.get().setCustomerFirstName(customerModel.getCustomerFirstName());
+            customerFound.get().setCustomerPhone(customerModel.getCustomerPhone());
+            customerFound.get().setCustomerEmail(customerModel.getCustomerEmail());
+            customerFound.get().setEnableStatus(customerModel.isEnableStatus());
+            return new ResponeModelJson(HttpStatus.OK,"Updated Successfully",customerRepository.save(customerFound.get()));
+        }
+
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Customer Id");
 
     }
 
 
     @Override
-    public ResponeModelJson resendEmailVerifyCation(String token) {
+    public ResponeModelJson deleteCustomerById(Long id) {
+        Optional<Customer> customerFound = customerRepository.findById(id);
+        if(customerFound.isPresent()){
+            customerRepository.deleteById(id);
+            return new ResponeModelJson(HttpStatus.OK,"Deleted");
+        }
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid ID");
 
-        return null;
     }
 }
