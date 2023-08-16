@@ -42,46 +42,49 @@ function SelectInputComp({ defaultValue, listResultChoose, handleUpdateListMulti
     }
     return (
         <>
-            <h3 className='font-medium mr-5 mb-4'>
-                {leftText}
-            </h3>
-            {
-                listResultChoose && value && value.length > 0 &&
+            <div className='flex items-center'>
+                <h3 className='min-w-[100px] text-left font-medium mr-5 mb-4'>
+                    {leftText}
+                </h3>
+                {
+                    listResultChoose && value && value.length > 0 &&
 
-                <div className='flex flex-wrap  border-[2px] my-3 py-4 px-3'>
-                    {
-                        value?.map((item: any, index: number) => {
-                            return <>
-                                <div className='flex w-fit px-3 py-1 items-center border-[2px] border-gray-400 rounded-md mr-5  '>
-                                    <ICON
-                                        onClick={() => {
-                                            handleListArr(item)
-                                        }}
-                                        className='mr-2 hover:cursor-pointer' icon={IconSolid.faTimes} />
-                                    <h3>
-                                        {
-                                            item
-                                        }
-                                    </h3>
+                    <div className='flex flex-wrap  border-[2px] my-3 py-4 px-3'>
+                        {
+                            value?.map((item: any, index: number) => {
+                                return <>
+                                    <div className='flex w-fit px-3 py-1 items-center border-[2px] border-gray-400 rounded-md mr-5  '>
+                                        <ICON
+                                            onClick={() => {
+                                                handleListArr(item)
+                                            }}
+                                            className='mr-2 hover:cursor-pointer' icon={IconSolid.faTimes} />
+                                        <h3>
+                                            {
+                                                item
+                                            }
+                                        </h3>
 
-                                </div>
-                            </>
-                        })
-                    }
-                </div>
-            }
-            <select
-                defaultValue={defaultValue}
-                onChange={(e) => {
+                                    </div>
+                                </>
+                            })
+                        }
+                    </div>
+                }
+                <select
+                    defaultValue={defaultValue}
+                    onChange={(e) => {
 
-                    handleOnchange && handleOnchange(e)
-                }}
-                className={' mb-5 h-12 border-[3px] px-3' + `${widthFull ? " w-full" : " w-1/2"}`}
-                name=""
-                id=""
-            >
-                {children}
-            </select>
+                        handleOnchange && handleOnchange(e)
+                    }}
+                    className={' mb-5 h-12 border-[3px] px-3' + `${widthFull ? " w-full" : " w-1/3"}`}
+                    name=""
+                    id=""
+                >
+                    {children}
+                </select>
+            </div>
+
         </>
     )
 }

@@ -1,9 +1,11 @@
+import Link from 'next/link'
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 import { ProductLineModel } from 'src/Model/apiModel'
 import { FetchAll, UpdateId, deleteProductLine } from 'src/services/api/productline'
 import { ICON, IconSolid } from 'src/utils'
+import { routingLink } from 'src/utils/routingLink'
 
 function ProductLineIndex() {
     const [properties, setProperties] = React.useState<ProductLineModel[]>([])
@@ -58,6 +60,16 @@ function ProductLineIndex() {
     return (
         <>
             <MainLayout>
+                <div className='flex justify-between px-5'>
+                    <div>
+
+                    </div>
+                    <Link href={`${routingLink.addnewproductline}`}>
+                        <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                            <h3 className='text-white font-medium'>Create New</h3>
+                        </div>
+                    </Link>
+                </div>
                 {
                     openModal && <>
                         <ModalWrapper openModalState={openModal} handleOpenModalState={setOpenModal} >

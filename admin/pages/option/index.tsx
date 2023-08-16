@@ -1,9 +1,11 @@
+import Link from 'next/link'
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 import { OptionModel } from 'src/Model/apiModel'
 import { DeleteOptionById, FetchAllOption, UpdateOptionById } from 'src/services/api/option'
 import { ICON, IconSolid } from 'src/utils'
+import { routingLink } from 'src/utils/routingLink'
 
 
 function OptionIndexPage() {
@@ -58,6 +60,16 @@ function OptionIndexPage() {
     return (
         <>
             <MainLayout>
+                <div className='flex justify-between px-5'>
+                    <div>
+
+                    </div>
+                    <Link href={`${routingLink.taothuoctinh}`}>
+                        <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                            <h3 className='text-white font-medium'>Create New</h3>
+                        </div>
+                    </Link>
+                </div>
                 {
                     openModal && <>
                         <ModalWrapper openModalState={openModal} handleOpenModalState={setOpenModal} >

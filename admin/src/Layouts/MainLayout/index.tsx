@@ -36,12 +36,12 @@ function MainLayout({ children, errorFetch }: Props) {
             icon: <ICON icon={IconSolid.faHome} />,
             title: "Quản Lý Danh mục sản phẩm",
             childrenItem: [
-                {
-                    childrenItem: [],
-                    title: "Thêm danh mục mới",
-                    icon: <ICON icon={IconSolid.faHome} />,
-                    link: routingLink.addnewcateogories
-                }
+                // {
+                //     childrenItem: [],
+                //     title: "Thêm danh mục mới",
+                //     icon: <ICON icon={IconSolid.faHome} />,
+                //     link: routingLink.addnewcateogories
+                // }
             ],
             link: routingLink.danhmucsanpham
         },
@@ -52,12 +52,12 @@ function MainLayout({ children, errorFetch }: Props) {
             icon: <ICON icon={IconSolid.faHome} />,
             title: "Quản lý Danh mục thuộc tính",
             childrenItem: [
-                {
-                    childrenItem: [],
-                    icon: <></>,
-                    title: "Tạo danh thuộc tính mới ",
-                    link: routingLink.taothuoctinh
-                },
+                // {
+                //     childrenItem: [],
+                //     icon: <></>,
+                //     title: "Tạo danh thuộc tính mới ",
+                //     link: routingLink.taothuoctinh
+                // },
                 // {
                 //     childrenItem: [],
                 //     icon: <ICON icon={IconSolid.faHome} />,
@@ -75,21 +75,7 @@ function MainLayout({ children, errorFetch }: Props) {
             icon: <ICON icon={IconSolid.faHome} />,
             title: "Quản lý người dùng ",
             childrenItem: [
-                // {
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     title: "Get All User"
-                // },
-                // {
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     title: "Create New User"
-                // },
-                // {
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     title: "Get Detail;"
-                // },
+
             ],
             link: routingLink.nguoidung
         },
@@ -97,38 +83,28 @@ function MainLayout({ children, errorFetch }: Props) {
         {
             title: "Quản lý sản phẩm",
             childrenItem: [
-                {
 
-                    title: "Thêm Sản phẩm",
-                    icon: <ICON icon={IconSolid.faHome} />,
-                    childrenItem: [],
-                    link: routingLink.addsanpham
-                },
-                {
 
-                    title: "Quản lý mã Sản phẩm",
-                    icon: <ICON icon={IconSolid.faHome} />,
-                    childrenItem: [],
-                    link: routingLink.productsku
-                },
 
-                {
-                    title: "Quản lý dòng sản phẩm",
-                    childrenItem: [
-                        {
-                            title: "Thêm dòng sản phẩm",
-                            childrenItem: [],
-                            icon: <ICON icon={IconSolid.faHome} />,
-                            link: routingLink.addnewproductline
-                        }
 
-                    ],
-                    icon: <ICON icon={IconSolid.faHome} />,
-                    link: routingLink.productline
-                },
             ],
             icon: <ICON icon={IconSolid.faHome} />,
             link: routingLink.sanpham
+        },
+        {
+
+            title: "Quản lý mã Sản phẩm",
+            icon: <ICON icon={IconSolid.faHome} />,
+            childrenItem: [],
+            link: routingLink.productsku
+        },
+        {
+            title: "Quản lý dòng sản phẩm",
+            childrenItem: [
+
+            ],
+            icon: <ICON icon={IconSolid.faHome} />,
+            link: routingLink.productline
         },
         {
             title: "Quản lý đơn hàng",

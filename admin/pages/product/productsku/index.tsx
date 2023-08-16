@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { FetchAllProductSku } from 'src/services/api/productsku'
+import { DeleteProductSkuById, FetchAllProductSku } from 'src/services/api/productsku'
 import { ICON, IconSolid } from 'src/utils'
 import { routingLink } from 'src/utils/routingLink'
 import { ProductSkuResponeModel } from 'src/Model/apiModel'
@@ -14,7 +14,12 @@ type ImageProductType = {
 function ProductSkuIndex() {
     const [properties, setProperties] = React.useState<ProductSkuResponeModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
-    const [value, setValue] = React.useState<ProductSkuResponeModel>()
+    const [value, setValue] = React.useState<ProductSkuResponeModel | null>({
+        id: {
+            productId: 0,
+            skuId: 0
+        }
+    })
     const [imageProduct, SetImageProduct] = React.useState<ImageProductType>({
         file: null,
         imgurl: ""
@@ -27,7 +32,13 @@ function ProductSkuIndex() {
 
         }
     }
+    const handleDelete = async function () {
+        try {
+            await DeleteProductSkuById(value?.id.productId, value?.id.skuId)
+        } catch (error) {
 
+        }
+    }
     React.useEffect(() => {
         FetchApi()
     }, [])

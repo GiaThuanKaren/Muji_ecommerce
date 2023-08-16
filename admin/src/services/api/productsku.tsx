@@ -27,9 +27,20 @@ export const CreateNewProductSku = async function (productSkuModel: ProductSkuMo
             headers: { "Content-Type": "multipart/form-data", 'Access-Control-Allow-Origin': '*' },
         })
         productSkuModel.imageProduct = data.data;
+        // productSkuModel.imageProduct = "test.jpg"
         await axios.post(`${BASE_DEV}/product_sku/create_new`, productSkuModel);
         ShowToast("Create New Product Sku Successfully", "INFO")
     } catch (error) {
+        console.log(error)
         ShowToast("Failed To Create New Product Sku", "ERROR")
+    }
+}
+
+export const DeleteProductSkuById = async function (idProduct: number, idSku: number) {
+    try {
+        await axios.delete(`${BASE_DEV}/product_sku/delete_product_sku?idproduct=${idProduct}&idsku=${idSku}`)
+        ShowToast("Deleted Successfully", "INFO")
+    } catch (error) {
+        ShowToast("Failed to delete this product Sku", "ERROR")
     }
 }

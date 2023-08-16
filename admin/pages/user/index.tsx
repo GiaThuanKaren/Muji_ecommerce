@@ -45,7 +45,7 @@ function GetAllUser() {
 
             let result = await FetchAllCustomer()
             setProperties(result?.data as CustomerResponeModel[])
-
+            
         } catch (error) {
 
         }

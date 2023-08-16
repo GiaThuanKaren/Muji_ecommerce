@@ -85,7 +85,7 @@ export interface ProductSkuModel {
   product_id?: number
   sku_id?: number
   price?: number
-  sku_name?: string
+  sku_name: string
   quantityStock?: number
   imageProduct?: string
 }

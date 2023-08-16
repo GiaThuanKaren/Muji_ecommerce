@@ -1,9 +1,11 @@
+import Link from 'next/link';
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
 import { CategoriesModel, CategoriesResponeModel } from 'src/Model/apiModel'
 import { DeleteCatorgiesById, FetchAllCategories, UpdateCategoriesById } from 'src/services/api/categories';
 import { ICON, IconSolid } from 'src/utils';
+import { routingLink } from 'src/utils/routingLink';
 
 function CatogoriesIndex() {
     const [properties, setProperties] = React.useState<CategoriesResponeModel[]>([])
@@ -48,6 +50,16 @@ function CatogoriesIndex() {
     return (
         <>
             <MainLayout>
+                <div className='flex justify-between px-5'>
+                    <div>
+
+                    </div>
+                    <Link href={`${routingLink.addnewcateogories}`}>
+                        <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                            <h3 className='text-white font-medium'>Create New</h3>
+                        </div>
+                    </Link>
+                </div>
                 {
                     openModal && <>
                         <ModalWrapper openModalState={openModal} handleOpenModalState={setOpenModal} >
@@ -78,7 +90,7 @@ function CatogoriesIndex() {
 
                                     properties.filter(function (item: CategoriesResponeModel) { return item.catorgoryID !== value?.catorgoryID }).map((item: CategoriesResponeModel, index: number) => {
                                         return <>
-                                            
+
                                             <option value={item.catorgoryID}>
                                                 {item.catorgoryID} - {item.nameCategory}
                                             </option>

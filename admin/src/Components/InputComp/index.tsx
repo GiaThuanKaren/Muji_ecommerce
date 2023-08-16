@@ -14,7 +14,7 @@ function InputComp({ disable, widthFull, handleOnchange, type, leftText, valueIn
     return (
         <>
             <div className='flex items-center   px-2 py-3 mb-3 flex-wrap'>
-                <h3 className='font-medium mr-5 mb-4'>
+                <h3 className='min-w-[100px] text-left font-medium mr-5 mb-4 '>
                     {leftText}
                 </h3>
                 <input
