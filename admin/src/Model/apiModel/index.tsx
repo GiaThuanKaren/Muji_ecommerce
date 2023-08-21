@@ -33,7 +33,8 @@ export interface CategoriesResponeModel {
   catorgoryID?: number
   nameCategory: string
   parentID: CategoriesResponeModel | null
-  productList: any[]
+  productList: any[],
+  imageCategory:string
 }
 
 
@@ -42,19 +43,20 @@ export interface CategoriesModel {
   catorgoryID?: number
   nameCategory: string
   product_lineid?: number
-  parentID?: number
+  parentID?: number,
+  imageCategory: string
 }
 
 
 export interface ProductResponeModel {
-  productId?: number
-  nameProduct?: string
-  quantityStock?: number
-  productDescription?: string
-  productSkus?: any[]
-  orderProducts?: any[]
-  categories_id?: number
-  list_option?: number[]
+  productId: number
+  nameProduct: string
+  quantityStock: number
+  productDescription: string
+  productSkus: ProductSkuResponeModel[]
+  orderProducts: any[]
+  categorie: CategoriesResponeModel
+  list_option: number[]
 }
 
 
@@ -73,6 +75,7 @@ export interface ProductSkuResponeModel {
   quantityStock: number
   imageProduct: string
   price: number
+
   skuValues: any[]
 }
 

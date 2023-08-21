@@ -18,6 +18,9 @@ public class Categories {
     private Long catorgoryID;
 
     private String nameCategory;
+
+    private String imageCategory;
+
     @ManyToOne
     @Nullable
     @JoinColumn(name = "parent_id")
@@ -27,7 +30,7 @@ public class Categories {
     @JsonIgnore
     private Set<Categories> categoriesSet;
     @ManyToOne
-//    @JsonIgnore
+    @JsonIgnore
     @JoinColumn(name="productline_id")
     private ProductLine  productLine;
 

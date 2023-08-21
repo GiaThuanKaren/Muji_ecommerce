@@ -5,7 +5,7 @@ import { MainLayout } from 'src/Layouts'
 import { CategoriesResponeModel, OptionModelRespone, ProductModel, ProductResponeModel } from 'src/Model/apiModel'
 import { FetchAllCategories } from 'src/services/api/categories'
 import { FetchAllOption } from 'src/services/api/option'
-import { FetchAllProduct, UpdateProductId } from 'src/services/api/product'
+import { DeleteProductById, FetchAllProduct, UpdateProductId } from 'src/services/api/product'
 import { ICON, IconSolid } from 'src/utils'
 import { routingLink } from 'src/utils/routingLink'
 
@@ -35,7 +35,14 @@ function GetAllProduct() {
 
         }
     }
+    const HandleDelete = async function (id: number) {
+        try {
+            await DeleteProductById(id);
+            await FetchApi();
+        } catch (error) {
 
+        }
+    }
     async function FetchApi() {
         try {
             let result = await FetchAllProduct();
@@ -44,6 +51,8 @@ function GetAllProduct() {
             setProperties(result?.data as ProductResponeModel[])
             SetOptionList(optionList?.data as OptionModelRespone[])
             SetCategoriesList(categoriesList?.data as CategoriesResponeModel[])
+
+          
         } catch (error) {
 
         }
@@ -87,7 +96,7 @@ function GetAllProduct() {
                                 handleInput("productDescription", e.target.value)
                             }} valueInput={value?.productDescription} leftText='Product Description' widthFull />
 
-                            <SelectInputComp value={value.list_option} primaryfield='optionID' handleUpdateListMulti={(value123: any) => {
+                            <SelectInputComp listResultChoose arrData={value.list_option} primaryfield='optionID' handleUpdateListMulti={(value123: any) => {
                                 console.log(value123, "12312")
                                 handleInput("list_option", value123 as number[])
                             }} widthFull leftText='Option List' handleOnchange={(e) => {
@@ -108,7 +117,7 @@ function GetAllProduct() {
 
 
 
-                            <SelectInputComp widthFull leftText='Categories List' handleOnchange={(e) => {
+                            <SelectInputComp  widthFull leftText='Categories List' handleOnchange={(e) => {
                                 handleInput("categories_id", e.target.value)
                             }}   >
                                 {

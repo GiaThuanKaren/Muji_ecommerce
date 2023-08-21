@@ -18,7 +18,12 @@ function ProductSkuIndex() {
         id: {
             productId: 0,
             skuId: 0
-        }
+        },
+        imageProduct: "",
+        price: 0,
+        quantityStock: 0,
+        skuName: "",
+        skuValues: []
     })
     const [imageProduct, SetImageProduct] = React.useState<ImageProductType>({
         file: null,
@@ -34,7 +39,7 @@ function ProductSkuIndex() {
     }
     const handleDelete = async function () {
         try {
-            await DeleteProductSkuById(value?.id.productId, value?.id.skuId)
+            await DeleteProductSkuById(value?.id.productId as number, value?.id.skuId as number)
         } catch (error) {
 
         }

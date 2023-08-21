@@ -15,7 +15,7 @@ public class CategoriesModel {
     private Long parentID;
 
     private Long product_lineid;
-
+    private String imageCategory;
     @Override
     public String toString() {
         return "CategoriesModel{" +

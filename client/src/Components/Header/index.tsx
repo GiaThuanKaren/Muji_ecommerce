@@ -3,6 +3,16 @@ import Searchinput from '../SearchInput'
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 import Link from 'next/link';
 import { linkRouting } from 'src/utils/routelink';
+
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+} from 'react-query'
+import { FetchAllCategories, FetchAllProductLine } from 'src/service/api';
+import { CategoriesModel, ProductLineModel } from 'src/Model';
 interface ItemNavBarHeaderCatologe {
     title: string;
     link: string;
@@ -12,44 +22,49 @@ interface ItemNavBarHeaderCatologe {
 
 
 function Header() {
-    const ListNavBarHeader: ItemNavBarHeaderCatologe[] = [
-        {
-            link: "",
-            title: "Nữ",
-            slug: "nu"
-        },
-        {
-            link: "",
-            title: "Nam",
-            slug: "nam"
-        },
-        {
-            link: "",
-            title: "Trẻ Em",
-            slug: "tre_em"
-        },
-        {
-            link: "",
-            title: "Bộ Sư Tập",
-            slug: "#"
-        },
-        {
-            link: "",
-            title: "Đồng phục",
-            slug: "dong_phuc"
-        },
-        {
-            link: "",
-            title: "Về Yody",
-            slug: "ve_yody"
-        },
-        {
-            link: "",
-            title: "Blog",
-            slug: "yody_love"
-        },
+    const queryClient = useQueryClient()
+    const { data, isLoading, isError } = useQuery("header_categories", FetchAllProductLine)
+    console.log(data)
+    // const ListNavBarHeader: ItemNavBarHeaderCatologe[] = [
+    //     {
+    //         link: "",
+    //         title: "Nữ",
+    //         slug: "nu"
+    //     },
+    //     {
+    //         link: "",
+    //         title: "Nam",
+    //         slug: "nam"
+    //     },
+    //     {
+    //         link: "",
+    //         title: "Trẻ Em",
+    //         slug: "tre_em"
+    //     },
+    //     {
+    //         link: "",
+    //         title: "Bộ Sư Tập",
+    //         slug: "#"
+    //     },
+    //     {
+    //         link: "",
+    //         title: "Đồng phục",
+    //         slug: "dong_phuc"
+    //     },
+    //     {
+    //         link: "",
+    //         title: "Về Yody",
+    //         slug: "ve_yody"
+    //     },
+    //     {
+    //         link: "",
+    //         title: "Blog",
+    //         slug: "yody_love"
+    //     },
 
-    ]
+    // ]
+
+
 
     return (
         <>
@@ -89,29 +104,53 @@ function Header() {
                             <div className='flex items-center mx-2 font-medium'>
                                 <ICON className='mx-2' icon={IconSolid.faPhone} />
                                 02499986999
-
                             </div>
-
-
                         </div>
                     </div>
 
-                    <div className='flex items-center justify-between mt-3'>
-                        <div className='flex items-center justify-between'>
+                    <div className=' flex items-center justify-between mt-3 w-full relative '>
+                        <div className='flex items-center flex-1 flex-wrap  '>
                             {
-                                ListNavBarHeader.map((item: ItemNavBarHeaderCatologe, index: number) => {
+                                data?.map((item: ProductLineModel, index: number) => {
                                     return <>
-                                        <Link href={`${item.link}`}>
-                                            <p className='font-medium mr-5'>{item.title}</p>
-                                        </Link>
+                                        <div className={`group/navbar`}>
+                                            <Link href={""}>
+                                                <p className='font-medium mr-5'>{item.nameProductLine} </p>
+                                            </Link>
+
+                                            <div className={`absolute top-full h-[50vh] overflow-y-auto group-hover/navbar:flex left-0 flex-wrap hidden w-full bg-white `}>
+                                                {
+                                                    [...item.categoriesList, ...item.categoriesList].map((item1: CategoriesModel, index1: number, arr: CategoriesModel[]) => {
+                                                        if (item1.parentID == null)
+                                                            return <>
+                                                                <div className='h-fit   my-3 basis-1/4'>
+                                                                    <h3 className='whitespace-nowrap font-medium text-black'>{
+                                                                        item1.nameCategory
+                                                                    }</h3>
+                                                                    {
+                                                                        arr.map((item2: CategoriesModel, index2: number) => {
+                                                                            if (item2.parentID?.catorgoryID == item1.catorgoryID)
+                                                                                return <>
+                                                                                    <h3 className='whitespace-nowrap  text-black'>{
+                                                                                        item2.nameCategory
+                                                                                    }</h3>
+                                                                                </>
+                                                                        })
+                                                                    }
+                                                                </div>
+                                                            </>
+                                                    })
+                                                }
+                                            </div>
+                                        </div >
                                     </>
                                 })
                             }
                         </div>
 
-                        <div className='flex items-center justify-between'>
-                            <div className='flex items-center group '>
-                                <div className='relative group'>
+                        <div className='flex items-center justify-between group'>
+                            <div className='flex items-center  '>
+                                <div className='relative '>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
                                         0
                                     </p> */}
@@ -166,7 +205,7 @@ function Header() {
                     </div>
 
                 </div>
-            </div>
+            </div >
 
         </>
     )

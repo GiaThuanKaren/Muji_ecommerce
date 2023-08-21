@@ -7,25 +7,29 @@ import { Pagination, Navigation } from "swiper";
 import styles from '../styles/Home.module.css'
 import { MainLayout } from 'src/Layouts'
 import { HorizontalProductList, SliderHome } from 'src/Components'
-
+import { useQueryClient, useQuery } from "react-query"
+import { FetchAllProductLine } from 'src/service/api';
+import { CategoriesModel, ProductLineModel } from 'src/Model';
 
 type Tab = {
   tabslug: "nu" | "nam" | "tre_em",
-  name: "Nam" | "Nữ " | "Trẻ Em"
+  name: "Nam" | "Nữ" | "Trẻ Em"
 
 }
 
 function TabNavigationHome() {
-  const [tab, setTab] = React.useState<"nu" | "nam" | "tre_em">("nam");
-  const [data, setData] = React.useState(() => {
-    return Array.from(Array(10).keys())
-  })
+  const queryClient = useQueryClient()
+  const { data, isLoading, isError } = useQuery("header_categories", FetchAllProductLine)
+
+
+  const [tab, setTab] = React.useState<"Nam" | "Nữ" | "Trẻ Em">("Nam");
+
   let ArrTab: Tab[] = [{
     name: "Nam",
     tabslug: "nam"
   },
   {
-    name: "Nữ ",
+    name: "Nữ",
     tabslug: "nu"
   },
   {
@@ -39,38 +43,63 @@ function TabNavigationHome() {
         {
           ArrTab.map((item: Tab, index: number) => {
             return <>
-              <div className='mx-4 border-b-2 w-44 '>
-                <p className='text-center w-full my-4 font-medium'>{item.name} </p>
+              <div onClick={(e) => {
+                setTab(item.name)
+              }} className={'mx-4 border-b-4 w-44 hover:cursor-pointer ' + `${item.name == tab && "  border-yellow-300 "}`}>
+
+                <p className='text-center w-full my-4 font-medium'>
+                  {item.name}
+                </p>
+
               </div>
+
             </>
           })
         }
-
-
       </div>
-      <Swiper
-        slidesPerView={7}
-        spaceBetween={50}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination, Navigation]}
-        className="mySwiper h-56 mt-10 "
-      >
-        {
-          data.map((item: any, index: number) => {
-            return <>
-              <SwiperSlide key={index}>
-                <div className='h-full  w-full p-2'>
-                  <div className=' bg-red-500 rounded-full   h-32 w-32'>
 
-                  </div>
-                </div>
-              </SwiperSlide>
+      {
+        data?.map((item: ProductLineModel, index: number) => {
+          console.log(item.nameProductLine == tab)
+          if (item.nameProductLine.trim() == tab.trim())
+            return <>
+              <Swiper
+                slidesPerView={7}
+                spaceBetween={100}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[Pagination, Navigation]}
+                className="mySwiper h-56 mt-10 "
+              >
+                {
+                  item?.categoriesList.map((item: CategoriesModel, index: number) => {
+                    if (item.parentID != null && item.imageCategory)
+                      return <>
+                        <SwiperSlide key={index}>
+                          <div className='h-fit  w-fit '>
+                            <div className=' bg-red-500 rounded-full   h-32 w-32'>
+                              <img className='h-full w-full ' src={item.imageCategory as string}
+                                alt={item.catorgoryID.toString()}
+                              />
+                            </div>
+                            <h3 className='text-center font-medium'>
+                              {item.nameCategory}
+                            </h3>
+                          </div>
+                        </SwiperSlide>
+                      </>
+                  })
+                }
+
+              </Swiper>
             </>
-          })
-        }
-      </Swiper>
+        })
+      }
+
+
+
+
     </div>
   </>
 }

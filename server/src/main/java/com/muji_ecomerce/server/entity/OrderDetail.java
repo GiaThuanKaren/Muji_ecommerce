@@ -9,6 +9,7 @@ public class OrderDetail {
     Order_Product_Key id;
 
     @ManyToOne
+
     @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;

@@ -5,10 +5,16 @@ import type { AppProps } from 'next/app'
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient()
+
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return <>
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <QueryClientProvider client={queryClient} >
+      <SessionProvider session={session}>
+
+        <Component {...pageProps} />
+      </SessionProvider>
+    </QueryClientProvider>
   </>
 }

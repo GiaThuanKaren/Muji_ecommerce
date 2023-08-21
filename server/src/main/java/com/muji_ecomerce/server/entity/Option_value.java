@@ -24,13 +24,13 @@ public class Option_value {
     private String valuesName;
 
     @OneToMany(mappedBy = "valuesId", cascade = CascadeType.ALL)
-    @JsonIgnore
+
     private List<Sku_values> skuValuesSet;
 
 //
 //
     @ManyToOne
-
+    @JsonIgnore
     @MapsId("optionID")
     @JoinColumn(name = "option_id")
     Option option1;

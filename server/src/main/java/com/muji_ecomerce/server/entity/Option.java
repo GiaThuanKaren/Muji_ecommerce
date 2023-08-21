@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class Option {
     Set<Product_Option> options;
 
     @OneToMany(mappedBy = "option1",cascade=CascadeType.ALL)
-    @JsonIgnore
+
     Set<Option_value> optionValues;
 
     @OneToMany(mappedBy = "option",cascade=CascadeType.ALL)

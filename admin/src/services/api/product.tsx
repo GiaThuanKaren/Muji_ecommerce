@@ -27,8 +27,25 @@ export const CreateNewProduct = async function (productModel: ProductModel) {
 
 export const UpdateProductId = async function (productModel: ProductResponeModel) {
     try {
-
-        let { data } = await axios.put(`${BASE_DEV}/product/updateProductByID`, productModel)
+        interface UpdateProductMdodel {
+            productId: number
+            nameProduct: string
+            quantityStock: number
+            productDescription: string
+            categories_id: number
+            list_option: number[]
+            // product_sky: number
+        }
+        let updatePayLoad: UpdateProductMdodel = {
+            productId: productModel.productId as number,
+            nameProduct: productModel.nameProduct,
+            quantityStock: productModel.quantityStock,
+            productDescription: productModel.productDescription,
+            categories_id: productModel.categorie.catorgoryID as number,
+            list_option: productModel.list_option,
+            // product_sky
+        }
+        let { data } = await axios.put(`${BASE_DEV}/product/updateProductByID`, updatePayLoad)
         console.log(data)
         ShowToast("Updated Product Sucessfully", "INFO")
     } catch (error) {
@@ -39,8 +56,9 @@ export const UpdateProductId = async function (productModel: ProductResponeModel
 
 export const DeleteProductById = async function (id: number) {
     try {
-
+        await axios.delete(`${BASE_DEV}/product/deleteProduct/${id}`)
+        ShowToast("Deleted Product Sucessfully", "INFO")
     } catch (error) {
-
+        ShowToast("Failed To Delete This Product", "ERROR")
     }
 }

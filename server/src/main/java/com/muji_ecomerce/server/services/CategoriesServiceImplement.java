@@ -67,6 +67,7 @@ public class CategoriesServiceImplement implements  CatogoriesService{
 
             Categories categories = new Categories();
             categories.setNameCategory(categoriesModel.getNameCategory());
+            categories.setImageCategory(categoriesModel.getImageCategory());
             categories.setProductLine(productLine.get());
             if(categoriesModel.getParentID() != null){
                 Optional<Categories> categoriesFound = catogoriesRepository.findById(categoriesModel.getParentID());

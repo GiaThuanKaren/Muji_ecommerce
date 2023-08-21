@@ -19,6 +19,7 @@ public class CustomerController {
 
     @GetMapping("/fetch_all")
     public ResponeModelJson fetchAllCustomer(){
+        System.out.println("sldhffd");
         return customerService.FetchAllCustomer();
     }
 

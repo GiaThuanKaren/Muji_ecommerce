@@ -2,6 +2,7 @@
 export const linkRouting = {
     home: "/",
     login: "/login",
+    listproduct:"/product",
     register: "/register",
     account: "/account",
     donhangcuatoi: "/account/orders",

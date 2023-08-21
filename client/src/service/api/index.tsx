@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CategoriesModel, ProductLineModel, ResponeModel } from "src/Model";
 const BASE_DEV: string = 'http://localhost:8080'
 
 
@@ -18,3 +19,23 @@ export const VerifyAccountByToken = async function (token: string) {
     }
 }
 
+
+
+export const FetchAllCategories = async function () {
+    try {
+        let { data } = await axios.get<ResponeModel<CategoriesModel>>(`${BASE_DEV}/categories/fetchAll`)
+        return data.data
+    } catch (error) {
+        throw error
+    }
+}
+
+
+export const FetchAllProductLine = async function () {
+    try {
+        let { data } = await axios.get<ResponeModel<ProductLineModel>>(`${BASE_DEV}/productline/fetch_all`)
+        return data.data
+    } catch (error) {
+        throw error
+    }
+}

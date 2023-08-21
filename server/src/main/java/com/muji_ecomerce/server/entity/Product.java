@@ -1,10 +1,13 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,17 +25,17 @@ public class Product {
     private String productDescription;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name="category_id")
     private Categories categories;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
-    @JsonIgnore
-    Set<Product_Option> products;
+
+    List<Product_Option> products;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
 //    @JsonIgnore
-    Set<Product_Sku> productSkus;
+    List<Product_Sku> productSkus;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
 //    @JsonIgnore
