@@ -1,26 +1,53 @@
 import React from 'react'
 import { CardProduct, DropoutComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
+interface PriceRange {
+    min: number,
+    max: number
+}
 
 function DisplayProductBySludPage2() {
+    const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
+    const material: string[] = []
     return <>
-        <div className='flex '>
+        <div className='flex my-5 py-4 w-full h-full'>
             <div className='basis-1/6 px-1'>
                 <div className='w-full min-h-[50vh] '>
+
                     <DropoutComp title='Loại sản phẩm' >
-                        <div className='h-32 bg-red-200 w-full'>
+                        <div className='max-h-72 overflow-y-auto bg-red-200 w-full'>
 
                         </div>
                     </DropoutComp>
-                    <DropoutComp title='Loại sản phẩm' >
+
+                    <DropoutComp title='Kích Thước Sản Phẩm' >
 
                     </DropoutComp>
+
+                    <DropoutComp title='Màu Sắc' >
+
+                    </DropoutComp>
+
+                    <DropoutComp title='Khoảng Giá' >
+
+                    </DropoutComp>
+
+                    <DropoutComp title='Chất Liệu' >
+
+                    </DropoutComp>
+                    
                 </div>
             </div>
 
-            <div className='flex-1 px-1'>
-                <div className='w-full h-[80vh] bg-red-400'>
-
+            <div className='flex-1 px-2 py-3'>
+                <div className='w-full  flex flex-wrap'>
+                    {
+                        Array.from(Array(20).keys()).map(() => {
+                            return <>
+                                <CardProduct />
+                            </>
+                        })
+                    }
                 </div>
             </div>
         </div>
@@ -62,7 +89,7 @@ function DisplayProductBySludPage1() {
             Đề Xuất Cho Bạn
         </p>
         {/* <CardProduct /> */}
-        <div className='flex flex-wrap w-full'>
+        <div className='flex flex-wrap w-full h-full'>
             {
                 Array.from(Array(20).keys()).map(() => {
                     return <>

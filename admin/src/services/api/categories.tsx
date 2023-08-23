@@ -6,6 +6,10 @@ import { ShowToast } from "src/utils";
 export const FetchAllCategories = async function () {
     try {
         let { data } = await axios.get<ResponeModel<CategoriesResponeModel>>(`${BASE_DEV}/categories/fetchAll`)
+        let arr = data.data.filter((item: CategoriesResponeModel) => {
+            return item.parentID != null
+        })
+        data.data = arr
         return data
     } catch (error) {
         ShowToast("Error To Fetching All Categories", "ERROR")
@@ -26,7 +30,7 @@ export const DeleteCatorgiesById = async function (id: number) {
 
 export const UpdateCategoriesById = async function (categoriesModel1: CategoriesModel) {
     try {
-        if(categoriesModel1.parentID == 0){
+        if (categoriesModel1.parentID == 0) {
             categoriesModel1.parentID = undefined
         }
         let { data } = await axios.put<CategoriesModel>(`${BASE_DEV}/categories/update`, categoriesModel1)

@@ -25,8 +25,14 @@ function CardProduct() {
                         navigation={true}
                         slidesPerView={3}
                         spaceBetween={30}
-                        centeredSlides={true}
 
+                        pagination={{
+                            el: ".swiper-pagination", // Use a valid DOM element here
+                            type: "bullets",
+                            clickable: true,
+                            bulletClass: "bg-amber-400",
+                            bulletActiveClass: "bg-green-400",
+                        }}
                         modules={[Pagination, Navigation]}
                         className="mySwiper"
                     >

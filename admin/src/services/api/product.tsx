@@ -8,6 +8,10 @@ import { ShowToast } from "src/utils";
 export const FetchAllProduct = async function () {
     try {
         let { data } = await axios.get<ResponeModel<ProductResponeModel>>(`${BASE_DEV}/product/fetchAll`)
+        // let arr = data.data.filter((item: ProductResponeModel) => {
+        //     return item.categorie.parentID != null
+        // })
+        // data.data = arr
         return data
     } catch (error) {
 

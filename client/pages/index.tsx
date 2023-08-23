@@ -10,6 +10,8 @@ import { HorizontalProductList, SliderHome } from 'src/Components'
 import { useQueryClient, useQuery } from "react-query"
 import { FetchAllProductLine } from 'src/service/api';
 import { CategoriesModel, ProductLineModel } from 'src/Model';
+import Link from 'next/link';
+import { linkRouting } from 'src/utils/routelink';
 
 type Tab = {
   tabslug: "nu" | "nam" | "tre_em",
@@ -77,16 +79,18 @@ function TabNavigationHome() {
                     if (item.parentID != null && item.imageCategory)
                       return <>
                         <SwiperSlide key={index}>
-                          <div className='h-fit  w-fit '>
-                            <div className=' bg-red-500 rounded-full   h-32 w-32'>
-                              <img className='h-full w-full ' src={item.imageCategory as string}
-                                alt={item.catorgoryID.toString()}
-                              />
+                          <Link href={`${linkRouting.listproduct}/${item.catorgoryID}`}>
+                            <div className='h-fit  w-fit '>
+                              <div className=' bg-red-500 rounded-full   h-32 w-32'>
+                                <img className='h-full w-full ' src={item.imageCategory as string}
+                                  alt={item.catorgoryID.toString()}
+                                />
+                              </div>
+                              <h3 className='text-center font-medium'>
+                                {item.nameCategory}
+                              </h3>
                             </div>
-                            <h3 className='text-center font-medium'>
-                              {item.nameCategory}
-                            </h3>
-                          </div>
+                          </Link>
                         </SwiperSlide>
                       </>
                   })

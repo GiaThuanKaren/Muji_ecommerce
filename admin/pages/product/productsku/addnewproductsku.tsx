@@ -72,8 +72,13 @@ function Addnewproductsku() {
         try {
             let dataListProduct = await FetchAllProduct();
             let dataListProductSku = await FetchAllProductSku();
+            if (dataListProduct && dataListProduct.data.length - 1 == 0) {
+                alert("Please add at least one product to continue ")
+                return
+
+            }
             setValue({
-                sku_id: dataListProductSku?.data[dataListProductSku?.data.length - 1]?.id.skuId + 1,
+                sku_id: dataListProductSku?.data && dataListProductSku?.data.length > 0 ? dataListProductSku?.data[dataListProductSku?.data.length - 1]?.id.skuId + 1 : 1,
                 sku_name: "",
                 product_id: dataListProduct?.data[dataListProduct.data.length - 1].productId
             })
@@ -150,7 +155,15 @@ function Addnewproductsku() {
                     }
                 </div>
 
+                <div className='flex items-center'>
+                    <h3 className='mr-4'>sdf</h3>
+                    <input type="checkbox" name="" id="" />
+                </div>
+
                 <InputComp handleOnchange={(e) => {
+                    if (e.target.type) {
+
+                    }
                     console.log(e.target.files)
                     if (e?.target?.files) {
                         SetImageProduct({
@@ -160,6 +173,7 @@ function Addnewproductsku() {
                     }
 
                 }} type={"file"} leftText='Image product' />
+
 
 
                 <div className='flex items-center justify-end px-5 my-10'>

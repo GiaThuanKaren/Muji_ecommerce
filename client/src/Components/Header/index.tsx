@@ -115,25 +115,27 @@ function Header() {
                                     return <>
                                         <div className={`group/navbar`}>
                                             <Link href={""}>
-                                                <p className='font-medium mr-5'>{item.nameProductLine} </p>
+                                                <p className='font-medium mr-5 '>{item.nameProductLine} </p>
                                             </Link>
 
-                                            <div className={`absolute top-full h-[50vh] overflow-y-auto group-hover/navbar:flex left-0 flex-wrap hidden w-full bg-white `}>
+                                            <div className={`absolute top-[calc(100%_+_12px)] h-[70vh] overflow-y-auto group-hover/navbar:flex left-0 flex-wrap hidden w-full bg-white px-5 py-4 `}>
                                                 {
-                                                    [...item.categoriesList, ...item.categoriesList].map((item1: CategoriesModel, index1: number, arr: CategoriesModel[]) => {
+                                                    item.categoriesList.map((item1: CategoriesModel, index1: number, arr: CategoriesModel[]) => {
                                                         if (item1.parentID == null)
                                                             return <>
                                                                 <div className='h-fit   my-3 basis-1/4'>
-                                                                    <h3 className='whitespace-nowrap font-medium text-black'>{
+                                                                    <h3 className='whitespace-nowrap font-medium my-3 text-black'>{
                                                                         item1.nameCategory
                                                                     }</h3>
                                                                     {
                                                                         arr.map((item2: CategoriesModel, index2: number) => {
                                                                             if (item2.parentID?.catorgoryID == item1.catorgoryID)
                                                                                 return <>
-                                                                                    <h3 className='whitespace-nowrap  text-black'>{
-                                                                                        item2.nameCategory
-                                                                                    }</h3>
+                                                                                    <Link href={`${linkRouting.listproduct}/${item2.catorgoryID}`}>
+                                                                                        <h3 className='my-2 text-base whitespace-nowrap  text-black'>{
+                                                                                            item2.nameCategory
+                                                                                        }</h3>
+                                                                                    </Link>
                                                                                 </>
                                                                         })
                                                                     }

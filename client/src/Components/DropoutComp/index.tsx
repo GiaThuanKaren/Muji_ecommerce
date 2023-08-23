@@ -14,7 +14,7 @@ function DropoutComp({ children, title }: Props) {
                 onClick={() => {
                     setClose(!close)
                 }}
-                className='my-2 flex w-full py-1 items-center justify-between'>
+                className='my-2 flex w-full py-1 items-center justify-between transition-all '>
                 <p className='font-medium'>{title}</p>
                 <div>
                     {close ? <ICON icon={IconSolid.faChevronDown} /> :

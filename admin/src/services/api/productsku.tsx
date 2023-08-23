@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ProductSkuModel, ResponeModel } from "src/Model/apiModel";
-import { ProductSkuResponeModel } from "src/utils/routingLink";
+import { ProductSkuModel, ResponeModel ,ProductSkuResponeModel } from "src/Model/apiModel";
+// import {  } from "src/utils/routingLink";
 import { BASE_DEV } from ".";
 import { ShowToast } from "src/utils";
 
@@ -13,7 +13,7 @@ export const FetchAllProductSku = async function () {
     }
 }
 
-export const CreateNewProductSku = async function (productSkuModel: ProductSkuModel, image: File) {
+export const CreateNewProductSku = async function (productSkuModel: ProductSkuModel, image: File | null) {
     interface UpdateImage {
         "msg": string,
         "others": null,
@@ -21,12 +21,16 @@ export const CreateNewProductSku = async function (productSkuModel: ProductSkuMo
         "status": string
     }
     try {
-        let formData = new FormData()
-        formData.append("tenfile", image)
-        let { data } = await axios.post<UpdateImage>(`https://instagram-backend-gia-thuan.vercel.app/api/upload/upload_single`, formData, {
-            headers: { "Content-Type": "multipart/form-data", 'Access-Control-Allow-Origin': '*' },
-        })
-        productSkuModel.imageProduct = data.data;
+        if (image) {
+            console.log("Uploading File")
+            let formData = new FormData()
+            formData.append("tenfile", image as File)
+            let { data } = await axios.post<UpdateImage>(`https://instagram-backend-gia-thuan.vercel.app/api/upload/upload_single`, formData, {
+                headers: { "Content-Type": "multipart/form-data", 'Access-Control-Allow-Origin': '*' },
+            })
+            productSkuModel.imageProduct = data.data;
+        }
+
         // productSkuModel.imageProduct = "test.jpg"
         await axios.post(`${BASE_DEV}/product_sku/create_new`, productSkuModel);
         ShowToast("Create New Product Sku Successfully", "INFO")

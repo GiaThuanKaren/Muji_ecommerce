@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import { InputComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
@@ -6,6 +7,7 @@ import { FetchAllCategories } from 'src/services/api/categories'
 import { FetchAllOption } from 'src/services/api/option'
 import { CreateNewProduct } from 'src/services/api/product'
 import { ICON, IconSolid } from 'src/utils'
+import { routingLink } from 'src/utils/routingLink'
 
 function AddNewProduct() {
     const [properties, setProperties] = React.useState<ProductModel>({
@@ -25,10 +27,12 @@ function AddNewProduct() {
             [key]: value
         })
     }
+    const { push } = useRouter()
     const handleCreateNewOption = async function () {
         try {
             let result = await CreateNewProduct(properties)
             console.log(result)
+            push(routingLink.sanpham)
         } catch (error) {
             console.log(error)
         }
