@@ -1,17 +1,19 @@
 import React from 'react'
+import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
 function DetailProductById() {
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
+    const ratingStart: string[] = ["Tất Cả", "5 Sao", "4 Sao", "3 Sao", "2 Sao"];
     const [numberProductAddToCard, setNumberProductAddToCard] = React.useState(1);
     const [chooseSize, setChooseSize] = React.useState(size[0])
     return (
         <>
             <MainLayout>
-                <div className='flex '>
+                <div className='flex w-full h-fit'>
 
-                    <div className='basis-3/4 px-3'>
+                    <div className='basis-2/3 px-3 h-fit'>
                         <div className='  w-full h-full'>
 
                             <div className='flex flex-wrap'>
@@ -26,8 +28,6 @@ function DetailProductById() {
                                     })
                                 }
                             </div>
-
-
                             <h3 className='text-black font-medium text-lg'>
                                 Mô tả sản phẩm
                             </h3>
@@ -49,9 +49,92 @@ function DetailProductById() {
                             </p>
 
                         </div>
+
+                        <div className='flex justify-between w-full h-fit bg-blue-200 px-10 py-7 my-3'>
+                            <div className='flex flex-col items-center'>
+                                <h3 className='text-xl my-1 font-medium'>
+                                    4.9/5
+                                </h3>
+                                <div className="my-1 flex items-center space-x-1">
+                                    <svg
+                                        className="w-9 h-9 text-yellow-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 22 20"
+                                    >
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg
+                                        className="w-9 h-9 text-yellow-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 22 20"
+                                    >
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg
+                                        className="w-9 h-9 text-yellow-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 22 20"
+                                    >
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg
+                                        className="w-9 h-9 text-yellow-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 22 20"
+                                    >
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg
+                                        className="w-9 h-9 text-yellow-400 dark:text-gray-500"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 22 20"
+                                    >
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                </div>
+                                <h3 className='my-1'>
+                                    (31 Đánh giá)
+
+                                </h3>
+                                <div className='bg-blue-800 px-4 py-2 my-1'>
+                                    <h3 className='text-white font-medium'>
+                                        Gửi đánh giá của bạn
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div className='flex flex-wrap flex-1 ml-5  '>
+                                {
+                                    ratingStart.map((item: string, index: number) => {
+                                        return <>
+                                            <div className='basis-1/4 h-12 px-2  '>
+                                                <div className='w-full h-full border-2 border-black bg-white flex items-center justify-center'>
+                                                    <h3 className=''>
+                                                        {item}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </>
+                                    })
+                                }
+                            </div>
+                        </div>
+
+
+                        <CommentCompononent />
                     </div>
 
-                    <div className='basis-1/4 h-full'>
+                    <div className='basis-1/3 h-full'>
                         <h3 className='font-medium text-black text-xl'>
                             Áo Polo Nam Coolmax
                         </h3>
@@ -70,7 +153,7 @@ function DetailProductById() {
                             <div className='flex items-center'>
                                 <div className="flex items-center space-x-1">
                                     <svg
-                                        className="w-4 h-4 text-yellow-300"
+                                        className="w-4 h-4 text-yellow-400"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor"
@@ -171,20 +254,26 @@ function DetailProductById() {
 
                         <div className='flex items-center justify-between my-4'>
 
-                            <div className='border-2 border-black flex items-center justify-center px-3 py-2'>
+                            <div className='max-w-[200px] min-w-[190px] border-2 border-black flex items-center justify-center px-3 py-2'>
                                 <ICON className='mr-3' icon={IconSolid.faShoppingCart} />
                                 <h3 className='font-medium text-base'>
                                     Thêm vào giỏ hàng
                                 </h3>
                             </div>
 
-                            <div className='bg-yellow-300 min-w-[200px] '>
+                            <div className='bg-yellow-300 max-w-[200px] min-w-[190px]  '>
                                 <h3 className='text-white font-medium text-center px-5 py-2'>
                                     Mua Ngay
                                 </h3>
                             </div>
 
                         </div>
+
+
+
+
+
+
                     </div>
 
                 </div>
