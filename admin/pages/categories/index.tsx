@@ -37,7 +37,7 @@ function CatogoriesIndex() {
     async function FetchApi() {
         try {
             let result = await FetchAllCategories();
-            
+
             setProperties(result?.data as CategoriesResponeModel[])
         } catch (error) {
 
@@ -55,11 +55,19 @@ function CatogoriesIndex() {
                     <div>
 
                     </div>
-                    <Link href={`${routingLink.addnewcateogories}`}>
-                        <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
-                            <h3 className='text-white font-medium'>Create New</h3>
-                        </div>
-                    </Link>
+                    <div className='flex items-center'>
+                        <Link href={`${routingLink.addnewcateogories}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Create New Categories</h3>
+                            </div>
+                        </Link>
+                        <Link className='mx-3' href={`${routingLink.addnewcateogories}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Add New</h3>
+                            </div>
+                        </Link>
+                    </div>
+
                 </div>
                 {
                     openModal && <>

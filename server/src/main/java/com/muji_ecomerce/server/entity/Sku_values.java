@@ -17,8 +17,9 @@ public class Sku_values {
            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
            @JoinColumn(name = "option_id", referencedColumnName ="option_id")
    }
-
    )
+
+
     private Option_value valuesId;
 
 

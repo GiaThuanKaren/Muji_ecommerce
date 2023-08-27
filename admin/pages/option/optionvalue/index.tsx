@@ -2,61 +2,45 @@ import Link from 'next/link'
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { OptionModel } from 'src/Model/apiModel'
-import { DeleteOptionById, FetchAllOption, UpdateOptionById } from 'src/services/api/option'
+import { OptionValueResponeModel } from 'src/Model/apiModel'
+import { FetchAllOptionValue } from 'src/services/api/optonValue'
 import { ICON, IconSolid } from 'src/utils'
 import { routingLink } from 'src/utils/routingLink'
 
-
-function OptionIndexPage() {
-    const [properties, setProperties] = React.useState<OptionModel[]>([])
-
+function OptionValueIndexPage() {
     const [openModal, setOpenModal] = React.useState(false)
-    const [openModalDelte, setOpenModalDelte] = React.useState(false)
-    const [value, setValue] = React.useState<OptionModel>({
-        optionName: "",
-        optionID: undefined
-    })
+    const [properties, setProperties] = React.useState<OptionValueResponeModel[]>([])
+    const [value, setValue] = React.useState<OptionValueResponeModel>({})
 
+    async function FetchApi() {
+        try {
+            let listOptionValue = await FetchAllOptionValue()
+            setProperties(listOptionValue?.data as OptionValueResponeModel[])
+        } catch (error) {
 
-    const handleInput = function (key: string, value1: any) {
-        setValue({
-            ...value,
-            [key]: value1
-        })
+        }
     }
     const handleUpdate = async function () {
         try {
-            await UpdateOptionById(value)
+            // await UpdateOptionById(value)
             await FetchApi();
             setOpenModal(false)
         } catch (error) {
 
         }
     }
-
-    const HandleDelete = async function (id: number) {
-        try {
-            await DeleteOptionById(id)
-            await FetchApi();
-        } catch (error) {
-
-        }
-    }
-    async function FetchApi() {
-        try {
-            let result = await FetchAllOption();
-            setProperties(result?.data as OptionModel[])
-        } catch (error) {
-
-        }
+    const handleInput = function (key: string, value1: any) {
+        setValue({
+            ...value,
+            [key]: value1
+        })
     }
     React.useEffect(() => {
-
         FetchApi()
     }, [])
 
-    // console.log(keys<OptionModel>())
+
+
     return (
         <>
             <MainLayout>
@@ -65,16 +49,12 @@ function OptionIndexPage() {
 
                     </div>
                     <div className='flex items-center'>
-                        <Link className='mx-3' href={`${routingLink.taothuoctinh}`}>
+                        <Link className='mx-3' href={`${routingLink.createNewOptionValue}`}>
                             <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
                                 <h3 className='text-white font-medium'>Create New</h3>
                             </div>
                         </Link>
-                        <Link href={`${routingLink.optionvalue}`}>
-                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
-                                <h3 className='text-white font-medium'>Manage Option Value</h3>
-                            </div>
-                        </Link>
+
                     </div>
 
                 </div>
@@ -85,10 +65,12 @@ function OptionIndexPage() {
                                 Chỉnh sửa thuộc tính
                             </h3>
 
-                            <InputComp disable valueInput={value?.optionID} leftText='Option ID' widthFull />
+                            <InputComp disable valueInput={value?.id?.optionId} leftText='Option ID' widthFull />
+                            <InputComp disable valueInput={value?.id?.productId} leftText='Option ID' widthFull />
+                            <InputComp disable valueInput={value?.id?.valueId} leftText='Option ID' widthFull />
                             <InputComp handleOnchange={(e) => {
-                                handleInput("optionName", e.target.value)
-                            }} valueInput={value?.optionName} leftText='Option Name' widthFull />
+                                handleInput("valuesName", e.target.value)
+                            }} valueInput={value?.valuesName} leftText='Value Name' widthFull />
                             <div className='flex items-center justify-end px-5'>
                                 <div onClick={handleUpdate} className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
                                     <p className='  text-white text-center  px-4'>
@@ -108,21 +90,29 @@ function OptionIndexPage() {
                     </>
                 }
                 <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
-                    "ID",
+                    "Option ID",
+                    "Product ID",
+                    "Value ID",
                     "OptionName"
                 ]} totalData={properties.length} displayEachPage={4} >
 
                     <tbody>
 
                         {
-                            properties.map((item: OptionModel, index: number) => {
+                            properties.map((item: OptionValueResponeModel, index: number) => {
                                 return <>
                                     <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.optionID}
+                                            {item.id?.optionId}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.optionName}
+                                            {item.id?.productId}
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                            {item.id?.valueId}
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                            {item.valuesName}
                                         </td>
 
                                         <td className="whitespace-nowrap px-6 py-4">
@@ -134,7 +124,7 @@ function OptionIndexPage() {
                                             <ICON onClick={() => {
                                                 let result = confirm("Do you want to delete it ?")
                                                 if (result) {
-                                                    HandleDelete(item.optionID as number)
+                                                    // HandleDelete(item.optionID as number)
                                                 }
                                             }} className='p-3 bg-red-300 rounded-full' icon={IconSolid.faTrash} />
                                         </td>
@@ -151,4 +141,4 @@ function OptionIndexPage() {
     )
 }
 
-export default OptionIndexPage
+export default OptionValueIndexPage

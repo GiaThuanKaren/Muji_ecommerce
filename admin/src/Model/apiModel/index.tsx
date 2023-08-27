@@ -35,7 +35,7 @@ export interface CategoriesResponeModel {
   nameCategory: string
   parentID: CategoriesResponeModel | null
   productList: any[],
-  imageCategory:string
+  imageCategory: string
 }
 
 
@@ -111,4 +111,23 @@ export interface CustomerModel {
   customerFirstName: string
   customerPhone: string
   customerEmail: string
+}
+
+export interface OptionValueResponeModel {
+  id?: OptionValueId
+  valuesName?: string
+  skuValuesSet?: any
+}
+
+export interface OptionValueId {
+  productId: number
+  optionId: number
+  valueId: number
+}
+
+export interface OptionValueModel {
+  product_id: string
+  option_id: string
+  value_id?: string
+  value_name: string
 }

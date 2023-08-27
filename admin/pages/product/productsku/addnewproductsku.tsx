@@ -72,7 +72,7 @@ function Addnewproductsku() {
         try {
             let dataListProduct = await FetchAllProduct();
             let dataListProductSku = await FetchAllProductSku();
-            if (dataListProduct && dataListProduct.data.length - 1 == 0) {
+            if (dataListProduct && dataListProduct.data.length == 0) {
                 alert("Please add at least one product to continue ")
                 return
 

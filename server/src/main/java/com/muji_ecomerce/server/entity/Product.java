@@ -29,7 +29,7 @@ public class Product {
     @JoinColumn(name="category_id")
     private Categories categories;
 
-    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade=CascadeType.REMOVE)
 
     List<Product_Option> products;
 

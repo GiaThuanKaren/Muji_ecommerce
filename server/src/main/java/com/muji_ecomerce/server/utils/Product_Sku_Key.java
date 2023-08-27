@@ -20,6 +20,7 @@ public class Product_Sku_Key implements Serializable {
     @Column(name = "product_id")
     private Long productId;
 
+
     @Column(name = "sku_id")
 
     private Long skuId;
