@@ -18,6 +18,7 @@ export interface ProductLineModel {
 }
 
 export interface ProductLineResponeModel {
+  productLineId: number,
   nameProductLine: string
   imageProductLine: string
 }

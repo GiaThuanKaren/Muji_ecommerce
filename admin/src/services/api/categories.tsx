@@ -9,7 +9,7 @@ export const FetchAllCategories = async function () {
         let arr = data.data.filter((item: CategoriesResponeModel) => {
             return item.parentID != null
         })
-        data.data = arr
+        // data.data = arr
         return data
     } catch (error) {
         ShowToast("Error To Fetching All Categories", "ERROR")

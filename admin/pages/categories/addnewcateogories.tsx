@@ -1,16 +1,18 @@
 import React from 'react'
 import { InputComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { CategoriesModel, CategoriesResponeModel, ProductLineModel } from 'src/Model/apiModel'
+import { CategoriesModel, CategoriesResponeModel, ProductLineModel, ProductLineResponeModel } from 'src/Model/apiModel'
 import { CreateNew, FetchAllCategories } from 'src/services/api/categories'
 import { FetchAll } from 'src/services/api/productline'
 
 function Addnewcateogories() {
-    const [productLine, setproductLine] = React.useState<ProductLineModel[]>([])
+    const [productLine, setproductLine] = React.useState<ProductLineResponeModel[]>([])
     const [categories, setCategories] = React.useState<CategoriesResponeModel[]>([])
     const [value, setValue] = React.useState<CategoriesModel>({
+        catorgoryID: 1,
         nameCategory: "",
-
+        parentID: undefined,
+        imageCategory: ""
     })
 
     async function FetchApi() {
@@ -18,7 +20,11 @@ function Addnewcateogories() {
             let result = await FetchAll();
             let result1 = await FetchAllCategories()
             setCategories(result1?.data as CategoriesResponeModel[])
-            setproductLine(result?.data as ProductLineModel[])
+            setproductLine(result?.data as ProductLineResponeModel[])
+            setValue({
+                ...value,
+                product_lineid: result?.data && result?.data.length > 0 ? result?.data[0].productLineId : 0
+            })
         } catch (error) {
 
         }
@@ -30,12 +36,12 @@ function Addnewcateogories() {
         })
     }
 
-    const handleCreateCategories = async function(){
+    const handleCreateCategories = async function () {
         try {
             await CreateNew(value);
-            
+
         } catch (error) {
-            
+
         }
     }
     React.useEffect(() => {
@@ -91,8 +97,12 @@ function Addnewcateogories() {
                             })
                         }
                     </select>
+
+                    <InputComp leftText='Image Categories' handleOnchange={(e) => {
+                        handleInput("imageCategory", e.target.value)
+                    }} />
                     <div className='flex items-center justify-end px-5'>
-                        <div onClick={()=>{
+                        <div onClick={() => {
                             handleCreateCategories();
                         }} className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
                             <p className='  text-white text-center  px-4'>

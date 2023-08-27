@@ -23,7 +23,7 @@ function TabNavigationHome() {
   const queryClient = useQueryClient()
   const { data, isLoading, isError } = useQuery("header_categories", FetchAllProductLine)
 
-
+  console.log(data)
   const [tab, setTab] = React.useState<"Nam" | "Nữ" | "Trẻ Em">("Nam");
 
   let ArrTab: Tab[] = [{
@@ -76,7 +76,7 @@ function TabNavigationHome() {
               >
                 {
                   item?.categoriesList.map((item: CategoriesModel, index: number) => {
-                    if (item.parentID != null && item.imageCategory)
+                    if (item.parentID != null)
                       return <>
                         <SwiperSlide key={index}>
                           <Link href={`${linkRouting.listproduct}/${item.catorgoryID}`}>

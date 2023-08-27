@@ -14,7 +14,7 @@ function CatogoriesIndex() {
         catorgoryID: 1,
         nameCategory: "",
         parentID: undefined,
-
+        imageCategory: ""
     })
 
     const HandleDelete = async function (id: number) {
@@ -37,6 +37,7 @@ function CatogoriesIndex() {
     async function FetchApi() {
         try {
             let result = await FetchAllCategories();
+            
             setProperties(result?.data as CategoriesResponeModel[])
         } catch (error) {
 
@@ -146,7 +147,9 @@ function CatogoriesIndex() {
                                                 setValue({
                                                     nameCategory: item.nameCategory,
                                                     catorgoryID: item.catorgoryID,
-                                                    parentID: item.parentID ? item.parentID.catorgoryID : undefined
+                                                    parentID: item.parentID ? item.parentID.catorgoryID : undefined,
+                                                    imageCategory: item.imageCategory ? item.imageCategory : ""
+
                                                 })
                                             }} className='p-3 bg-yellow-300 mx-2 rounded-full' icon={IconSolid.faPenToSquare} />
                                             <ICON onClick={() => {
@@ -161,8 +164,6 @@ function CatogoriesIndex() {
                                 </>
                             })
                         }
-
-
                     </tbody>
                 </TableComp>
             </MainLayout >
