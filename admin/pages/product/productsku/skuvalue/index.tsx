@@ -1,9 +1,11 @@
+import Link from 'next/link'
 import React from 'react'
 import { TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 import { ProductSkuResponeModel, SkuValueResponeModel } from 'src/Model/apiModel'
 import { FetchAllSkuValue } from 'src/services/api/Skuvalue'
 import { ICON, IconSolid } from 'src/utils'
+import { routingLink } from 'src/utils/routingLink'
 
 function SkuValueManageIndexPage() {
     const [properties, setProperties] = React.useState<SkuValueResponeModel[]>([])
@@ -28,6 +30,24 @@ function SkuValueManageIndexPage() {
     return (
         <>
             <MainLayout>
+                <div className='flex justify-between px-5'>
+                    <div>
+
+                    </div>
+                    <div className='flex items-center'>
+                        <Link href={`${routingLink.addnewSkuValue}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Create New Sku Value</h3>
+                            </div>
+                        </Link>
+                        {/* <Link className='mx-3' href={`${routingLink.addnewcateogories}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Add New</h3>
+                            </div>
+                        </Link> */}
+                    </div>
+
+                </div>
                 <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
                     "Product ID",
                     "Option ID",

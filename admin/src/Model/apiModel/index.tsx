@@ -193,3 +193,10 @@ export interface Id4 {
   optionId: number
   valueId: number
 }
+
+export interface SkuValueModel {
+  productId: string
+  skuId: string
+  optionId: string
+  valuesId: string
+}

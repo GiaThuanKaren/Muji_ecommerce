@@ -5,7 +5,7 @@ import { OptionValueModel, OptionValueResponeModel, ResponeModel } from "src/Mod
 
 export const FetchAllOptionValue = async function () {
     try {
-        let { data } = await axios.get<ResponeModel<OptionValueResponeModel[]>>(`${BASE_DEV}/option_value/fetch_all`)
+        let { data } = await axios.get<ResponeModel<OptionValueResponeModel>>(`${BASE_DEV}/option_value/fetch_all`)
         return data
     } catch (error) {
         ShowToast("Failed To Get All OptionValue", "ERROR")
