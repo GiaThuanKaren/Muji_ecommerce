@@ -1,7 +1,7 @@
 package com.muji_ecomerce.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.muji_ecomerce.server.utils.Option_Value_Key;
+import com.muji_ecomerce.server.utils.OptionValueKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Setter
@@ -19,12 +18,12 @@ import java.util.Set;
 public class Option_value {
 
     @EmbeddedId
-    Option_Value_Key id;
+    OptionValueKey id;
 
     private String valuesName;
 
     @OneToMany(mappedBy = "valuesId", cascade = CascadeType.ALL)
-
+@JsonIgnore
     private List<Sku_values> skuValuesSet;
 
 //

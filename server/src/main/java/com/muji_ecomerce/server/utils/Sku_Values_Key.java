@@ -3,11 +3,15 @@ package com.muji_ecomerce.server.utils;
 
 import com.muji_ecomerce.server.entity.Product_Sku;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sku_Values_Key implements Serializable {
 
     @Column(name = "product_id")
@@ -23,6 +27,11 @@ public class Sku_Values_Key implements Serializable {
     @Column(name = "option_id")
     private Long optionId;
 
+
+    @Column(name = "values_id")
+    private Long valuesId;
+
+
 //    @ManyToOne
 //
 //    @JoinColumns({
@@ -37,17 +46,16 @@ public class Sku_Values_Key implements Serializable {
 //    })
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Sku_Values_Key that = (Sku_Values_Key) o;
-        return Objects.equals(productId, that.productId) && Objects.equals(skuId, that.skuId) && Objects.equals(optionId, that.optionId);
+        return Objects.equals(productId, that.productId) && Objects.equals(skuId, that.skuId) && Objects.equals(optionId, that.optionId) && Objects.equals(valuesId, that.valuesId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, skuId, optionId);
+        return Objects.hash(productId, skuId, optionId, valuesId);
     }
 }

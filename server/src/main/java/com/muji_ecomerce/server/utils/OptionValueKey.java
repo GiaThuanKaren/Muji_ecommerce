@@ -17,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Option_Value_Key implements Serializable {
+public class OptionValueKey implements Serializable {
     @Column(name = "product_id")
     private Long productId;
 
@@ -34,7 +34,7 @@ public class Option_Value_Key implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Option_Value_Key that = (Option_Value_Key) o;
+        OptionValueKey that = (OptionValueKey) o;
         return Objects.equals(productId, that.productId) && Objects.equals(optionId, that.optionId) && Objects.equals(valueId, that.valueId);
     }
 

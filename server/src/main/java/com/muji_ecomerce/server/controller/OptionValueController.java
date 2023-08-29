@@ -3,7 +3,7 @@ package com.muji_ecomerce.server.controller;
 import com.muji_ecomerce.server.model.OptionValueModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.OptionValueService;
-import com.muji_ecomerce.server.utils.Option_Value_Key;
+import com.muji_ecomerce.server.utils.OptionValueKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +33,12 @@ public class OptionValueController {
 
     @DeleteMapping("/delete")
     public ResponeModelJson deleteOptionValue(@RequestParam("idproduct") Long productId,@RequestParam("idoption") Long optionid,@RequestParam("idvalue") Long valueid){
-        return optionValueService.delete(new Option_Value_Key(productId,optionid,valueid));
+        return optionValueService.delete(new OptionValueKey(productId,optionid,valueid));
     }
+
+    @GetMapping("/findOptionValueByProductID")
+    public ResponeModelJson findOptionValueByProductID(@RequestParam("productid") Long productid){
+        return optionValueService.getDetailOptionValueById(productid);
+    }
+
 }

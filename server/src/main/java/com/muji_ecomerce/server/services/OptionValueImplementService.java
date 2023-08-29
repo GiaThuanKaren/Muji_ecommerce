@@ -8,12 +8,12 @@ import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.repository.OptionRepository;
 import com.muji_ecomerce.server.repository.OptionValueRepsitory;
 import com.muji_ecomerce.server.repository.ProductRepository;
-import com.muji_ecomerce.server.utils.Option_Value_Key;
+import com.muji_ecomerce.server.utils.OptionValueKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,7 +44,7 @@ public class OptionValueImplementService implements OptionValueService {
             return  new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Product Id");
 
         optionValue.setOption1(optionFound.get());
-        optionValue.setId(new Option_Value_Key(optionValueModel.getProduct_id(), optionValueModel.getOption_id(), optionValueModel.getValue_id()));
+        optionValue.setId(new OptionValueKey(optionValueModel.getProduct_id(), optionValueModel.getOption_id(), optionValueModel.getValue_id()));
 
         return new ResponeModelJson<>(HttpStatus.CREATED,"OKE", optionValueRepsitory.save(optionValue));
     }
@@ -52,7 +52,7 @@ public class OptionValueImplementService implements OptionValueService {
 
     @Override
     public ResponeModelJson updateOpptionValue(OptionValueModel optionValueModel) {
-        Optional<Option_value> optionValueFound =optionValueRepsitory.findById(new Option_Value_Key(optionValueModel.getProduct_id(), optionValueModel.getOption_id(), optionValueModel.getValue_id() ));
+        Optional<Option_value> optionValueFound =optionValueRepsitory.findById(new OptionValueKey(optionValueModel.getProduct_id(), optionValueModel.getOption_id(), optionValueModel.getValue_id() ));
         System.out.println(optionValueFound.get().toString() );
         if(optionValueFound.isPresent()){
             Optional<Option > optionFound = optionRepository.findById(optionValueModel.getOption_id());
@@ -74,7 +74,7 @@ public class OptionValueImplementService implements OptionValueService {
     }
 
     @Override
-    public ResponeModelJson delete(Option_Value_Key optionValueKey) {
+    public ResponeModelJson delete(OptionValueKey optionValueKey) {
         Optional<Option_value> optionValueFound =optionValueRepsitory.findById(optionValueKey);
         if(optionValueFound.isPresent()){
             optionValueRepsitory.deleteById(optionValueKey);
@@ -82,5 +82,16 @@ public class OptionValueImplementService implements OptionValueService {
         }
 
         return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid option Value Key");
+    }
+
+
+    @Override
+    public ResponeModelJson getDetailOptionValueById(Long Id) {
+        Optional<List<Option_value>> optionValueFound = optionValueRepsitory.findAllByIdProductId(Id);
+
+        if(optionValueFound.isPresent())
+            return new ResponeModelJson(HttpStatus.OK,"Found",optionValueFound.get());
+        else
+            return new ResponeModelJson(HttpStatus.OK,"Not Found");
     }
 }

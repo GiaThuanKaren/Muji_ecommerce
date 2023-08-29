@@ -5,7 +5,7 @@ import com.muji_ecomerce.server.model.OptionValueModel;
 import com.muji_ecomerce.server.model.ProductModal;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.repository.*;
-import com.muji_ecomerce.server.utils.Option_Value_Key;
+import com.muji_ecomerce.server.utils.OptionValueKey;
 import com.muji_ecomerce.server.utils.Product_Option_Key;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,7 +74,7 @@ public class ProductServiceImplement implements  ProductService{
             return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Product Id");
         }
         Option_value optionValue = new Option_value();
-        optionValue.setId(new Option_Value_Key(optionValueModel.getProduct_id(),optionValueModel.getOption_id(),optionValueModel.getValue_id() ));
+        optionValue.setId(new OptionValueKey(optionValueModel.getProduct_id(),optionValueModel.getOption_id(),optionValueModel.getValue_id() ));
         optionValue.setValuesName(optionValueModel.getValue_name());
 
         return new ResponeModelJson(HttpStatus.CREATED,"Done",optionValueRepsitory.save(optionValue));

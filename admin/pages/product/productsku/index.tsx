@@ -101,11 +101,18 @@ function ProductSkuIndex() {
                     <div>
 
                     </div>
-                    <Link href={`${routingLink.addnewproductsku}`}>
-                        <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
-                            <h3 className='text-white font-medium'>Create New</h3>
-                        </div>
-                    </Link>
+                    <div className='flex items-center'>
+                        <Link className='ml-4' href={`${routingLink.addnewproductsku}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Create New</h3>
+                            </div>
+                        </Link>
+                        <Link className='ml-4' href={`${routingLink.skuvaluemanage}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Manage Sku Value</h3>
+                            </div>
+                        </Link>
+                    </div>
                 </div>
                 <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
                     "Id Product",

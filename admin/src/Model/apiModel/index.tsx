@@ -131,3 +131,65 @@ export interface OptionValueModel {
   value_id?: string
   value_name: string
 }
+
+
+
+
+
+// export interface SkuValueResponeModel {
+//   id: SkuValueId
+//   valuesId: ValuesId
+//   productSku: ProductSku
+// }
+
+// export interface SkuValueId {}
+
+export interface SkuValueResponeModel {
+  id: SkuValueId
+  valuesId: ValuesId
+  productSku: ProductSku
+  option: Option
+}
+
+export interface SkuValueId {}
+
+export interface ValuesId {
+  id: Id2
+  valuesName: string
+}
+
+export interface Id2 {
+  productId: number
+  optionId: number
+  valueId: number
+}
+
+export interface ProductSku {
+  id: Id3
+  skuName: string
+  quantityStock: number
+  imageProduct: string
+  price: number
+}
+
+export interface Id3 {
+  productId: number
+  skuId: number
+}
+
+export interface Option {
+  optionID: number
+  optionName: string
+  optionValues: OptionValue[]
+}
+
+export interface OptionValue {
+  id: Id4
+  valuesName: string
+}
+
+export interface Id4 {
+  productId: number
+  optionId: number
+  valueId: number
+}

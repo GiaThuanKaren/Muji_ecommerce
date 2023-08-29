@@ -26,3 +26,13 @@ export const CreateNewOptionValueAPi = async function (optionValue: OptionValueM
         ShowToast("Failed To Create New Option Value", "ERROR")
     }
 }
+
+
+export const findOptionValueByProductId = async function (productId: number) {
+    try {
+        let { data } = await axios.get(`${BASE_DEV}/option_value/findOptionValueByProductID?productid=${productId}`)
+        return data
+    } catch (error) {
+        ShowToast("Failed To Get Detail Of This Option Value", "ERROR")
+    }
+}

@@ -1,13 +1,14 @@
 import React from 'react'
 import { InputComp, SelectInputComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { OptionModelRespone, OptionValueModel, OptionValueResponeModel, ProductResponeModel } from 'src/Model/apiModel'
+import { OptionModelRespone, OptionValueModel, OptionValueResponeModel, ProductResponeModel, ProductSkuResponeModel } from 'src/Model/apiModel'
 import { FetchAllOption } from 'src/services/api/option'
 import { CreateNewOptionValueAPi, FetchAllOptionValue } from 'src/services/api/optonValue'
 import { FetchAllProduct } from 'src/services/api/product'
+import { FetchAllProductSku } from 'src/services/api/productsku'
 
 function CreateNewOptionValue() {
-    const [listProduct, setListProduct] = React.useState<ProductResponeModel[]>([])
+    const [listProduct, setListProduct] = React.useState<ProductSkuResponeModel[]>([])
     const [listOption, setListOption] = React.useState<OptionModelRespone[]>([])
     const [listOptionValue, setListOptionValue] = React.useState<OptionValueResponeModel[]>([])
     const [value, setValue] = React.useState<OptionValueModel>({
@@ -47,11 +48,11 @@ function CreateNewOptionValue() {
 
     async function FetchApi() {
         try {
-            let result1 = await FetchAllProduct()
+            let result1 = await FetchAllProductSku()
             let result2 = await FetchAllOption();
             let result3 = await FetchAllOptionValue();
             setListOptionValue(result3?.data as OptionValueResponeModel[])
-            setListProduct(result1?.data as ProductResponeModel[])
+            setListProduct(result1?.data as ProductSkuResponeModel[])
             setListOption(result2?.data as OptionModelRespone[])
             setValue({
                 ...value,
@@ -75,10 +76,10 @@ function CreateNewOptionValue() {
                     handleInput("product_id", e.target.value)
                 }} value={value.product_id} leftText='Product Id'>
                     {
-                        listProduct.map((item: ProductResponeModel, index: number) => {
+                        listProduct.map((item: ProductSkuResponeModel, index: number) => {
                             return <>
-                                <option value={item.productId}>
-                                    {item.productId} -  {item.nameProduct}
+                                <option value={item.id.productId}>
+                                 ProductId :  {item.id.productId} - SkuId : {item.id.skuId} - SkuName  {item.skuName}
                                 </option>
                             </>
                         })
@@ -98,6 +99,9 @@ function CreateNewOptionValue() {
                         })
                     }
                 </SelectInputComp>
+
+
+               
 
                 <InputComp leftText='Value Name' valueInput={value.value_name} handleOnchange={(e) => {
                     handleInput("value_name", e.target.value)

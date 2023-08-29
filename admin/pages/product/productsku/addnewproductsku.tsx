@@ -2,7 +2,8 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { InputComp, SelectInputComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { ProductResponeModel, ProductSkuModel, ProductSkuResponeModel } from 'src/Model/apiModel'
+import { OptionValueResponeModel, ProductResponeModel, ProductSkuModel, ProductSkuResponeModel } from 'src/Model/apiModel'
+import { FetchAllOptionValue } from 'src/services/api/optonValue'
 import { FetchAllProduct } from 'src/services/api/product'
 import { CreateNewProductSku, FetchAllProductSku } from 'src/services/api/productsku'
 import { ShowToast } from 'src/utils'
@@ -16,7 +17,7 @@ function Addnewproductsku() {
     const { push } = useRouter()
     const [listProductSku, setlistProductSku] = React.useState<ProductSkuResponeModel[]>([])
     const [listProduct, setListProduct] = React.useState<ProductResponeModel[]>([])
-
+    const [listOptionValue, setListOptionValue] = React.useState<OptionValueResponeModel[]>([])
     const [imageProduct, SetImageProduct] = React.useState<ImageProductType>({
         file: null,
         imgurl: ""
@@ -72,6 +73,7 @@ function Addnewproductsku() {
         try {
             let dataListProduct = await FetchAllProduct();
             let dataListProductSku = await FetchAllProductSku();
+            let dataListOptionValue = await FetchAllOptionValue();
             if (dataListProduct && dataListProduct.data.length == 0) {
                 alert("Please add at least one product to continue ")
                 return
@@ -82,6 +84,7 @@ function Addnewproductsku() {
                 sku_name: "",
                 product_id: dataListProduct?.data[dataListProduct.data.length - 1].productId
             })
+            setListOptionValue(dataListOptionValue?.data as OptionValueResponeModel[])
             setlistProductSku(dataListProductSku?.data as ProductSkuResponeModel[])
             setListProduct(dataListProduct?.data as ProductResponeModel[])
         } catch (error) {

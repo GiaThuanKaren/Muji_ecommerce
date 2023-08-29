@@ -34,7 +34,7 @@ public class Product_Sku {
     private Product product;
 
     @OneToMany(mappedBy = "productSku", cascade = CascadeType.ALL)
-
+@JsonIgnore
     List<Sku_values> skuValues;
 
 //    @OneToMany(mappedBy = "Productoption", cascade = CascadeType.ALL)

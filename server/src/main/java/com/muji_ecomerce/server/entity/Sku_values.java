@@ -3,17 +3,26 @@ package com.muji_ecomerce.server.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muji_ecomerce.server.utils.Sku_Values_Key;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+
 public class Sku_values {
     @EmbeddedId
     Sku_Values_Key id;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("id")
-
+//@JsonIgnore
    @JoinColumns({
-           @JoinColumn(name = "value_id", referencedColumnName ="value_id"),
+           @JoinColumn(name = "values_id", referencedColumnName ="value_id"),
            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
            @JoinColumn(name = "option_id", referencedColumnName ="option_id")
    }
@@ -26,6 +35,8 @@ public class Sku_values {
 
 
     @ManyToOne(cascade=CascadeType.ALL)
+//    @JsonIgnore
+
     @MapsId("id")
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
@@ -34,6 +45,8 @@ public class Sku_values {
     Product_Sku productSku;
 
     @ManyToOne(cascade=CascadeType.ALL)
+
+
     @MapsId("optionID")
             @JoinColumn(name = "option_id")
     Option option;
