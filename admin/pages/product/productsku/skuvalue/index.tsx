@@ -69,7 +69,7 @@ function SkuValueManageIndexPage() {
                                             {item.valuesId.id.valueId}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.valuesId.valuesName}
+                                            {item.valuesId.valuesName} 
                                         </td>
 
                                         <td className="whitespace-nowrap px-6 py-4">

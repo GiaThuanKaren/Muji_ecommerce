@@ -23,7 +23,7 @@ public class Option_value {
     private String valuesName;
 
     @OneToMany(mappedBy = "valuesId", cascade = CascadeType.ALL)
-@JsonIgnore
+    @JsonIgnore
     private List<Sku_values> skuValuesSet;
 
 //

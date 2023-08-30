@@ -51,4 +51,14 @@ public class SkuValuesServiceImplements implements SkuValuesService{
         skuValuesRepository.save(skuValuesCreated);
         return new ResponeModelJson(HttpStatus.CREATED,"OKE");
     }
+
+    @Override
+    public ResponeModelJson deleteSkuValeById(Sku_Values_Key skuValuesKeyID) {
+        Optional<Sku_values> skuValuesFound = skuValuesRepository.findById(skuValuesKeyID);
+        if(skuValuesFound.isPresent()){
+            skuValuesRepository.deleteById(skuValuesKeyID);
+            return new ResponeModelJson(HttpStatus.OK,"Done");
+        }
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Can not find this sku value id ");
+    }
 }

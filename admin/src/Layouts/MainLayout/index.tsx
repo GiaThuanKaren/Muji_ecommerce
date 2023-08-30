@@ -123,7 +123,7 @@ function MainLayout({ children, errorFetch }: Props) {
 
     ]
     const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
-    console.log(openSideBarUser)
+    // console.log(openSideBarUser)
     return (
         <>
             <div className='flex max-w-screen h-screen'>

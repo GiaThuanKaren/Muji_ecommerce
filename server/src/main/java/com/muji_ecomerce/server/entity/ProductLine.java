@@ -22,7 +22,7 @@ public class ProductLine {
 
     private String imageProductLine;
 
-    @OneToMany(mappedBy = "productLine")
+    @OneToMany(mappedBy = "productLine", cascade = CascadeType.ALL)
 //    @JsonIgnore
     private List<Categories> categoriesList;
 

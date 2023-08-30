@@ -6,9 +6,10 @@ import { FetchAllOption } from 'src/services/api/option'
 import { CreateNewOptionValueAPi, FetchAllOptionValue } from 'src/services/api/optonValue'
 import { FetchAllProduct } from 'src/services/api/product'
 import { FetchAllProductSku } from 'src/services/api/productsku'
+import { ShowToast } from 'src/utils'
 
 function CreateNewOptionValue() {
-    const [listProduct, setListProduct] = React.useState<ProductSkuResponeModel[]>([])
+    const [listProduct, setListProduct] = React.useState<ProductResponeModel[]>([])
     const [listOption, setListOption] = React.useState<OptionModelRespone[]>([])
     const [listOptionValue, setListOptionValue] = React.useState<OptionValueResponeModel[]>([])
     const [value, setValue] = React.useState<OptionValueModel>({
@@ -28,31 +29,48 @@ function CreateNewOptionValue() {
 
     const handleCreateNewOptionValue = async function () {
         try {
-            const maxValueId = Math.max(...listOptionValue.map((item: OptionValueResponeModel) => {
-                if (item.id?.optionId == value.option_id && item.id.productId == value.product_id) {
+            // const maxValueId = Math.max(...)
+            let a = listOptionValue.map((item: OptionValueResponeModel) => {
+                if (item.id?.optionId.toString() == value.option_id && item.id.productId.toString() == value.product_id) {
+                    console.log(item)
                     return item.id.valueId
-                }
-            }))
-            if (maxValueId)
-                value.value_id = (maxValueId + 1).toString()
-            else
+                } else return 0
+            })
+
+            console.log(a, Math.max(...(a as number[])))
+            if (isFinite(Math.max(...(a as number[])))) {
+                value.value_id = (Math.max(...(a as number[])) + 1).toString()
+            } else {
                 value.value_id = "1"
-            console.log(value)
+            }
             await CreateNewOptionValueAPi(value);
+            console.log(value)
+            setListOptionValue([...listOptionValue, {
+                id: {
+                    optionId: parseInt(value.option_id),
+                    productId: parseInt(value.product_id),
+                    valueId: parseInt(value?.value_id as string)
+                },
+                valuesName: value.value_name
+            }])
         } catch (error) {
 
         }
     }
 
-
+    console.log(listOptionValue)
 
     async function FetchApi() {
         try {
-            let result1 = await FetchAllProductSku()
+            let result1 = await FetchAllProduct()
             let result2 = await FetchAllOption();
             let result3 = await FetchAllOptionValue();
+            // if (result3?.data.length == 0) {
+            //     ShowToast("Please add more data", " WARNING")
+            //     return
+            // }
             setListOptionValue(result3?.data as OptionValueResponeModel[])
-            setListProduct(result1?.data as ProductSkuResponeModel[])
+            setListProduct(result1?.data as ProductResponeModel[])
             setListOption(result2?.data as OptionModelRespone[])
             setValue({
                 ...value,
@@ -63,7 +81,7 @@ function CreateNewOptionValue() {
 
         }
     }
-    console.log(value)
+    // console.log(value)
 
     React.useEffect(() => {
         FetchApi()
@@ -76,10 +94,10 @@ function CreateNewOptionValue() {
                     handleInput("product_id", e.target.value)
                 }} value={value.product_id} leftText='Product Id'>
                     {
-                        listProduct.map((item: ProductSkuResponeModel, index: number) => {
+                        listProduct.map((item: ProductResponeModel, index: number) => {
                             return <>
-                                <option value={item.id.productId}>
-                                 ProductId :  {item.id.productId} - SkuId : {item.id.skuId} - SkuName  {item.skuName}
+                                <option value={item.productId}>
+                                    ProductId :  {item.productId}
                                 </option>
                             </>
                         })
@@ -101,7 +119,7 @@ function CreateNewOptionValue() {
                 </SelectInputComp>
 
 
-               
+
 
                 <InputComp leftText='Value Name' valueInput={value.value_name} handleOnchange={(e) => {
                     handleInput("value_name", e.target.value)
