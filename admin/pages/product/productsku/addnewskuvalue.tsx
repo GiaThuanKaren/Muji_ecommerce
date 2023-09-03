@@ -56,8 +56,8 @@ function Addnewskuvalue() {
             setListSkuValue(result3?.data as SkuValueResponeModel[])
             setListOptionValue(result2?.data as OptionValueResponeModel[])
             setlistProductSku(result1?.data as ProductSkuResponeModel[])
-            if(result1?.data.length==0){
-                ShowToast("Please add at least 1 product sku to continue"," WARNING")
+            if (result1?.data.length == 0) {
+                ShowToast("Please add at least 1 product sku to continue", " WARNING")
                 await push(routingLink.skuvaluemanage)
             }
             if (result1?.data && result1?.data.length > 0) {
@@ -87,7 +87,7 @@ function Addnewskuvalue() {
         FetchApi()
     }, [])
 
-    console.log(value,listOptionValue,listProductSku)
+    console.log(value, listOptionValue, listProductSku)
     return (
         <>
             <MainLayout>

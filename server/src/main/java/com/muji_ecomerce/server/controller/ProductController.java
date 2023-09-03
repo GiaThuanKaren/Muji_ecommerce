@@ -40,6 +40,17 @@ public class ProductController {
         return productService.deleteProductById(id);
     }
 
+    @GetMapping("/getbyidcategories")
+    private ResponeModelJson getByIdCategories(@RequestParam("idcategories") Long idCategories){
+        return productService.getProductByIdCategories(idCategories);
+    }
+
+
+    @GetMapping("/getproductbyid")
+    private ResponeModelJson getDetailProductById(@RequestParam("productid") Long produductID){
+        return productService.getDetailProductByProductId(produductID);
+    }
+
     @GetMapping("/fetchAll")
     private ResponeModelJson getAll(){
         return productService.FetchAllProduct();

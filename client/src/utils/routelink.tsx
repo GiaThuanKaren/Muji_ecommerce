@@ -3,6 +3,7 @@ export const linkRouting = {
     home: "/",
     login: "/login",
     listproduct:"/product",
+    detailproduct:"/product/detailproduct",
     register: "/register",
     account: "/account",
     donhangcuatoi: "/account/orders",

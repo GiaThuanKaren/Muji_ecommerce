@@ -15,4 +15,9 @@ public interface ProductService {
     ResponeModelJson updateProductById(ProductModal productModal);
 
     ResponeModelJson deleteProductById(Long productId);
+
+    ResponeModelJson getProductByIdCategories(Long idCategories);
+
+
+    ResponeModelJson getDetailProductByProductId(Long ProductId);
 }

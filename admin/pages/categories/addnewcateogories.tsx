@@ -77,7 +77,9 @@ function Addnewcateogories() {
                             categories.map((item: CategoriesResponeModel, index: number) => {
                                 return <>
                                     <option value={item.catorgoryID}>
-                                        {item.catorgoryID} - {item.nameCategory}
+                                        {item.catorgoryID} - {item.nameCategory} {
+                                            item.parentID && `- ${item.parentID.nameCategory}`
+                                        }
                                     </option>
                                 </>
                             })

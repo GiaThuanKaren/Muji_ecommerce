@@ -135,4 +135,24 @@ public class ProductServiceImplement implements  ProductService{
             return new ResponeModelJson(HttpStatus.CONFLICT,"Can not Delte This Product");
 
     }
+
+    @Override
+    public ResponeModelJson getProductByIdCategories(Long idCategories) {
+
+        List<Product> productListFound = productRepository.findByCategoriesCatorgoryID(idCategories);
+        if(productListFound.size()>0)
+            return new ResponeModelJson(HttpStatus.OK,"OKE",productListFound);
+        else
+            return new ResponeModelJson(HttpStatus.OK,"Can not find any product with this categories id",productListFound);
+    }
+
+    @Override
+    public ResponeModelJson getDetailProductByProductId(Long ProductId) {
+        Optional<Product> productFound = productRepository.findById(ProductId);
+        if(productFound.isPresent())
+            return new ResponeModelJson(HttpStatus.OK,"OKe",productFound.get());
+
+        return new ResponeModelJson(HttpStatus.NOT_FOUND,"Can not find any product with this productID");
+//        return new ResponeModelJson<>();
+    }
 }

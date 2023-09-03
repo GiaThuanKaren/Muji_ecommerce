@@ -1,13 +1,36 @@
+import { useRouter } from 'next/router';
 import React from 'react'
 import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
+import { ProductModel, ProductSkuModel } from 'src/Model';
+import { GetDetailProductById } from 'src/service/api';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
 function DetailProductById() {
+    const { query, isReady } = useRouter()
+    const [product, setProduct] = React.useState<ProductModel>()
+    const [currentProductSku, setCurrentProductSku] = React.useState<ProductSkuModel>()
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
     const ratingStart: string[] = ["Tất Cả", "5 Sao", "4 Sao", "3 Sao", "2 Sao"];
     const [numberProductAddToCard, setNumberProductAddToCard] = React.useState(1);
     const [chooseSize, setChooseSize] = React.useState(size[0])
+    async function FetchApi() {
+        try {
+            let result = await GetDetailProductById(query?.idproduct as string);
+            console.log(result?.data)
+
+            setProduct(result?.data as ProductModel)
+        } catch (error) {
+
+        }
+    }
+    React.useEffect(() => {
+        if (isReady) {
+            console.log("Ready")
+            FetchApi()
+        }
+    }, [isReady])
+    console.log(product)
     return (
         <>
             <MainLayout>
@@ -18,10 +41,14 @@ function DetailProductById() {
 
                             <div className='flex flex-wrap'>
                                 {
-                                    Array.from(Array(5).keys()).map(() => {
+                                    product?.productSkus.map((item: ProductSkuModel) => {
                                         return <>
                                             <div className=' basis-1/2 mb-5'>
-                                                <img className='w-full h-full object-contain ' src="https://bizweb.dktcdn.net/100/438/408/products/apm3519-vng-ao-polo-nam-yody-1.jpg?v=1688803915707" alt="" />
+                                                <img
+                                                    className='w-full h-full object-contain '
+                                                    src={item.imageProduct.trim() ? `https://drive.google.com/uc?export=view&id=${item.imageProduct}` : "https://bizweb.dktcdn.net/100/438/408/products/apm3519-vng-ao-polo-nam-yody-1.jpg?v=1688803915707"}
+                                                    alt=""
+                                                />
                                             </div>
 
                                         </>
@@ -33,19 +60,9 @@ function DetailProductById() {
                             </h3>
 
                             <p>
-                                Chất liệu: 95% Polyester + 5% Spandex
-
-                                Sợi vải bao gồm nhiều rãnh dẹt giúp thoáng khí, thoát ẩm cực tốt
-
-                                Áo polo nam Coolmax mang lại cảm giác mát mẻ, dễ chịu cho người mặc ngay cả khi vận động mạnh
-
-                                Tự tin cùng Thiết kế khỏe khoắn, nam tính
-
-                                Ứng dụng linh hoạt: Thích hợp mặc đi chơi, đi làm, hoạt động thể thao, cafe, hẹn hò với bạn bè
-
-                                YODY - Look good. Feel good.
-
-                                Sản xuất tại Việt Nam
+                                {
+                                    product?.productDescription
+                                }
                             </p>
 
                         </div>
@@ -136,7 +153,9 @@ function DetailProductById() {
 
                     <div className='basis-1/3 h-full'>
                         <h3 className='font-medium text-black text-xl'>
-                            Áo Polo Nam Coolmax
+                            {
+                                product?.nameProduct
+                            }
                         </h3>
                         <div className='py-3 flex items-center w-full h-full'>
                             <div className=''>
@@ -210,10 +229,12 @@ function DetailProductById() {
                         </h3>
                         <div className='flex flex-wrap w-full my-3'>
                             {
-                                Array.from(Array(10).keys()).map(() => {
+                                product?.productSkus.map((item: ProductSkuModel) => {
                                     return <>
-                                        <div className='h-12 w-12 my-2'>
-                                            <img className='w-full h-full' src="https://bizweb.dktcdn.net/thumb/small/100/438/408/products/ao-polo-nam-apm3519-dod-5-yodyvn.jpg?v=1690163862263" alt="" />
+                                        <div className='h-16 w-12 my-2'>
+                                            <img className='w-full h-full object-contain'
+                                                src={item.imageProduct.trim() ? `https://drive.google.com/uc?export=view&id=${item.imageProduct}` : "https://bizweb.dktcdn.net/100/438/408/products/apm3519-vng-ao-polo-nam-yody-1.jpg?v=1688803915707"}
+                                            />
                                         </div>
                                     </>
                                 })

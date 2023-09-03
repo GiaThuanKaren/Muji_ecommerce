@@ -15,6 +15,7 @@ type ImageProductType = {
 
 function Addnewproductsku() {
     const { push } = useRouter()
+    const [isFileInput, setIsFileInput] = React.useState(false)
     const [listProductSku, setlistProductSku] = React.useState<ProductSkuResponeModel[]>([])
     const [listProduct, setListProduct] = React.useState<ProductResponeModel[]>([])
     const [listOptionValue, setListOptionValue] = React.useState<OptionValueResponeModel[]>([])
@@ -159,23 +160,29 @@ function Addnewproductsku() {
                 </div>
 
                 <div className='flex items-center'>
-                    <h3 className='mr-4'>sdf</h3>
-                    <input type="checkbox" name="" id="" />
+                    <h3 className='mr-4'>Is File Input</h3>
+                    <input onChange={(e) => {
+                        console.log(e.target.checked)
+                        setIsFileInput(e.target.checked)
+                    }} type="checkbox" name="" id="" />
                 </div>
 
                 <InputComp handleOnchange={(e) => {
-                    if (e.target.type) {
-
+                    if (e.target.type == "file") {
+                        console.log(e.target.files)
+                        if (e?.target?.files) {
+                            SetImageProduct({
+                                file: e?.target?.files[0],
+                                imgurl: URL.createObjectURL(e?.target?.files[0])
+                            })
+                        }
                     }
-                    console.log(e.target.files)
-                    if (e?.target?.files) {
-                        SetImageProduct({
-                            file: e?.target?.files[0],
-                            imgurl: URL.createObjectURL(e?.target?.files[0])
-                        })
+                    if (e.target.type == "text") {
+                        console.log(e.target.value)
                     }
 
-                }} type={"file"} leftText='Image product' />
+
+                }} type={isFileInput ? "file" : "text"} leftText='Image product' />
 
 
 

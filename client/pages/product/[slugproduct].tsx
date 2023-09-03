@@ -1,14 +1,36 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import { CardProduct, DropoutComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
+import { Product, ProductModel, ResponeModel } from 'src/Model'
+import { GetAllProductByIdCategories } from 'src/service/api'
 interface PriceRange {
     min: number,
     max: number
 }
 
 function DisplayProductBySludPage2() {
+    const { query, isReady } = useRouter()
+    const [listProduct, setListProduct] = React.useState<ResponeModel<ProductModel>>()
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
     const material: string[] = []
+
+    async function FetchApi(idCategories: number) {
+        try {
+            let resultListProduct = await GetAllProductByIdCategories(idCategories);
+            setListProduct(resultListProduct)
+        } catch (error) {
+
+        }
+    }
+
+    React.useEffect(() => {
+        if (isReady) {
+            console.log(query.slugproduct)
+            FetchApi(parseInt(query.slugproduct as string))
+        }
+    }, [isReady])
+    console.log(listProduct)
     return <>
         <div className='flex my-5 py-4 w-full h-full'>
             <div className='basis-1/6 px-1'>
@@ -35,18 +57,26 @@ function DisplayProductBySludPage2() {
                     <DropoutComp title='Chất Liệu' >
 
                     </DropoutComp>
-                    
+
                 </div>
             </div>
 
             <div className='flex-1 px-2 py-3'>
                 <div className='w-full  flex flex-wrap'>
                     {
-                        Array.from(Array(20).keys()).map(() => {
-                            return <>
-                                <CardProduct />
-                            </>
-                        })
+                        listProduct?.data && listProduct?.data.length > 0 ? <>
+                            {
+                                listProduct.data.map((item: ProductModel, index: number) => {
+                                    return <>
+                                        <CardProduct key={index} {...item} />
+                                    </>
+                                })
+                            }
+                        </> : <>
+                            <h3 className='text-center w-full font-medium '>
+                                {listProduct?.message}
+                            </h3>
+                        </>
                     }
                 </div>
             </div>

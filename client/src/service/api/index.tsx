@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CategoriesModel, ProductLineModel, ResponeModel } from "src/Model";
+import { CategoriesModel, Product, ProductLineModel, ProductModel, ResponeModel } from "src/Model";
 const BASE_DEV: string = 'http://localhost:8080'
 
 
@@ -37,5 +37,31 @@ export const FetchAllProductLine = async function () {
         return data.data
     } catch (error) {
         throw error
+    }
+}
+
+
+export const GetAllProductByIdCategories = async function (idCategories: number) {
+    try {
+        let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategories?idcategories=${idCategories}`)
+        console.log(data)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const GetDetailProductById = async function (productId: string) {
+    try {
+        interface ResponeModel1<T> {
+            status: string,
+            message: string,
+            data: T
+        }
+        let { data } = await axios.get<ResponeModel1<ProductModel>>(`${BASE_DEV}/product/getproductbyid?productid=${productId}`)
+        return data
+    } catch (error) {
+        console.log(error)
     }
 }
