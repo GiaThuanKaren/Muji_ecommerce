@@ -123,7 +123,7 @@ function DisplayProductBySludPage1() {
             {
                 Array.from(Array(20).keys()).map(() => {
                     return <>
-                        <CardProduct />
+                        {/* <CardProduct /> */}
                     </>
                 })
             }

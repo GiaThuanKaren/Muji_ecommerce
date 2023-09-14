@@ -89,6 +89,6 @@ public class CategoriesServiceImplement implements  CatogoriesService{
 
     @Override
     public ResponeModelJson fetchAll() {
-        return new  ResponeModelJson(HttpStatus.OK,"Done",catogoriesRepository.findAllNative());
+        return new  ResponeModelJson(HttpStatus.OK,"Done",catogoriesRepository.findAll());
     }
 }

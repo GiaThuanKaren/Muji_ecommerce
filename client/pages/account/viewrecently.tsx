@@ -11,7 +11,7 @@ function Viewrecently() {
                         {
                             Array.from(Array(10).keys()).map(() => {
                                 return <>
-                                    <CardProduct />
+                                    {/* <CardProduct /> */}
                                 </>
                             })
                         }

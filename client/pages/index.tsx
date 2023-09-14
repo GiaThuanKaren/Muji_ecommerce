@@ -49,7 +49,7 @@ function TabNavigationHome() {
                 setTab(item.name)
               }} className={'mx-4 border-b-4 w-44 hover:cursor-pointer ' + `${item.name == tab && "  border-yellow-300 "}`}>
 
-                <p className='text-center w-full my-4 font-medium'>
+                <p className='text-xs lg:text-base text-center w-full my-4 font-medium'>
                   {item.name}
                 </p>
 
@@ -81,12 +81,12 @@ function TabNavigationHome() {
                         <SwiperSlide key={index}>
                           <Link href={`${linkRouting.listproduct}/${item.catorgoryID}`}>
                             <div className='h-fit  w-fit '>
-                              <div className=' bg-red-500 rounded-full   h-32 w-32'>
+                              <div className=' bg-red-500 rounded-full h-20 w-20  lg:h-32 lg:w-32'>
                                 <img className='h-full w-full ' src={item.imageCategory as string}
                                   alt={item.catorgoryID.toString()}
                                 />
                               </div>
-                              <h3 className='text-center font-medium'>
+                              <h3 className='text-center text-xs lg:text-base my-4 font-medium'>
                                 {item.nameCategory}
                               </h3>
                             </div>

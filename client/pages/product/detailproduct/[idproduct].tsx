@@ -2,23 +2,46 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
-import { ProductModel, ProductSkuModel } from 'src/Model';
+import { OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model';
 import { GetDetailProductById } from 'src/service/api';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
+
+interface ProductSkuChooseInf {
+    img: string,
+    productSkuId: string,
+    size: string,
+    skuName: string
+
+}
+
+
 function DetailProductById() {
     const { query, isReady } = useRouter()
+    const [productSkuChoose, setProductSkuChoose] = React.useState<ProductSkuChooseInf>({
+        img: "",
+        productSkuId: "",
+        size: "",
+        skuName: ""
+    })
     const [product, setProduct] = React.useState<ProductModel>()
     const [currentProductSku, setCurrentProductSku] = React.useState<ProductSkuModel>()
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
     const ratingStart: string[] = ["Tất Cả", "5 Sao", "4 Sao", "3 Sao", "2 Sao"];
     const [numberProductAddToCard, setNumberProductAddToCard] = React.useState(1);
-    const [chooseSize, setChooseSize] = React.useState(size[0])
+    const [chooseSize, setChooseSize] = React.useState(
+        ""
+    )
     async function FetchApi() {
         try {
             let result = await GetDetailProductById(query?.idproduct as string);
             console.log(result?.data)
-
+            setProductSkuChoose({
+                img: result?.data.productSkus[0].imageProduct.toString().trim().startsWith("https://") ? result?.data.productSkus[0].imageProduct : `https://drive.google.com/uc?export=view&id=${result?.data.productSkus[0].imageProduct}` as string,
+                productSkuId: result?.data.productSkus[0].id.skuId.toString() as string,
+                size: "",
+                skuName: result?.data.productSkus[0].skuName as string
+            })
             setProduct(result?.data as ProductModel)
         } catch (error) {
 
@@ -38,22 +61,30 @@ function DetailProductById() {
 
                     <div className='basis-2/3 px-3 h-fit'>
                         <div className='  w-full h-full'>
-
+                            <div className='  w-full mb-5'>
+                                <img
+                                    className='w-full h-full object-cover '
+                                    src={productSkuChoose.img}
+                                    alt=""
+                                />
+                            </div>
+                            {/* productSkuChoose */}
                             <div className='flex flex-wrap'>
-                                {
+
+                                {/* {
                                     product?.productSkus.map((item: ProductSkuModel) => {
                                         return <>
                                             <div className=' basis-1/2 mb-5'>
                                                 <img
                                                     className='w-full h-full object-contain '
-                                                    src={item.imageProduct.trim() ? `https://drive.google.com/uc?export=view&id=${item.imageProduct}` : "https://bizweb.dktcdn.net/100/438/408/products/apm3519-vng-ao-polo-nam-yody-1.jpg?v=1688803915707"}
+                                                    src={item.imageProduct.trim().startsWith("https://") ? item.imageProduct : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`}
                                                     alt=""
                                                 />
                                             </div>
 
                                         </>
                                     })
-                                }
+                                } */}
                             </div>
                             <h3 className='text-black font-medium text-lg'>
                                 Mô tả sản phẩm
@@ -146,10 +177,10 @@ function DetailProductById() {
                                 }
                             </div>
                         </div>
-
-
                         <CommentCompononent />
                     </div>
+
+
 
                     <div className='basis-1/3 h-full'>
                         <h3 className='font-medium text-black text-xl'>
@@ -160,10 +191,12 @@ function DetailProductById() {
                         <div className='py-3 flex items-center w-full h-full'>
                             <div className=''>
                                 <h3>
-                                    APM3519-HOG
+                                    {/* APM3519-HOG */}
+                                    {
+                                        productSkuChoose.skuName
+                                    }
                                 </h3>
                             </div>
-
                             <div className='px-3  border-l-[1px]   border-r-[1px] border-black mx-3'>
                                 <h3 className=''>
                                     Đã bán 171K
@@ -223,7 +256,6 @@ function DetailProductById() {
                             </div>
 
                         </div>
-
                         <h3>
                             Màu Sắc : Xanh Biển
                         </h3>
@@ -231,34 +263,55 @@ function DetailProductById() {
                             {
                                 product?.productSkus.map((item: ProductSkuModel) => {
                                     return <>
-                                        <div className='h-16 w-12 my-2'>
+                                        <div onClick={() => {
+                                            setProductSkuChoose({
+                                                img: item.imageProduct,
+                                                productSkuId: item.id.skuId.toString() as string,
+                                                size: "",
+                                                skuName: item.skuName
+                                            })
+                                        }} className={'h-16 w-12 my-2 mx-2 border-[2px]' + `${item.id.skuId.toString() == productSkuChoose.productSkuId ? " border-[2px] border-gray-400 " : " "}`}>
                                             <img className='w-full h-full object-contain'
-                                                src={item.imageProduct.trim() ? `https://drive.google.com/uc?export=view&id=${item.imageProduct}` : "https://bizweb.dktcdn.net/100/438/408/products/apm3519-vng-ao-polo-nam-yody-1.jpg?v=1688803915707"}
+                                                src={item.imageProduct.trim().startsWith("https://") ? item.imageProduct : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`}
                                             />
                                         </div>
                                     </>
                                 })
                             }
                         </div>
-
-                        <h3>
-                            Kích Thước : M
-                        </h3>
-                        <div className='flex flex-wrap  my-3 '>
-                            {
-                                size.map((item: string) => {
+                        {
+                            product?.products.map((item: Product, index: number) => {
+                                if (
+                                    item.option.optionID == 252
+                                ) {
                                     return <>
-                                        <div onClick={() => {
-                                            setChooseSize(item)
-                                        }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item ? " bg-slate-200" : " bg-yellow-300"}`}>
-                                            <p className={'font-medium  ' + `${chooseSize !== item ? " text-black " : " text-white"}`}>
-                                                {item}
-                                            </p>
+                                        <h3>
+                                            {
+                                                item.option.optionName
+                                            }
+                                        </h3>
+                                        <div className='flex flex-wrap  my-3 '>
+                                            {
+                                                item.option.optionValues.map((item1: OptionValues) => {
+                                                    return <>
+                                                        <div onClick={() => {
+                                                            setChooseSize(item1)
+                                                        }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1 ? " bg-slate-200" : " bg-yellow-300"}`}>
+                                                            <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
+                                                                {item1.valuesName}
+                                                            </p>
+                                                        </div>
+                                                    </>
+                                                })
+                                            }
                                         </div>
                                     </>
-                                })
-                            }
-                        </div>
+                                }
+
+                            })
+                        }
+
+
                         <div className='flex items-center border-2 border-[#a5a4a4] w-fit px-3 py-1'>
                             <ICON onClick={() => {
                                 if (numberProductAddToCard !== 1) {
@@ -289,14 +342,7 @@ function DetailProductById() {
                             </div>
 
                         </div>
-
-
-
-
-
-
                     </div>
-
                 </div>
             </MainLayout>
         </>

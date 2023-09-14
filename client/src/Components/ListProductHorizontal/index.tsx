@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react'
 import { ICON, IconSolid } from 'src/utils/icon';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination ,Navigation} from "swiper";
+import { Pagination, Navigation } from "swiper";
 import CardProduct from '../CardProduct';
 
 interface Props {
@@ -21,23 +21,24 @@ function HorizontalProductList({ link, title }: Props) {
                         <ICON className='ml-3' icon={IconSolid.faChevronRight} />
                     </Link>
                 </div>
-
                 <div className='flex items-center'>
-                    <div className='w-[20%]'>
+                    <div className='hidden md:block md:w-[20%]'>
                         <div>
-                            <img src="https://bizweb.dktcdn.net/100/438/408/themes/904142/assets/home_preivew_sanpham_2_image_desktop.jpg?1687694911598" alt="" />
+                            <img
+                                src="https://bizweb.dktcdn.net/100/438/408/themes/904142/assets/home_preivew_sanpham_2_image_desktop.jpg?1687694911598"
+                                alt="" />
                         </div>
                     </div>
-                    <div className='w-[80%] '>
+                    <div className='w-full md:w-[80%] '>
                         <Swiper
-                            slidesPerView={4}
+                            slidesPerView={3}
                             spaceBetween={30}
-                         
-                            modules={[Pagination,Navigation]}
+
+                            modules={[Pagination, Navigation]}
                             navigation
                             className="mySwiper h-fit "
                         >
-                            {
+                            {/* {
                                 Array.from(Array(10).keys()).map((item, index) => {
                                     return <>
                                         <SwiperSlide>
@@ -46,7 +47,7 @@ function HorizontalProductList({ link, title }: Props) {
 
                                     </>
                                 })
-                            }
+                            } */}
                         </Swiper>
                     </div>
                 </div>

@@ -58,8 +58,20 @@ export interface Id { }
 export interface Option {
     optionID: number
     optionName: string
-    optionValues: any[]
+    optionValues: OptionValues[]
 }
+
+export interface OptionValues {
+    id: OptionValuesId
+    valuesName: string
+}
+
+export interface OptionValuesId {
+    productId: number
+    optionId: number
+    valueId: number
+}
+
 
 
 

@@ -37,7 +37,7 @@ function CatogoriesIndex() {
     async function FetchApi() {
         try {
             let result = await FetchAllCategories();
-
+            console.log(result)
             setProperties(result?.data as CategoriesResponeModel[])
         } catch (error) {
 
@@ -47,6 +47,7 @@ function CatogoriesIndex() {
 
         FetchApi()
     }, [])
+
 
     return (
         <>

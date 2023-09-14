@@ -23,6 +23,8 @@ interface ItemNavBarHeaderCatologe {
 
 function Header() {
     const queryClient = useQueryClient()
+    const [openLeftBarMobile, setOpenLeftBarMobile] = React.useState(false)
+    const [openRightBarMobile, setOpenRightBarMobile] = React.useState(false)
     const { data, isLoading, isError } = useQuery("header_categories", FetchAllProductLine)
     console.log(data)
     // const ListNavBarHeader: ItemNavBarHeaderCatologe[] = [
@@ -68,8 +70,43 @@ function Header() {
 
     return (
         <>
-            <div className='h-24 flex header_bg items-center justify-center   z-[2] fixed top-0 left-0 right-0 shadow-sm py-2'>
-                <div className=' w-full  h-full xl:mx-[200px]'>
+            <div className=' h-fit flex items-center justify-center   z-[2] fixed top-0 left-0 right-0 shadow-sm '>
+
+
+                {
+                    openLeftBarMobile && <>
+                        <div className='absolute left-0 top-0 bottom-0 h-screen w-screen bg-slate-400'>
+                            <div className='h-5 relative'>
+                                <ICON className=' ' icon={IconSolid.faTimes} />
+                            </div>
+                        </div>
+                    </>
+                }
+
+
+                {/* Mobile Header Start */}
+
+                <div className='lg:hidden bg-white shadow-sm w-full h-full px-3 py-4 flex items-center justify-between'>
+                    <ICON onClick={() => {
+                        setOpenLeftBarMobile(true)
+                    }} className='text-xl hover:cursor-pointer ' icon={IconSolid.faBars} />
+                    <Link href={linkRouting.home}>
+                        <img src="https://bizweb.dktcdn.net/100/438/408/themes/904142/assets/logo.svg?1687673070998" alt="" />
+                    </Link>
+                    <div className='flex items-center '>
+                        <ICON className='mx-5  hover:cursor-pointer text-xl' icon={IconSolid.faSearch} />
+                        <div className='hover:cursor-pointer'>
+                            <img
+                                src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/cart.svg?1694593856100"
+                                alt=""
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Mobile Header End */}
+
+                <div className='hidden lg:block  header_bg w-full  h-full px-3 py-5 2xl:mx-[200px]'>
 
                     <div className='flex items-center justify-between'>
 
@@ -95,14 +132,12 @@ function Header() {
                                 </p>
                             </div>
                             <p className='block mx-1 font-medium'>
-
                                 -
-
                                 Đặt hàng gọi
                             </p>
 
-                            <div className='flex items-center mx-2 font-medium'>
-                                <ICON className='mx-2' icon={IconSolid.faPhone} />
+                            <div className='flex items-center mx-1 font-medium'>
+                                <ICON className='mx-1' icon={IconSolid.faPhone} />
                                 02499986999
                             </div>
                         </div>
@@ -207,6 +242,7 @@ function Header() {
                     </div>
 
                 </div>
+
             </div >
 
         </>
