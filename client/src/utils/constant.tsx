@@ -1,6 +1,43 @@
 import { Product, ProductModel } from "src/Model";
+import { ToastContainer, toast } from 'react-toastify';
 
-export const ProductMock:ProductModel = {
+
+
+export const ShowToast = (message: string, type: "INFO" | "WARNING" | "ERROR") => {
+    switch (type) {
+        case "ERROR": {
+            toast.error(message)
+            break
+        }
+        case "INFO": {
+            toast.info(message)
+            break
+        }
+        case "WARNING": {
+            toast.warn(message)
+            break
+        }
+    }
+
+}
+
+
+
+
+
+interface ProductCart {
+    item: ProductModel,
+    quantity: number
+}
+
+
+export interface localStorageInf {
+    product: ProductCart[]
+
+}
+
+
+export const ProductMock: ProductModel = {
     "productId": 552,
     "nameProduct": "Áo Polo Nam Coolmax 123",
     "quantityStock": 0,
@@ -102,7 +139,49 @@ export const ProductMock:ProductModel = {
             "quantityStock": 12,
             "imageProduct": "1ZGQ1lUhNlMpSxeu0U4N7sFxYopMKT5om",
             "price": 123.0
+        },
+        {
+            "id": {
+                "productId": 552,
+                "skuId": 2
+            },
+            "skuName": "R4612",
+            "quantityStock": 12,
+            "imageProduct": "https://bizweb.dktcdn.net/thumb/large/100/438/408/products/akm5037-cam-2.jpg?v=1690163735137",
+            "price": 123.0
+        },
+        {
+            "id": {
+                "productId": 552,
+                "skuId": 2
+            },
+            "skuName": "R4612",
+            "quantityStock": 12,
+            "imageProduct": "https://bizweb.dktcdn.net/thumb/large/100/438/408/products/akm5037-cam-2.jpg?v=1690163735137",
+            "price": 123.0
+        },
+        {
+            "id": {
+                "productId": 552,
+                "skuId": 2
+            },
+            "skuName": "R4612",
+            "quantityStock": 12,
+            "imageProduct": "https://bizweb.dktcdn.net/thumb/large/100/438/408/products/akm5037-cam-2.jpg?v=1690163735137",
+            "price": 123.0
+        },
+        {
+            "id": {
+                "productId": 552,
+                "skuId": 2
+            },
+            "skuName": "R4612",
+            "quantityStock": 12,
+            "imageProduct": "https://bizweb.dktcdn.net/thumb/large/100/438/408/products/akm5037-cam-2.jpg?v=1690163735137",
+            "price": 123.0
         }
     ],
     "orderProducts": []
 }
+
+

@@ -1,5 +1,6 @@
 import axios from "axios";
-import { CategoriesModel, Product, ProductLineModel, ProductModel, ResponeModel } from "src/Model";
+import { CategoriesModel, Product, ProductLineModel, ProductModel, RegisterModel, ResponeModel } from "src/Model";
+import { ShowToast } from "src/utils/constant";
 const BASE_DEV: string = 'http://localhost:8080'
 
 
@@ -63,5 +64,19 @@ export const GetDetailProductById = async function (productId: string) {
         return data
     } catch (error) {
         console.log(error)
+    }
+}
+
+
+
+
+
+
+export const NewUserRegister = async function (registerModel: RegisterModel) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/register`, registerModel)
+        return data
+    } catch (error) {
+        ShowToast("Failed To Register ", "ERROR")
     }
 }

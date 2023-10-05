@@ -8,6 +8,7 @@ import jakarta.mail.MessagingException;
 public interface CustomerService {
     ResponeModelJson registerNewCCustomer(CustomerModel customerModel) throws MessagingException;
 
+    ResponeModelJson loginCustomer(CustomerModel customerModel);
     ResponeModelJson FetchAllCustomer();
 
     void saveVerifycationToken(String token, Customer customer);
@@ -18,6 +19,7 @@ public interface CustomerService {
 
     ResponeModelJson updateCustomerById(CustomerModel customerModel);
 
+    ResponeModelJson resetPasswordCustomer(CustomerModel customerModel);
 
     ResponeModelJson deleteCustomerById(Long id);
 };

@@ -58,7 +58,7 @@ function CommentCompononent() {
                         </svg>
                     </div>
                 </div>
-                <h3 className='max-w-[50vw] my-3'>
+                <h3 className='w-full  md:max-w-[50vw] my-3'>
                     Giao hàng nhanh áo đẹp, chồng mình rất thích mặc quần áo của nhà yody lần sau sẽ ủng hộ tiếpGiao hàng nhanh áo đẹp, chồng mình rất thích mặc quần áo của nhà yody lần sau sẽ ủng hộ tiếpGiao hàng nhanh áo đẹp, chồng mình rất thích mặc quần áo của nhà yody lần sau sẽ ủng hộ tiếp
                 </h3>
                 <div className='flex items-center my-3'>

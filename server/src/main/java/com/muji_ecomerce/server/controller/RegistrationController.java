@@ -24,9 +24,10 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public ResponeModelJson registerNewCustomer(@RequestBody CustomerModel customerModel) throws MessagingException {
+        System.out.println(customerModel.toString());
         ResponeModelJson customer = customerService.registerNewCCustomer(customerModel);
 
-        System.out.println("lksjdflds");
+
         return customer;
     }
 

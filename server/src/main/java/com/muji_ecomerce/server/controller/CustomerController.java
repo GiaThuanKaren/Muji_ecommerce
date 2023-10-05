@@ -23,6 +23,11 @@ public class CustomerController {
         return customerService.FetchAllCustomer();
     }
 
+    @PostMapping("/login")
+    public ResponeModelJson loginCustomer(@RequestBody CustomerModel customerModel){
+        return customerService.loginCustomer(customerModel);
+    }
+
     @GetMapping("/verify_token")
     public ResponeModelJson verifyTokenCustomer(@RequestParam("token") String token){
         if(token!= null)

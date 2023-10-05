@@ -1,22 +1,33 @@
 import React from 'react'
-import { Footer, Header } from 'src/Components'
+import { Footer, Header, Spinner } from 'src/Components'
 
 interface Props {
     children: React.ReactNode
+    isLoading?: boolean
 }
 
 
-function MainLayout({ children }: Props) {
+function MainLayout({ children, isLoading = false }: Props) {
     return (
         <>
             <Header />
-            <div className='bg-[#f8f8f8] w-full h-full'>
-                <div className='mt-32 px-3  2xl:mx-[200px] '>
+            {
+                isLoading && <>
+                    <div className='bg-[#ebebeba8] z-10 fixed w-screen h-screen flex justify-center items-center'>
+                        <Spinner />
+                    </div>
+
+                </>
+
+            }
+            <div className=' w-screen h-full'>\
+
+                <div className='bg-[#f8f8f8] mt-32 px-3  2xl:mx-[200px] '>
                     {children}
                 </div>
             </div>
 
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }

@@ -20,6 +20,7 @@ public class CustomerModel {
 
     private boolean enableStatus;
 
+    private String password;
 
     @Override
     public String toString() {
@@ -30,6 +31,7 @@ public class CustomerModel {
                 ", customerPhone='" + customerPhone + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", enableStatus=" + enableStatus +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

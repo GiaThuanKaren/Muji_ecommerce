@@ -26,6 +26,7 @@ public class Customer {
 
     private String customerEmail;
 
+    private String password;
     private boolean enableStatus;
     @OneToMany(mappedBy = "customer",cascade=CascadeType.ALL)
     @JsonIgnore

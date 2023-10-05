@@ -1,9 +1,10 @@
 
 export const linkRouting = {
     home: "/",
+    cart: "/cart",
     login: "/login",
-    listproduct:"/product",
-    detailproduct:"/product/detailproduct",
+    listproduct: "/product",
+    detailproduct: "/product/detailproduct",
     register: "/register",
     account: "/account",
     donhangcuatoi: "/account/orders",

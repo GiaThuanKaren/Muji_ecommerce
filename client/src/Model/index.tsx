@@ -87,3 +87,14 @@ export interface ProductSkuId {
     productId: number
     skuId: number
 }
+
+
+
+export interface RegisterModel {
+    customerLastName: string
+    customerFirstName: string
+    customerPhone: string
+    customerEmail: string
+    password: string
+  }
+  

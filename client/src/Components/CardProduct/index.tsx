@@ -56,7 +56,7 @@ function CardProduct({ nameProduct, productId, productSkus, productDescription }
                     </Link>
                     <Swiper
                         ref={sliderRef}
-                        slidesPerView={3}
+                        slidesPerView={5}
                         spaceBetween={30}
 
                     // navigation={true}
@@ -84,8 +84,8 @@ function CardProduct({ nameProduct, productId, productSkus, productDescription }
                                         });
                                         console.log("Choose Product Sku")
                                     }} key={index}>
-                                        <div className='h-full  w-full p-2 my-10'>
-                                            <div className=' bg-red-500 rounded-full   h-10 w-10'>
+                                        <div className='h-full  w-full p-2 my-2 '>
+                                            <div className=' bg-red-500 rounded-full overflow-hidden border-[1px] border-gray-200  h-8 w-8'>
                                                 <img
                                                     className='w-full h-max object-cover'
                                                     src=

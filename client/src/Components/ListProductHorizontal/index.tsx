@@ -4,6 +4,7 @@ import { ICON, IconSolid } from 'src/utils/icon';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 import CardProduct from '../CardProduct';
+import { ProductMock } from 'src/utils/constant';
 
 interface Props {
     title: string;
@@ -31,23 +32,23 @@ function HorizontalProductList({ link, title }: Props) {
                     </div>
                     <div className='w-full md:w-[80%] '>
                         <Swiper
-                            slidesPerView={3}
+                            slidesPerView={4}
                             spaceBetween={30}
 
                             modules={[Pagination, Navigation]}
                             navigation
                             className="mySwiper h-fit "
                         >
-                            {/* {
+                            {
                                 Array.from(Array(10).keys()).map((item, index) => {
                                     return <>
                                         <SwiperSlide>
-                                            <CardProduct />
+                                            <CardProduct {...ProductMock} />
                                         </SwiperSlide>
 
                                     </>
                                 })
-                            } */}
+                            }
                         </Swiper>
                     </div>
                 </div>

@@ -13,6 +13,9 @@ import {
 } from 'react-query'
 import { FetchAllCategories, FetchAllProductLine } from 'src/service/api';
 import { CategoriesModel, ProductLineModel } from 'src/Model';
+import { useRouter } from 'next/router';
+
+
 interface ItemNavBarHeaderCatologe {
     title: string;
     link: string;
@@ -23,6 +26,7 @@ interface ItemNavBarHeaderCatologe {
 
 function Header() {
     const queryClient = useQueryClient()
+    const { push } = useRouter()
     const [openLeftBarMobile, setOpenLeftBarMobile] = React.useState(false)
     const [openRightBarMobile, setOpenRightBarMobile] = React.useState(false)
     const { data, isLoading, isError } = useQuery("header_categories", FetchAllProductLine)
@@ -70,7 +74,8 @@ function Header() {
 
     return (
         <>
-            <div className=' h-fit flex items-center justify-center   z-[2] fixed top-0 left-0 right-0 shadow-sm '>
+            {/* header_bg */}
+            <div className='bg-white h-fit flex items-center justify-center   z-[2] fixed top-0 left-0 right-0 shadow-sm '>
 
 
                 {
@@ -86,7 +91,7 @@ function Header() {
 
                 {/* Mobile Header Start */}
 
-                <div className='lg:hidden bg-white shadow-sm w-full h-full px-3 py-4 flex items-center justify-between'>
+                <div className='lg:hidden bg-white shadow-sm w-screen  h-full px-3 py-4 flex items-center justify-between'>
                     <ICON onClick={() => {
                         setOpenLeftBarMobile(true)
                     }} className='text-xl hover:cursor-pointer ' icon={IconSolid.faBars} />
@@ -106,7 +111,7 @@ function Header() {
 
                 {/* Mobile Header End */}
 
-                <div className='hidden lg:block  header_bg w-full  h-full px-3 py-5 2xl:mx-[200px]'>
+                <div className='hidden lg:block   w-full  h-full px-3 py-5 2xl:mx-[200px]'>
 
                     <div className='flex items-center justify-between'>
 
@@ -186,11 +191,14 @@ function Header() {
                         </div>
 
                         <div className='flex items-center justify-between group'>
-                            <div className='flex items-center  '>
+                            <div onClick={() => {
+                                push(`${linkRouting.cart}`)
+                            }} className='flex items-center hover:cursor-pointer '>
+
                                 <div className='relative '>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
-                                        0
-                                    </p> */}
+        0
+    </p> */}
                                     <ICON className='mx-3' icon={IconSolid.faBagShopping} />
 
                                     <div className='w-72 h-52 hidden bg-white absolute top-full left-0 group-hover:block'>
@@ -214,8 +222,11 @@ function Header() {
 
                                 </div>
                                 {/* <ICON icon="fa-sharp fa-light fa-bag-shopping" /> */}
-                                GIỏ HÀNG
+                                <h3 className='capitalize'>
+                                    Giỏ Hàng
+                                </h3>
                             </div>
+
 
                             <p className='ml-7'>
                                 <ICON className='mx-3' icon={IconRegular.faUser} />

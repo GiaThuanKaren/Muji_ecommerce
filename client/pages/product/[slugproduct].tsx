@@ -4,6 +4,7 @@ import { CardProduct, DropoutComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
 import { Product, ProductModel, ResponeModel } from 'src/Model'
 import { GetAllProductByIdCategories } from 'src/service/api'
+import { ProductMock } from 'src/utils/constant'
 interface PriceRange {
     min: number,
     max: number
@@ -33,7 +34,7 @@ function DisplayProductBySludPage2() {
     console.log(listProduct)
     return <>
         <div className='flex my-5 py-4 w-full h-full'>
-            <div className='basis-1/6 px-1'>
+            <div className='hidden md:block basis-1/6 px-1'>
                 <div className='w-full min-h-[50vh] '>
 
                     <DropoutComp title='Loại sản phẩm' >
@@ -64,19 +65,31 @@ function DisplayProductBySludPage2() {
             <div className='flex-1 px-2 py-3'>
                 <div className='w-full  flex flex-wrap'>
                     {
-                        listProduct?.data && listProduct?.data.length > 0 ? <>
-                            {
+                        listProduct?.data &&
+
+                            listProduct?.data.length > 0 ? <>
+                            {/* {
                                 listProduct.data.map((item: ProductModel, index: number) => {
                                     return <>
                                         <CardProduct key={index} {...item} />
                                     </>
                                 })
+                            } */}
+                            {
+                                Array.from(Array(8).keys()).map(() => {
+                                    return (
+                                        <>
+                                            <CardProduct {...ProductMock} />
+                                        </>
+                                    )
+                                })
                             }
-                        </> : <>
-                            <h3 className='text-center w-full font-medium '>
-                                {listProduct?.message}
-                            </h3>
                         </>
+                            : <>
+                                <h3 className='text-center w-full font-medium '>
+                                    {listProduct?.message}
+                                </h3>
+                            </>
                     }
                 </div>
             </div>

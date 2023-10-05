@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CustomerServiceImplement implements CustomerService{
@@ -33,7 +31,7 @@ public class CustomerServiceImplement implements CustomerService{
         customer.setCustomerFirstName(customerModel.getCustomerFirstName());
         customer.setCustomerLastName(customerModel.getCustomerLastName());
         customer.setCustomerPhone(customerModel.getCustomerPhone());
-
+        customer.setPassword(customerModel.getPassword());
         customer.setEnableStatus(false);
         Customer customerCreated= customerRepository.save(customer);
 
@@ -41,6 +39,31 @@ public class CustomerServiceImplement implements CustomerService{
         saveVerifycationToken(token,customerCreated);
         emailService.sendMail(customer.getCustomerEmail(), "Account Verification ",token);
         return new ResponeModelJson(HttpStatus.OK,"OKe");
+    }
+
+    @Override
+    public ResponeModelJson loginCustomer(CustomerModel customerModel) {
+        List<Map<String,Object>> customer= customerRepository.findTokenByEmailCustomer(customerModel.getCustomerEmail());
+
+        if(customer.size() ==0){
+            return new ResponeModelJson(HttpStatus.NOT_FOUND,"Can not find user accout");
+        }
+        boolean enable_status = (boolean) customer.get(0).get("enable_status");
+        String password =customer.get(0).get("password").toString();
+
+
+        if(enable_status == false){
+            return new ResponeModelJson(HttpStatus.CONFLICT,"Please Verify Your Email");
+        }
+
+        if(password.trim().equals(customerModel.getPassword().trim())==false ){
+           return  new ResponeModelJson(HttpStatus.CONFLICT,"Wrong Password");
+        }
+        return new ResponeModelJson(HttpStatus.ACCEPTED,"Authenticated");
+//        return new ResponeModelJson(HttpStatus.OK,"DOne",customer.get(0).get("enable_status"));
+
+
+//        return new ResponeModelJson(HttpStatus.OK,"sdf", customerRepository.findTokenByEmailCustomer(customerModel.getCustomerEmail()));
     }
 
     @Override
@@ -114,5 +137,11 @@ public class CustomerServiceImplement implements CustomerService{
         }
         return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid ID");
 
+    }
+
+    @Override
+    public ResponeModelJson resetPasswordCustomer(CustomerModel customerModel) {
+        
+        return null;
     }
 }
