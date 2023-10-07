@@ -66,6 +66,8 @@ public class CustomerServiceImplement implements CustomerService{
 //        return new ResponeModelJson(HttpStatus.OK,"sdf", customerRepository.findTokenByEmailCustomer(customerModel.getCustomerEmail()));
     }
 
+
+
     @Override
     public ResponeModelJson FetchAllCustomer() {
         return new ResponeModelJson(HttpStatus.OK,"OKE",customerRepository.findAll());
@@ -112,14 +114,24 @@ public class CustomerServiceImplement implements CustomerService{
     public ResponeModelJson updateCustomerById(CustomerModel customerModel) {
         Optional<Customer> customerFound= customerRepository.findById(customerModel.getCustomerId());
         if(customerFound.isPresent()){
-            customerFound.get().setCustomerLastName(customerModel.getCustomerLastName());
-            customerFound.get().setCustomerFirstName(customerModel.getCustomerFirstName());
-            customerFound.get().setCustomerPhone(customerModel.getCustomerPhone());
-            customerFound.get().setCustomerEmail(customerModel.getCustomerEmail());
-            customerFound.get().setEnableStatus(customerModel.isEnableStatus());
-
-
-
+            if(customerModel.getCustomerLastName() != null){
+                customerFound.get().setCustomerLastName(customerModel.getCustomerLastName());
+            }
+            if(customerModel.getCustomerFirstName() != null){
+                customerFound.get().setCustomerFirstName(customerModel.getCustomerFirstName());
+            }
+            if(customerModel.getCustomerPhone() != null){
+                customerFound.get().setCustomerPhone(customerModel.getCustomerPhone());
+            }
+            if(customerModel.getCustomerEmail() != null){
+                customerFound.get().setCustomerEmail(customerModel.getCustomerEmail());
+            }
+            if(customerModel.isEnableStatus()){
+                customerFound.get().setEnableStatus(customerModel.isEnableStatus());
+            }
+            if(customerModel.getPassword() != null){
+                customerFound.get().setPassword(customerModel.getPassword());
+            }
             return new ResponeModelJson(HttpStatus.OK,"Updated Successfully",customerRepository.save(customerFound.get()));
         }
 
@@ -141,7 +153,20 @@ public class CustomerServiceImplement implements CustomerService{
 
     @Override
     public ResponeModelJson resetPasswordCustomer(CustomerModel customerModel) {
-        
         return null;
+    }
+
+    @Override
+    public ResponeModelJson emailResetPassword(String emailCustomer) throws MessagingException {
+        Optional<Customer> customerFound = customerRepository.findByCustomerEmail(emailCustomer);
+        if(customerFound.isPresent()){
+            String uuidToken = UUID.randomUUID().toString();
+            emailService.sendMailResetPassword(emailCustomer,"Reset Email",uuidToken);
+            VerificationTokenCustomer verificationTokenCustomer = new VerificationTokenCustomer(customerFound.get(),uuidToken);
+            verifyTokenRepository.save(verificationTokenCustomer);
+            return new ResponeModelJson(HttpStatus.OK,"Done");
+        }
+
+        return new ResponeModelJson(HttpStatus.OK,"Can not find any account with this email");
     }
 }

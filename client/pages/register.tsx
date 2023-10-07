@@ -106,7 +106,7 @@ function RegisterPage() {
                             {customerInfo.password != customerInfo.repassword && "Password does not match"}
                         </p>
 
-                        <div onClick={handleRegister} className='h-12 my-3 bg-blue-300 rounded-lg flex items-center justify-center'>
+                        <div onClick={handleRegister} className='h-12 my-3 bg-blue-300 rounded-lg flex items-center justify-center hover:cursor-pointer'>
                             <p className='text-center text-white  font-medium'>Đăng Ký</p>
                         </div>
                         {/* <div className='h-12 my-3  rounded-lg flex items-center justify-center'>

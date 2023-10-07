@@ -21,5 +21,9 @@ public interface CustomerService {
 
     ResponeModelJson resetPasswordCustomer(CustomerModel customerModel);
 
+    ResponeModelJson emailResetPassword(String emailCustomer) throws MessagingException;
+
     ResponeModelJson deleteCustomerById(Long id);
+
+
 };

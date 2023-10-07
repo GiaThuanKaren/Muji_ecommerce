@@ -3,6 +3,8 @@ package com.muji_ecomerce.server.controller;
 import com.muji_ecomerce.server.model.CustomerModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.CustomerService;
+import com.muji_ecomerce.server.services.EmailService;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/fetch_all")
     public ResponeModelJson fetchAllCustomer(){
@@ -46,6 +51,11 @@ public class CustomerController {
         return customerService.deleteCustomerById(id);
     }
 
+    @PostMapping("/sendEmailResetPassword")
+    public ResponeModelJson sendMailResetPassword(@RequestBody CustomerModel  customerModel) throws MessagingException {
+
+        return customerService.emailResetPassword(customerModel.getCustomerEmail());
+    }
 
 //    @GetMapping("/r")
 

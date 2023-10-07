@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CategoriesModel, Product, ProductLineModel, ProductModel, RegisterModel, ResponeModel } from "src/Model";
+import { CategoriesModel, LoginModel, Product, ProductLineModel, ProductModel, RegisterModel, ResponeModel } from "src/Model";
 import { ShowToast } from "src/utils/constant";
 const BASE_DEV: string = 'http://localhost:8080'
 
@@ -75,8 +75,54 @@ export const GetDetailProductById = async function (productId: string) {
 export const NewUserRegister = async function (registerModel: RegisterModel) {
     try {
         let { data } = await axios.post(`${BASE_DEV}/register`, registerModel)
+
         return data
     } catch (error) {
         ShowToast("Failed To Register ", "ERROR")
+    }
+}
+
+export const LoginCustomer = async function (loginModel: LoginModel) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/customer/login`, loginModel)
+        switch (data.message) {
+            case "Can not find user accout": {
+                ShowToast("Can not find user accout", "INFO")
+                return false
+            }
+            case "Please Verify Your Email": {
+                ShowToast("Please Verify Your Email", "INFO")
+                return false
+            }
+            case "Authenticated": {
+                return true
+            }
+        }
+
+        return true
+    } catch (error) {
+        ShowToast("Failed To Login ", "ERROR")
+    }
+}
+
+
+export const sendEmailResetPassword = async function (customerEmail: string) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/customer/sendEmailResetPassword`, {
+            customerEmail: customerEmail
+        })
+        switch (data.message) {
+            case "Can not find any account with this email": {
+                ShowToast("Can not find any account with this email", "INFO")
+
+                return false
+            }
+            case "Done": {
+                ShowToast("Check Your Inbox", "INFO")
+                return true
+            }
+        }
+    } catch (error) {
+        ShowToast("Failed To Send Email , PLease Try Again", "ERROR")
     }
 }

@@ -11,5 +11,6 @@ export const linkRouting = {
     changepassword: "/account/changepassword",
     diachi: "/account/addresses",
     viewrecently: "/account/viewrecently",
-    productliked: "/account/productliked"
+    productliked: "/account/productliked",
+    resetpassword: "/resetpassword"
 }

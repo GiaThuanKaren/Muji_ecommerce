@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { MainLayout } from 'src/Layouts'
+import { LoginCustomer } from 'src/service/api'
 import { ICON, IconBrand } from 'src/utils/icon'
 import { linkRouting } from 'src/utils/routelink'
 
@@ -20,20 +22,53 @@ function LoginPage() {
             icon: <ICON icon={IconBrand.faFacebook} />
         }
     ]
+    const { push } = useRouter()
+    const [isLoading, setIsLoading] = React.useState(false)
+    const [customerInfo, setCustomerInfo] = React.useState({
+        customerEmail: "",
+        password: "",
+    })
+
+    const handleLogin = async function () {
+        try {
+            setIsLoading(true)
+            let result = await LoginCustomer(customerInfo);
+            if (result == true) {
+                push(linkRouting.home)
+            }
+        } catch (error) {
+
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
+
+
     return (
         <>
-            <MainLayout>
+            <MainLayout isLoading={isLoading}>
                 <div className=' h-screen overflow-hidden flex justify-center bg-white'>
                     <div className='mt-20 w-[20%]'>
                         <h3 className='font-medium text-2xl text-center'>Đăng Nhập</h3>
-                        <input placeholder='Email' type="email" className="block w-full h-10 bg-gray-100 my-3 px-3 py-5 rounded-md" />
-                        <input placeholder='Mật Khẩu' type="password" className="block w-full h-10 bg-gray-100 my-3 px-3 py-5 rounded-md" />
+                        <input onChange={(e) => {
+                            setCustomerInfo({
+                                ...customerInfo,
+                                customerEmail: e.target.value
+                            })
+                        }} placeholder='Email' type="email" className="block w-full h-10 bg-gray-100 my-3 px-3 py-5 rounded-md" />
+                        <input onChange={(e) => {
+                            setCustomerInfo({
+                                ...customerInfo,
+                                password: e.target.value
+                            })
+                        }} placeholder='Mật Khẩu' type="password" className="block w-full h-10 bg-gray-100 my-3 px-3 py-5 rounded-md" />
                         <div className='flex my-4'>
                             <input type="checkbox" name="" id="" />
                             <p className='ml-3'>Remember me</p>
                         </div>
 
-                        <div className='h-12 my-3 bg-blue-300 rounded-lg flex items-center justify-center'>
+                        <div onClick={handleLogin} className='h-12 my-3 bg-blue-300 rounded-lg flex items-center justify-center hover:cursor-pointer hover:bg-blue-400 transition-all'>
                             <p className='text-center text-white  font-medium'>Đăng Nhập</p>
                         </div>
                         <div className='h-12 my-3  rounded-lg flex items-center justify-center'>

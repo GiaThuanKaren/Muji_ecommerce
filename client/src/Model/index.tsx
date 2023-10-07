@@ -96,5 +96,10 @@ export interface RegisterModel {
     customerPhone: string
     customerEmail: string
     password: string
-  }
-  
+}
+
+
+export interface LoginModel {
+    customerEmail: string
+    password: string
+}

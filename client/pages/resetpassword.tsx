@@ -43,7 +43,6 @@ function Resetpassword() {
     return (
         <>
             <MainLayout>
-
                 <div className='w-full h-screen flex items-center justify-center bg-white'>
                     <div className='w-[50%]  '>
                         <h3 className='text-center font-medium'>

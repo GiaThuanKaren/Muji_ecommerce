@@ -64,7 +64,33 @@ public class EmailServiceImplement implements EmailService{
         }
     }
 
+    @Override
+    public void sendMailResetPassword(String toEmail, String subjectEmail, String tokenAuthen) throws MessagingException {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            String verifyAccount ="http://localhost:3000/resetpassword?token="+tokenAuthen ;
+//            if(environment.getActiveProfiles()[0].equals("production"))
+//                verifyAccount = "http://localhost:3000/account/verifyaccount";
 
+//            String htmlBody =build(verifyAccount);
+//            String htmlBody = emailTemplate(verifyAccount);
+//        SimpleMailMessage message = new SimpleMailMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom("giathuannguyen213@gmail.com");
+            helper.setTo(toEmail);
+            helper.setSubject(subjectEmail);
+            helper.setText(verifyAccount, true);
+//        message.setFrom("giathuannguyen213@gmail.com");
+//        message.setTo(toEmail);
+//        message.setText(templateEmail);
+//        message.setSubject(subjectEmail);
+
+            mailSender.send(message);
+            System.out.println("Mail Send Suceesfully");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     private String emailTemplate(String verifyaccount){
         String htmlBody ="<!DOCTYPE html>\n" +

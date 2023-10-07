@@ -22,7 +22,7 @@ function MainLayout({ children, isLoading = false }: Props) {
             }
             <div className=' w-screen h-full'>\
 
-                <div className='bg-[#f8f8f8] mt-32 px-3  2xl:mx-[200px] '>
+                <div className='bg-[#ffffff] mt-32 px-3  2xl:mx-[200px] '>
                     {children}
                 </div>
             </div>
