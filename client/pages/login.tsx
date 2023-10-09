@@ -71,7 +71,9 @@ function LoginPage() {
                         <div onClick={handleLogin} className='h-12 my-3 bg-blue-300 rounded-lg flex items-center justify-center hover:cursor-pointer hover:bg-blue-400 transition-all'>
                             <p className='text-center text-white  font-medium'>Đăng Nhập</p>
                         </div>
-                        <div className='h-12 my-3  rounded-lg flex items-center justify-center'>
+                        <div onClick={() => {
+                            push(`${linkRouting.fogotpassword}`)
+                        }} className='hover:cursor-pointer h-12 my-3  rounded-lg flex items-center justify-center'>
                             <p className='text-center text-blue-300  font-medium'>Quên mật khẩu</p>
                         </div>
 

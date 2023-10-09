@@ -126,3 +126,34 @@ export const sendEmailResetPassword = async function (customerEmail: string) {
         ShowToast("Failed To Send Email , PLease Try Again", "ERROR")
     }
 }
+
+
+
+export const VerifyTokenResetPassword = async function (token: string) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/customer/verifytokenResetPassword`, {
+
+            "token": token as string
+        })
+        console.log(data)
+        if (data.message != "Done")
+            return false
+        return true
+    } catch (error) {
+        ShowToast("Failed To Verify Token", "ERROR")
+    }
+}
+
+
+export const ResetPasswordCustomer = async function (newPassword: string, token: string) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/customer/resetpasword`,
+            {
+                "newPassword": newPassword,
+                "token": token
+            })
+        
+    } catch (error) {
+
+    }
+}

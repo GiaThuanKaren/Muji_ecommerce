@@ -152,8 +152,17 @@ public class CustomerServiceImplement implements CustomerService{
     }
 
     @Override
-    public ResponeModelJson resetPasswordCustomer(CustomerModel customerModel) {
-        return null;
+    public ResponeModelJson resetPasswordCustomer(String newPassword, String token) {
+        if(token == null || token == ""){
+            return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Tokem");
+        }
+        Customer customerFound= verifyTokenRepository.findByToken(token).getCustomer();
+        if(customerFound==null){
+            return new ResponeModelJson(HttpStatus.CONFLICT,"Can not find any customer ");
+        }
+        customerFound.setPassword(newPassword);
+        customerRepository.save(customerFound);
+        return new ResponeModelJson(HttpStatus.OK,"Changed Password Successfully");
     }
 
     @Override
@@ -168,5 +177,21 @@ public class CustomerServiceImplement implements CustomerService{
         }
 
         return new ResponeModelJson(HttpStatus.OK,"Can not find any account with this email");
+    }
+
+
+
+    @Override
+    public ResponeModelJson verifyTokenCutomerWithoutDelete(String Token) {
+        VerificationTokenCustomer verificationTokenCustomerFound = verifyTokenRepository.findByToken(Token);
+        if(verificationTokenCustomerFound == null)
+            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Invalid Token");
+
+        Calendar calendar = Calendar.getInstance();
+        if(verificationTokenCustomerFound.getExpirationDate().getTime() - calendar.getTime().getTime() <=0){
+//            verifyTokenRepository.delete(verificationTokenCustomerFound);
+            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Token Expired");
+        }
+        return new ResponeModelJson(HttpStatus.OK,"Done");
     }
 }

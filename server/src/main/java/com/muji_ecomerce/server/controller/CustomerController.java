@@ -1,6 +1,7 @@
 package com.muji_ecomerce.server.controller;
 
 import com.muji_ecomerce.server.model.CustomerModel;
+import com.muji_ecomerce.server.model.ResetPasswordCustomer;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.CustomerService;
 import com.muji_ecomerce.server.services.EmailService;
@@ -57,6 +58,17 @@ public class CustomerController {
         return customerService.emailResetPassword(customerModel.getCustomerEmail());
     }
 
+    @PostMapping("/resetpasword")
+    public ResponeModelJson resetPasword(@RequestBody ResetPasswordCustomer resetPasswordCustomerModel){
+
+        return customerService.resetPasswordCustomer(resetPasswordCustomerModel.getNewPassword(),resetPasswordCustomerModel.getToken());
+    }
+
+
+    @PostMapping("/verifytokenResetPassword")
+    public ResponeModelJson verifyTokenResetPassword(@RequestBody ResetPasswordCustomer resetPasswordCustomer){
+        return customerService.verifyTokenCutomerWithoutDelete(resetPasswordCustomer.getToken());
+    }
 //    @GetMapping("/r")
 
 //    @PostMapping("/register")

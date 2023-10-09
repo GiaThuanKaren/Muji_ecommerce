@@ -19,11 +19,16 @@ public interface CustomerService {
 
     ResponeModelJson updateCustomerById(CustomerModel customerModel);
 
-    ResponeModelJson resetPasswordCustomer(CustomerModel customerModel);
+    ResponeModelJson resetPasswordCustomer(String newPassword,String token);
 
     ResponeModelJson emailResetPassword(String emailCustomer) throws MessagingException;
 
     ResponeModelJson deleteCustomerById(Long id);
+
+
+
+
+    ResponeModelJson verifyTokenCutomerWithoutDelete(String Token);
 
 
 };
