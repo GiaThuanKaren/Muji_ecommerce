@@ -107,7 +107,7 @@ function OptionIndexPage() {
                         </ModalWrapper>
                     </>
                 }
-                <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
+                {properties && <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
                     "ID",
                     "OptionName"
                 ]} totalData={properties.length} displayEachPage={4} >
@@ -145,7 +145,7 @@ function OptionIndexPage() {
 
 
                     </tbody>
-                </TableComp>
+                </TableComp>}
             </MainLayout>
         </>
     )

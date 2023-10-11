@@ -1,19 +1,19 @@
 package com.muji_ecomerce.server.services;
 
 import com.muji_ecomerce.server.entity.Employee;
-import com.muji_ecomerce.server.entity.Option;
 import com.muji_ecomerce.server.entity.Role;
 import com.muji_ecomerce.server.model.EmployeeModel;
+import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.repository.EmployeeRepository;
 import com.muji_ecomerce.server.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class EmployeeServiceImplement implements EmployeeService{
 
    @Autowired
@@ -27,7 +27,6 @@ public class EmployeeServiceImplement implements EmployeeService{
         Optional<Role> role = roleRepository.findById(employeeModel.getRoleid());
         if(role.isPresent()){
             Employee employee = new Employee();
-
             employee.setEmployeeFirstName(employeeModel.getEmployeeFirstName());
             employee.setEmployeeLastName(employeeModel.getEmployeeLastName());
             employee.setEmployeeEmail(employeeModel.getEmployeeEmail());
@@ -45,6 +44,21 @@ public class EmployeeServiceImplement implements EmployeeService{
 
     }
 
+    @Override
+    public ResponeModelJson loginEmployee(EmployeeModel employeeModel) {
+        Employee employee = employeeRepository.findByEmployeeEmail(employeeModel.getEmployeeEmail());
+
+        if (employee == null) {
+            return new ResponeModelJson(HttpStatus.NOT_FOUND, "Can not find user accout");
+        }
+
+        String password = employee.getEmployeePassword();
+
+        if (password.trim().equals(employeeModel.getEmployeePassword().trim()) == false) {
+            return new ResponeModelJson(HttpStatus.CONFLICT,"Wrong Password");
+        }
+        return new ResponeModelJson(HttpStatus.ACCEPTED,"Authenticated", employee);
+    }
 
     @Override
     public List<Employee> getAllEmployee() {

@@ -1,6 +1,7 @@
 package com.muji_ecomerce.server.controller;
 
 import com.muji_ecomerce.server.entity.Employee;
+import com.muji_ecomerce.server.model.CustomerModel;
 import com.muji_ecomerce.server.model.EmployeeModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.EmployeeService;
@@ -23,6 +24,11 @@ public class EmployeeController {
         List<Employee> employeeList= employeeService.getAllEmployee();
         return new ResponeModelJson(HttpStatus.OK,
                 "Oke",employeeList);
+    }
+
+    @PostMapping("/login")
+    public ResponeModelJson loginEmployee(@RequestBody EmployeeModel employeeModel) {
+        return employeeService.loginEmployee(employeeModel);
     }
 
     @PostMapping("/create_new")

@@ -1,20 +1,20 @@
 import React from 'react'
 import { InputComp, ModalWrapper, SelectInputComp, TableComp } from 'src/Components'
 import { MainLayout } from 'src/Layouts'
-import { CustomerResponeModel } from 'src/Model/apiModel'
-import { DeleteCustomerById, FetchAllCustomer, UpdateCustomerById } from 'src/services/api/customer'
+import { FunctionModel, RoleModel, PermissionModel } from 'src/Model/apiModel'
+import { DeleteRoleById, FetchAllRole, UpdateRoleById } from 'src/services/api/role'
+import { DeleteFunctionById, FetchAllFunction, UpdateFunctionById } from 'src/services/api/function'
+import { DeletePermissionById, FetchAllPermission, UpdatePermissionById } from 'src/services/api/permission'
 import { ICON, IconSolid } from 'src/utils'
+import { log } from 'console'
 
-function GetAllUser() {
-    const [properties, setProperties] = React.useState<CustomerResponeModel[]>([])
+
+function GetAllPermission() {
+    const [properties, setProperties] = React.useState<RoleModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
-    const [value, setValue] = React.useState<CustomerResponeModel>({
-        customerEmail: "",
-        customerFirstName: "",
-        customerId: -1,
-        customerLastName: "",
-        customerPhone: "",
-        enableStatus: false
+    const [value, setValue] = React.useState<RoleModel>({
+        roleName: "",
+        roleId: -1,
     })
     const handleInput = function (key: string, value1: any) {
         setValue({
@@ -23,9 +23,19 @@ function GetAllUser() {
         })
     }
 
+    const [roles, setRoles] = React.useState<RoleModel[]>([]);
+    const [functions, setFunctions] = React.useState<FunctionModel[]>([]);
+    const [permissions , setPermissions ] = React.useState<PermissionModel[]>([]);
+    const [selectedRole, setSelectedRole] = React.useState<number>();
+  
+    const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedRoleId = event.target.value;
+        setSelectedRole(selectedRoleId);
+    };
+
     const HandleDelete = async function (id: number) {
         try {
-            await DeleteCustomerById(id)
+            await DeleteRoleById(id)
             await FetchApi()
         } catch (error) {
 
@@ -33,7 +43,7 @@ function GetAllUser() {
     }
     const handleUpdate = async function () {
         try {
-            await UpdateCustomerById(value)
+            await UpdateRoleById(value)
             await FetchApi();
             setOpenModal(false)
         } catch (error) {
@@ -43,11 +53,17 @@ function GetAllUser() {
     async function FetchApi() {
         try {
 
-            let result = await FetchAllCustomer()
-            setProperties(result?.data as CustomerResponeModel[])
+            // let result = await FetchAllRole()
+            // setProperties(result?.data as RoleModel[])
+
+            let [role, func, permission] = await Promise.all([FetchAllRole(), FetchAllFunction(), FetchAllPermission()])
+
+            setRoles(role?.data as RoleModel[])
+            setFunctions(func?.data as FunctionModel[])
+            setPermissions(permission?.data as PermissionModel[])
             
         } catch (error) {
-
+            console.error(error);
         }
     }
     React.useEffect(() => {
@@ -64,31 +80,10 @@ function GetAllUser() {
                                 Chỉnh sửa thuộc tính
                             </h3>
 
-                            <InputComp disable valueInput={value?.customerId} leftText='Option ID' widthFull />
+                            <InputComp disable valueInput={value?.roleId} leftText='Option ID' widthFull />
                             <InputComp handleOnchange={(e) => {
                                 handleInput("customerFirstName", e.target.value)
-                            }} valueInput={value?.customerFirstName} leftText='Customer First Name' widthFull />
-
-                            <InputComp handleOnchange={(e) => {
-                                handleInput("customerLastName", e.target.value)
-                            }} valueInput={value?.customerLastName} leftText='Customer Last Name' widthFull />
-
-                            <InputComp handleOnchange={(e) => {
-                                handleInput("customerPhone", e.target.value)
-                            }} valueInput={value?.customerPhone} leftText='Customer Phone' widthFull />
-
-                            <InputComp handleOnchange={(e) => {
-                                handleInput("customerEmail", e.target.value)
-                            }} valueInput={value?.customerEmail} leftText='Customer Email' widthFull />
-
-                            <SelectInputComp defaultValue={value.enableStatus ? 1 : 0} handleOnchange={(e) => {
-                                console.log(e.target.value, e.target.value == "1")
-                                handleInput("enableStatus", e.target.value == "1")
-                            }} leftText='Status Account' >
-                                <option value={1}>Active</option>
-                                <option value={0}>Disable</option>
-                            </SelectInputComp>
-
+                            }} valueInput={value?.roleName} leftText='Role name' widthFull />
 
                             <div className='flex items-center justify-end px-5'>
                                 <div onClick={handleUpdate} className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
@@ -110,37 +105,19 @@ function GetAllUser() {
                 }
                 {properties && <TableComp handleDelete={() => { } } handleEdit={() => { } } headerRow={[
                     "ID",
-                    "First Name",
-                    "Last Name",
-                    "Customer Phone",
-                    "Customer Email",
-                    "Enable Status",
+                    "Role Name",
                 ]} totalData={properties.length} displayEachPage={4} >
 
                     <tbody>
-
                         {
-                            properties.map((item: CustomerResponeModel, index: number) => {
+                            properties.map((item: RoleModel, index: number) => {
                                 return <>
                                     <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.customerId}
+                                            {item.roleId}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.customerFirstName}
-                                        </td>
-
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.customerLastName}
-                                        </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.customerPhone}
-                                        </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.customerEmail}
-                                        </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.enableStatus ? "Active" : "Disable"}
+                                            {item.roleName}
                                         </td>
 
                                         <td className="whitespace-nowrap px-6 py-4">
@@ -152,7 +129,7 @@ function GetAllUser() {
                                             <ICON onClick={() => {
                                                 let result = confirm("Do you want to delete it ?")
                                                 if (result) {
-                                                    HandleDelete(item.customerId)
+                                                    HandleDelete(item.roleId)
                                                 }
                                             }} className='p-3 bg-red-300 rounded-full' icon={IconSolid.faTrash} />
                                         </td>
@@ -161,12 +138,42 @@ function GetAllUser() {
                             })
                         }
 
-
                     </tbody>
                 </TableComp>}
+                <div>
+                    <label>Chọn vai trò:</label>
+                    <select onChange={handleRoleChange} value={selectedRole}>
+                        <option value="">Chọn vai trò</option>
+                        {roles.map((role) => (
+                            <option key={role.roleId} value={role.roleId}>{role.roleName}</option>
+                        ))}
+                    </select>
+
+                {/* Hiển thị danh sách chức năng dựa trên vai trò được chọn */}
+                <div>
+                    {selectedRole && (
+                        <div>
+                            <h2>Danh sách chức năng cho vai trò {selectedRole}</h2>
+                            <ul>
+                                {functions.map((func) => (
+                                    <li key={func.functionId}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={permissions.some((permission) => permission.permission.roleId == selectedRole && permission.permission.functionId == func.functionId)}
+                                            />
+                                            {func.functionName}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            </div>
             </MainLayout>
         </>
     )
 }
 
-export default GetAllUser
+export default GetAllPermission
