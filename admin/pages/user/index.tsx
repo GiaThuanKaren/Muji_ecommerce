@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { InputComp, ModalWrapper, SelectInputComp, TableComp } from 'src/Components'
+import { Pagination } from 'src/Components/Pagination'
 import { MainLayout } from 'src/Layouts'
 import { CustomerResponeModel } from 'src/Model/apiModel'
-import { DeleteCustomerById, FetchAllCustomer, UpdateCustomerById } from 'src/services/api/customer'
+import { DeleteCustomerById, FetchAllCustomer, FetchAllCustomers, UpdateCustomerById } from 'src/services/api/customer'
 import { ICON, IconSolid } from 'src/utils'
 
+const CUSTOM_PER_PAGE = 2;
+
 function GetAllUser() {
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [getTotalCount, setGetTotalCount] = React.useState(0);
+    const [indexPage, setIndexPage] = React.useState(1);
+
     const [properties, setProperties] = React.useState<CustomerResponeModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
     const [value, setValue] = React.useState<CustomerResponeModel>({
@@ -16,12 +23,45 @@ function GetAllUser() {
         customerPhone: "",
         enableStatus: false
     })
+
     const handleInput = function (key: string, value1: any) {
         setValue({
             ...value,
             [key]: value1
         })
     }
+
+    const statusStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '5px',
+        margin: '5px',
+        cursor: 'pointer',
+    }
+    const dotStyle = {
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        marginRight: '10px',
+    };
+    
+    const activeDotStyle = {
+        ...dotStyle,
+        backgroundColor: 'rgb(21 128 61)',
+    };
+
+    const inactiveDotStyle = {
+        ...dotStyle,
+        backgroundColor: 'rgb(185 28 28)',
+    };
+
+    const onPageChange = (page: number) => {
+        setCurrentPage(page)
+    }
+
+    const HandleToggle = (status: boolean) => {
+
+    };
 
     const HandleDelete = async function (id: number) {
         try {
@@ -40,10 +80,20 @@ function GetAllUser() {
 
         }
     }
+
     async function FetchApi() {
         try {
+            
+            let result = await FetchAllCustomer(currentPage, CUSTOM_PER_PAGE)
+            let result2 = await FetchAllCustomers();
+            setGetTotalCount(result2?.data.length)
 
-            let result = await FetchAllCustomer()
+            // setFirstPageIndex((currentPage - 1) * CUSTOM_PER_PAGE);
+            // setLastPageIndex(firstPageIndex + CUSTOM_PER_PAGE);
+
+            const firstPageIndex = (currentPage - 1) * CUSTOM_PER_PAGE
+            const lastPageIndex = firstPageIndex + CUSTOM_PER_PAGE
+
             setProperties(result?.data as CustomerResponeModel[])
             
         } catch (error) {
@@ -52,7 +102,7 @@ function GetAllUser() {
     }
     React.useEffect(() => {
         FetchApi()
-    }, [])
+    }, [currentPage])
 
     return (
         <>
@@ -115,36 +165,38 @@ function GetAllUser() {
                     "Customer Phone",
                     "Customer Email",
                     "Enable Status",
-                ]} totalData={properties.length} displayEachPage={4} >
-
-                    <tbody>
-
+                ]} totalData={properties.length} displayEachPage={4} 
+                
+                children1={
+                    <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                         {
                             properties.map((item: CustomerResponeModel, index: number) => {
                                 return <>
-                                    <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                    <tr key={index} className="text-gray-700 dark:text-gray-400">
+                                        <td className="px-4 py-3">
                                             {item.customerId}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.customerFirstName}
                                         </td>
-
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.customerLastName}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.customerPhone}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.customerEmail}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                            {item.enableStatus ? "Active" : "Disable"}
+                                        <td className="px-4 py-3 text-sm">
+                                            <div onClick={() => HandleToggle(item.enableStatus)}>
+                                                <div style={statusStyle}>
+                                                    <div style={item.enableStatus ? activeDotStyle : inactiveDotStyle}></div>
+                                                    {item.enableStatus ? 'Active' : 'Inactive'}
+                                                </div>
+                                            </div>
                                         </td>
-
-                                        <td className="whitespace-nowrap px-6 py-4">
-
+                                        <td className="px-4 py-3 text-sm">
                                             <ICON onClick={() => {
                                                 setOpenModal(true)
                                                 setValue(item)
@@ -160,9 +212,19 @@ function GetAllUser() {
                                 </>
                             })
                         }
-
-
                     </tbody>
+                }
+
+                children2={
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={getTotalCount}
+                        pageCount={CUSTOM_PER_PAGE}
+                        onPageChange={onPageChange}
+                    />
+                }
+
+                >
                 </TableComp>}
             </MainLayout>
         </>
