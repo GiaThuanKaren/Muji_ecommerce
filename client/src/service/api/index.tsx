@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CategoriesModel, LoginModel, Product, ProductLineModel, ProductModel, RegisterModel, ResponeModel } from "src/Model";
-import { ShowToast } from "src/utils/constant";
+import { Key_Product_Storage, ProductCart, ProductCartItem, ShowToast, localStorageInf } from "src/utils/constant";
 const BASE_DEV: string = 'http://localhost:8080'
 
 
@@ -152,8 +152,50 @@ export const ResetPasswordCustomer = async function (newPassword: string, token:
                 "newPassword": newPassword,
                 "token": token
             })
-        
+
     } catch (error) {
 
     }
 }
+
+
+
+export const AddProductToLocalStorage = function (productCart: ProductCartItem) {
+    try {
+        // localStorage.setItem("123123", "123")
+        let previousProduct = FetchDataFromStorageByKey();
+        console.log("Previous Product ", previousProduct?.product)
+        previousProduct.product.push(productCart)
+
+        console.log(previousProduct)
+        localStorage.setItem(Key_Product_Storage, JSON.stringify(previousProduct))
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const FetchDataFromStorageByKey = function () {
+    try {
+        const data: localStorageInf = JSON.parse(localStorage.getItem(Key_Product_Storage) as string)
+        return data
+    } catch (error) {
+
+    }
+}
+
+export const initLocalStorage = function () {
+    let initBucket: localStorageInf = {
+        product: [
+
+        ]
+    }
+    if (!localStorage.getItem(Key_Product_Storage)) {
+
+        localStorage.setItem(Key_Product_Storage, JSON.stringify(initBucket))
+    }
+}
+
+
+
