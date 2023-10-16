@@ -1,6 +1,6 @@
 import { Product, ProductModel } from "src/Model";
 import { ToastContainer, toast } from 'react-toastify';
-
+export const Key_Product_Storage = "muji_bucket"
 
 
 export const ShowToast = (message: string, type: "INFO" | "WARNING" | "ERROR") => {
@@ -20,19 +20,21 @@ export const ShowToast = (message: string, type: "INFO" | "WARNING" | "ERROR") =
     }
 
 }
+export interface ProductCart {
+    productsku: string,
+    productId: string,
+    image: string,
+    size: string
+}
 
-
-
-
-
-interface ProductCart {
-    item: ProductModel,
+export interface ProductCartItem {
+    item: ProductCart,
     quantity: number
 }
 
 
 export interface localStorageInf {
-    product: ProductCart[]
+    product: ProductCartItem[]
 
 }
 

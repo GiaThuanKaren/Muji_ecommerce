@@ -3,7 +3,8 @@ import React from 'react'
 import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
 import { OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model';
-import { GetDetailProductById } from 'src/service/api';
+import { AddProductToLocalStorage, GetDetailProductById } from 'src/service/api';
+import { ProductCartItem } from 'src/utils/constant';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
 
@@ -12,7 +13,7 @@ interface ProductSkuChooseInf {
     productSkuId: string,
     size: string,
     skuName: string
-
+    productId?: string
 }
 
 
@@ -22,11 +23,11 @@ function DetailProductById() {
         img: "",
         productSkuId: "",
         size: "",
-        skuName: ""
+        skuName: "",
+        productId: ""
     })
     const [product, setProduct] = React.useState<ProductModel>()
-    const [currentProductSku, setCurrentProductSku] = React.useState<ProductSkuModel>()
-    const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
+    // const [currentProductSku, setCurrentProductSku] = React.useState<ProductSkuModel>()
     const ratingStart: string[] = ["Tất Cả", "5 Sao", "4 Sao", "3 Sao", "2 Sao"];
     const [numberProductAddToCard, setNumberProductAddToCard] = React.useState(1);
     const [chooseSize, setChooseSize] = React.useState(
@@ -40,9 +41,29 @@ function DetailProductById() {
                 img: result?.data.productSkus[0].imageProduct.toString().trim().startsWith("https://") ? result?.data.productSkus[0].imageProduct : `https://drive.google.com/uc?export=view&id=${result?.data.productSkus[0].imageProduct}` as string,
                 productSkuId: result?.data.productSkus[0].id.skuId.toString() as string,
                 size: "",
-                skuName: result?.data.productSkus[0].skuName as string
+                skuName: result?.data.productSkus[0].skuName as string,
+                productId: query.idproduct as string
             })
             setProduct(result?.data as ProductModel)
+        } catch (error) {
+
+        }
+    }
+    const handleAddCart = async function () {
+        try {
+
+            let productAddCart: ProductCartItem = {
+                item: {
+                    image: productSkuChoose.img,
+                    productId: productSkuChoose.productId as string,
+                    productsku: productSkuChoose.productSkuId,
+                    size: productSkuChoose.size
+
+                },
+                quantity: numberProductAddToCard
+            }
+            console.log(productAddCart)
+            AddProductToLocalStorage(productAddCart)
         } catch (error) {
 
         }
@@ -58,7 +79,6 @@ function DetailProductById() {
         <>
             <MainLayout>
                 <div className='flex w-full h-fit'>
-
                     <div className='flex-1 xl:basis-2/3 px-3 h-fit'>
                         <div className='  w-full h-full'>
                             <div className='h-[500px]  w-full mb-5'>
@@ -146,6 +166,7 @@ function DetailProductById() {
                                 </div>
                                 <h3>
                                     Màu Sắc : Xanh Biển
+
                                 </h3>
                                 <div className='flex flex-wrap w-full my-3'>
                                     {
@@ -188,8 +209,14 @@ function DetailProductById() {
                                                         item.option.optionValues.map((item1: OptionValues) => {
                                                             return <>
                                                                 <div onClick={() => {
-                                                                    setChooseSize(item1)
-                                                                }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1 ? " bg-slate-200" : " bg-yellow-300"}`}>
+
+                                                                    setProductSkuChoose({
+                                                                        ...productSkuChoose,
+                                                                        size: item1.valuesName,
+
+                                                                    })
+                                                                    setChooseSize(item1.valuesName)
+                                                                }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-300"}`}>
                                                                     <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
                                                                         {item1.valuesName}
                                                                     </p>
@@ -439,10 +466,12 @@ function DetailProductById() {
                                     return <>
                                         <div onClick={() => {
                                             setProductSkuChoose({
+                                                ...productSkuChoose,
                                                 img: item.imageProduct,
                                                 productSkuId: item.id.skuId.toString() as string,
                                                 size: "",
-                                                skuName: item.skuName
+                                                skuName: item.skuName,
+
                                             })
                                         }} className={'h-16 w-12 my-2 mx-2 border-[3px] hover:border-yellow-500  ' + `${item.id.skuId.toString() == productSkuChoose.productSkuId ? " border-[2px] border-yellow-500  " : " "}`}>
                                             <img className='w-full h-full object-contain'
@@ -474,8 +503,14 @@ function DetailProductById() {
                                                 item.option.optionValues.map((item1: OptionValues) => {
                                                     return <>
                                                         <div onClick={() => {
-                                                            setChooseSize(item1)
-                                                        }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1 ? " bg-slate-200" : " bg-yellow-300"}`}>
+
+                                                            setProductSkuChoose({
+                                                                ...productSkuChoose,
+                                                                size: item1.valuesName
+
+                                                            })
+                                                            setChooseSize(item1.valuesName)
+                                                        }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-300"}`}>
                                                             <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
                                                                 {item1.valuesName}
                                                             </p>
@@ -507,7 +542,9 @@ function DetailProductById() {
 
                         <div className='flex items-center justify-between my-4'>
 
-                            <div className='max-w-[200px] min-w-[190px] border-2 border-black flex items-center justify-center px-3 py-2'>
+                            <div onClick={() => {
+                                handleAddCart()
+                            }} className='hover:cursor-pointer max-w-[200px] min-w-[190px] border-2 border-black flex items-center justify-center px-3 py-2'>
                                 <ICON className='mr-3' icon={IconSolid.faShoppingCart} />
                                 <h3 className='font-medium text-base'>
                                     Thêm vào giỏ hàng
@@ -525,6 +562,7 @@ function DetailProductById() {
 
 
                     </div>
+
                 </div>
             </MainLayout>
         </>
