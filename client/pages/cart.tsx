@@ -1,7 +1,8 @@
 import React from 'react'
 import { MainLayout } from 'src/Layouts'
 import { Product, ProductModel } from 'src/Model'
-import { ProductMock } from 'src/utils/constant'
+import { FetchDataFromStorageByKey } from 'src/service/api'
+import { ProductCartItem, ProductMock } from 'src/utils/constant'
 import { ICON, IconSolid } from 'src/utils/icon'
 
 
@@ -10,19 +11,21 @@ interface CardCartInf {
     nameProduct?: string,
     pricePerProduct?: string,
     quantity?: number
+    onChooseProduct: (item: ProductCartItem) => any
 }
 
 
-function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: CardCartInf) {
+function CardCart({ onChooseProduct, imageProduct, nameProduct, pricePerProduct, quantity }: CardCartInf) {
     const [quantityCart, setQuantityCard] = React.useState<number>(0)
+
     return <>
-        <tr>
+        <tr >
             <td className="p-2 whitespace-nowrap">
                 <div className="flex items-center">
                     <div className="w=full h-full flex-shrink-0 mr-2 sm:mr-3">
                         <img
-                            className="h-full w-full object-contain"
-                            src="https://bizweb.dktcdn.net/thumb/compact/100/438/408/products/ao-polo-nam-apm6079-vag-1-yodyvn.jpg"
+                            className="h-20 w-20 object-contain"
+                            src={imageProduct}
                             width={40}
                             height={40}
                             alt="Alex Shatov"
@@ -30,11 +33,11 @@ function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: Card
                     </div>
                     <div className="font-medium text-gray-800  h-full">
                         <h3 className='mb-10 whitespace-normal'>
-                            Áo Polo Nam Mắt Chim Bo Hiệu Ứng Dệt Nổi
+                            {nameProduct}
                         </h3>
-                        <h3>
+                        {/* <h3>
                             Vàng/XL
-                        </h3>
+                        </h3> */}
                     </div>
                 </div>
             </td>
@@ -46,7 +49,7 @@ function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: Card
             </td>
             <td className="p-2 whitespace-nowrap">
                 <div className="text-left font-medium text-green-500">
-                    $2,890.66
+                    $ {pricePerProduct}
                 </div>
             </td>
             <td className="p-2 whitespace-nowrap">
@@ -57,7 +60,7 @@ function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: Card
                         }} className='bg-white p-2 border-[1px] border-gray-400' icon={IconSolid.faPlus} />
                         <h3 className='bg-white p-1 px-2 '>
                             {/* {quantity} */}
-                            {quantityCart}
+                            {quantity}
                         </h3>
                         <ICON onClick={() => {
                             setQuantityCard(prev => prev - 1)
@@ -77,6 +80,18 @@ function CartProduct() {
     const [productCart, setProductCart] = React.useState<ProductModel[]>([
         ProductMock, ProductMock, ProductMock, ProductMock
     ])
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [listProduct, setListProduct] = React.useState<ProductCartItem[]>([])
+    const [chooseProduct, setChooseProduct] = React.useState<ProductCartItem[]>([])
+
+    React.useEffect(() => {
+        if (typeof window != undefined) {
+            let data = FetchDataFromStorageByKey();
+            setListProduct(data?.product as ProductCartItem[])
+        }
+    }, [])
+
+
 
     return (
         <>
@@ -93,7 +108,7 @@ function CartProduct() {
                                             Giỏ hàng
                                         </p>
                                         <p className='capitalize'>
-                                            ( {productCart.length + 1} ) sản phẩm
+                                            ( {listProduct.length} ) sản phẩm
                                         </p>
                                     </div>
                                     {/* <CardCart /> */}
@@ -141,9 +156,9 @@ function CartProduct() {
 
                                                 <tbody className="text-sm divide-y divide-gray-100">
                                                     {
-                                                        productCart.map((item: ProductModel, index: number) => {
+                                                        listProduct.map((item: ProductCartItem, index: number) => {
                                                             return <>
-                                                                <CardCart />
+                                                                <CardCart key={index} nameProduct={item.item.size} imageProduct={item.item.image} />
                                                             </>
                                                         })
                                                     }

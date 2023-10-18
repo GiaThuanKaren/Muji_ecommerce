@@ -86,6 +86,10 @@ export const LoginCustomer = async function (loginModel: LoginModel) {
     try {
         let { data } = await axios.post(`${BASE_DEV}/customer/login`, loginModel)
         switch (data.message) {
+            case "Wrong Password":{
+                ShowToast("Wrong Password ","INFO")
+                return false
+            }
             case "Can not find user accout": {
                 ShowToast("Can not find user accout", "INFO")
                 return false
@@ -173,8 +177,8 @@ export const AddProductToLocalStorage = function (productCart: ProductCartItem) 
     } catch (error) {
         console.log(error)
     }
-}
 
+}
 
 export const FetchDataFromStorageByKey = function () {
     try {

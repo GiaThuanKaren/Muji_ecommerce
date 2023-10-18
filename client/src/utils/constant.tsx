@@ -25,6 +25,8 @@ export interface ProductCart {
     productId: string,
     image: string,
     size: string
+    name:string
+    
 }
 
 export interface ProductCartItem {

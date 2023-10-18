@@ -57,8 +57,8 @@ function DetailProductById() {
                     image: productSkuChoose.img,
                     productId: productSkuChoose.productId as string,
                     productsku: productSkuChoose.productSkuId,
-                    size: productSkuChoose.size
-
+                    size: productSkuChoose.size,
+                    name: product?.nameProduct as string
                 },
                 quantity: numberProductAddToCard
             }
@@ -194,7 +194,9 @@ function DetailProductById() {
                                             item.option.optionID == 252
                                         ) {
                                             return <>
+                                                {/* `${ item.option.optionName} 123  ${ productSkuChoose.size}` */}
                                                 <h3 className='font-medium '>
+
                                                     {
                                                         item.option.optionName
                                                     }

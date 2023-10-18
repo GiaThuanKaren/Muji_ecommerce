@@ -52,6 +52,11 @@ public class Sku_values {
     Option option;
 
 
+
+//    private int quantity;
+
+
+
 //    @ManyToOne
 //
 //    product_option Productoption;
