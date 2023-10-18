@@ -106,11 +106,46 @@ export interface CustomerResponeModel {
   enableStatus: boolean
 }
 
+export interface RoleModel {
+  roleId: number
+  roleName: string
+}
+
+export interface FunctionModel {
+  functionId: number
+  functionName: string
+}
+
+export interface PermissionModel {
+  permission: {
+    roleId: number
+    functionId: number
+  }
+}
+
+export interface PermissionResponeModel {
+  // functionId: number
+  function_name: string,
+  slug: string
+}
+
 export interface CustomerModel {
   customerLastName: string
   customerFirstName: string
   customerPhone: string
   customerEmail: string
+}
+
+export interface EmployeeModel {
+  employeeLastName: string
+  employeeFirstName: string
+  employeePhone: string
+  employeeEmail: string
+}
+
+export interface LoginModel {
+  employeeEmail: string
+  employeePassword: string
 }
 
 export interface OptionValueResponeModel {

@@ -1,8 +1,6 @@
 package com.muji_ecomerce.server.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +14,7 @@ public class EmployeeModel {
 
     private String employeeAdress;
 
-        private String employeeEmail;
+    private String employeeEmail;
 
     private String employeePassword;
 

@@ -17,4 +17,5 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
     List<Map<String,Object>> findTokenByEmailCustomer(@Param("email") String email);
 
     Optional<Customer> findByCustomerEmail(String email);
+
 }

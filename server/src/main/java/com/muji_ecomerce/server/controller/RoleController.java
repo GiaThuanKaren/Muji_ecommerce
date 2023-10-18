@@ -1,6 +1,7 @@
 package com.muji_ecomerce.server.controller;
 
 
+import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.model.RoleModel;
 import com.muji_ecomerce.server.services.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,11 @@ public class RoleController {
         System.out.println(roleModel.getNameRole());
         roleService.createNewRole(roleModel.getNameRole());
         return "ksdnfkjsd";
+    }
+
+    @GetMapping("/fetchAll")
+    private ResponeModelJson getAll(){
+        return roleService.FetchAllRole();
     }
 
 

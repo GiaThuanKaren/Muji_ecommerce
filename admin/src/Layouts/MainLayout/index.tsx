@@ -1,7 +1,10 @@
+import { icon } from '@fortawesome/fontawesome-svg-core'
 import React from 'react'
 import { Header } from 'src/Components'
 import DropOutItem from 'src/Components/DropOutItem'
 import { DropOutSideBarItem } from 'src/Model'
+import { PermissionResponeModel } from 'src/Model/apiModel'
+import { FindPermissionByRole } from 'src/services/api/permission'
 import { ICON, IconSolid } from 'src/utils'
 import { routingLink } from 'src/utils/routingLink'
 
@@ -25,103 +28,148 @@ function ErrorFetching() {
 }
 
 function MainLayout({ children, errorFetch }: Props) {
-    let data: DropOutSideBarItem[] = [
-        {
-            icon: <ICON icon={IconSolid.faHome} />,
-            title: "Dashboard",
-            childrenItem: [],
-            link: routingLink.dashboard
-        },
-        {
-            icon: <ICON icon={IconSolid.faHome} />,
-            title: "Quản Lý Danh mục sản phẩm",
-            childrenItem: [
-                // {
-                //     childrenItem: [],
-                //     title: "Thêm danh mục mới",
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     link: routingLink.addnewcateogories
-                // }
-            ],
-            link: routingLink.danhmucsanpham
-        },
+
+    const [rolePermission, setRolePermission] = React.useState<PermissionResponeModel[]>([]);
+
+    const FetchApi = async () => {
+        try {
+            const item: any = localStorage.getItem("roleId")
+            let result = await FindPermissionByRole(JSON.parse(item))
+            console.log(result.data);
+            
+            setRolePermission(result.data)
+        } catch (error) {
+            
+        }
+    }
+
+    React.useEffect(() => {
+   
+        FetchApi()
+
+    }, []);
+
+    // NOTE >> Menu navbar
+    
+    let data: DropOutSideBarItem[] = rolePermission.map((item: PermissionResponeModel, index: number) => ({
+        // [
+        icon: <ICON icon={IconSolid.faHome} />,
+        title: item.function_name,
+        childrenItem: [],
+        link: routingLink[item.slug]
+    }));
+        
+        // {
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     title: "Dashboard",
+        //     childrenItem: [],
+        //     link: routingLink.dashboard
+        // },
+        // {
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     title: "Quản Lý Danh mục sản phẩm",
+        //     childrenItem: [
+        //         // {
+        //         //     childrenItem: [],
+        //         //     title: "Thêm danh mục mới",
+        //         //     icon: <ICON icon={IconSolid.faHome} />,
+        //         //     link: routingLink.addnewcateogories
+        //         // }
+        //     ],
+        //     link: routingLink.danhmucsanpham
+        // },
 
 
 
-        {
-            icon: <ICON icon={IconSolid.faHome} />,
-            title: "Quản lý Danh mục thuộc tính",
-            childrenItem: [
-                // {
-                //     childrenItem: [],
-                //     icon: <></>,
-                //     title: "Tạo danh thuộc tính mới ",
-                //     link: routingLink.taothuoctinh
-                // },
-                // {
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     title: "Create New User"
-                // },
-                // {
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />,
-                //     title: "Get Detail;"
-                // },
-            ],
-            link: routingLink.thuoctinh
-        },
-        {
-            icon: <ICON icon={IconSolid.faHome} />,
-            title: "Quản lý người dùng ",
-            childrenItem: [
+        // {
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     title: "Quản lý Danh mục thuộc tính",
+        //     childrenItem: [
+        //         // {
+        //         //     childrenItem: [],
+        //         //     icon: <></>,
+        //         //     title: "Tạo danh thuộc tính mới ",
+        //         //     link: routingLink.taothuoctinh
+        //         // },
+        //         // {
+        //         //     childrenItem: [],
+        //         //     icon: <ICON icon={IconSolid.faHome} />,
+        //         //     title: "Create New User"
+        //         // },
+        //         // {
+        //         //     childrenItem: [],
+        //         //     icon: <ICON icon={IconSolid.faHome} />,
+        //         //     title: "Get Detail;"
+        //         // },
+        //     ],
+        //     link: routingLink.thuoctinh
+        // },
+        // {
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     title: "Quản lý người dùng ",
+        //     childrenItem: [
 
-            ],
-            link: routingLink.nguoidung
-        },
+        //     ],
+        //     link: routingLink.nguoidung
+        // },
 
-        {
-            title: "Quản lý sản phẩm",
-            childrenItem: [
-
-
+        // {
+        //     title: "Quản lý sản phẩm",
+        //     childrenItem: [
 
 
-            ],
-            icon: <ICON icon={IconSolid.faHome} />,
-            link: routingLink.sanpham
-        },
-        {
-
-            title: "Quản lý mã Sản phẩm",
-            icon: <ICON icon={IconSolid.faHome} />,
-            childrenItem: [],
-            link: routingLink.productsku
-        },
-        {
-            title: "Quản lý dòng sản phẩm",
-            childrenItem: [
-
-            ],
-            icon: <ICON icon={IconSolid.faHome} />,
-            link: routingLink.productline
-        },
-        {
-            title: "Quản lý đơn hàng",
-            childrenItem: [
-                // {
-                //     title: "Get All Shipping Status In All Product",
-                //     childrenItem: [],
-                //     icon: <ICON icon={IconSolid.faHome} />
-                // }
 
 
-            ],
-            icon: <ICON icon={IconSolid.faHome} />,
-            link: routingLink.donhang
-        },
+        //     ],
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     link: routingLink.sanpham
+        // },
+        // {
 
-    ]
+        //     title: "Quản lý mã Sản phẩm",
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     childrenItem: [],
+        //     link: routingLink.productsku
+        // },
+        // {
+        //     title: "Quản lý dòng sản phẩm",
+        //     childrenItem: [
+
+        //     ],
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     link: routingLink.productline
+        // },
+        // {
+        //     title: "Quản lý đơn hàng",
+        //     childrenItem: [
+        //         // {
+        //         //     title: "Get All Shipping Status In All Product",
+        //         //     childrenItem: [],
+        //         //     icon: <ICON icon={IconSolid.faHome} />
+        //         // }
+
+
+        //     ],
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     link: routingLink.donhang
+        // },
+        // {
+        //     title: "Phân Quyền",
+        //     childrenItem: [
+        //         // {
+        //         //     title: "Get All Shipping Status In All Product",
+        //         //     childrenItem: [],
+        //         //     icon: <ICON icon={IconSolid.faHome} />
+        //         // }
+
+
+        //     ],
+        //     icon: <ICON icon={IconSolid.faHome} />,
+        //     link: routingLink.phanquyen
+        // },
+
+    // ]
+
     const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
     // console.log(openSideBarUser)
     return (

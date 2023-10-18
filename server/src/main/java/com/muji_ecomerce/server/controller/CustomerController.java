@@ -1,16 +1,23 @@
 package com.muji_ecomerce.server.controller;
 
+import com.muji_ecomerce.server.entity.Customer;
 import com.muji_ecomerce.server.model.CustomerModel;
 import com.muji_ecomerce.server.model.ResetPasswordCustomer;
 import com.muji_ecomerce.server.model.ResponeModelJson;
+import com.muji_ecomerce.server.repository.CustomerRepository;
 import com.muji_ecomerce.server.services.CustomerService;
 import com.muji_ecomerce.server.services.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.print.Pageable;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -21,11 +28,23 @@ public class CustomerController {
     private CustomerService customerService;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @GetMapping("/fetch_all")
-    public ResponeModelJson fetchAllCustomer(){
-        System.out.println("sldhffd");
+    public ResponeModelJson fetchAllCustomer(
+            @RequestParam(defaultValue = "1") int _page,
+            @RequestParam(defaultValue = "10") int _limit) {
+        Page<Customer> customerPage = customerRepository.findAll(PageRequest.of(_page - 1, _limit));
+        List<Customer> customers = customerPage.getContent();
+        return new ResponeModelJson<>(HttpStatus.OK, "OKE", customers);
+    }
+
+    @GetMapping("/fetch_alls")
+    public ResponeModelJson fetchAllCustomers() {
+
         return customerService.FetchAllCustomer();
     }
 
