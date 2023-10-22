@@ -9,22 +9,27 @@ import { ToastContainer, toast } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from "react-query";
 import React from "react";
 import 'react-toastify/dist/ReactToastify.css';
-
-import { initLocalStorage } from "src/service/api";
+import { store } from "src/store/app";
+import { Provider } from 'react-redux'
+import { FetchDataFromStorageByKey, initLocalStorage } from "src/service/api";
+import { firstLoadFromLocal } from "src/store/app/slices/cartSlices";
 const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   React.useEffect(() => {
     if (typeof window != undefined) {
       initLocalStorage()
+      store.dispatch(firstLoadFromLocal(FetchDataFromStorageByKey()))
     }
   }, [])
   return <>
     <QueryClientProvider client={queryClient} >
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-        <ToastContainer />
-      </SessionProvider>
+      <Provider store={store}>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </SessionProvider>
+      </Provider>
     </QueryClientProvider>
   </>
 }

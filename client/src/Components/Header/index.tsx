@@ -11,9 +11,10 @@ import {
     QueryClient,
     QueryClientProvider,
 } from 'react-query'
-import { FetchAllCategories, FetchAllProductLine } from 'src/service/api';
+import { FetchAllCategories, FetchAllProductLine, FetchDataFromStorageByKey } from 'src/service/api';
 import { CategoriesModel, ProductLineModel } from 'src/Model';
 import { useRouter } from 'next/router';
+import { ProductCartItem } from 'src/utils/constant';
 
 
 interface ItemNavBarHeaderCatologe {
@@ -26,6 +27,7 @@ interface ItemNavBarHeaderCatologe {
 
 function Header() {
     const queryClient = useQueryClient()
+    const [listProductCart, setListProductCart] = React.useState<ProductCartItem[]>([])
     const { push } = useRouter()
     const [openLeftBarMobile, setOpenLeftBarMobile] = React.useState(false)
     const [openRightBarMobile, setOpenRightBarMobile] = React.useState(false)
@@ -69,6 +71,12 @@ function Header() {
     //     },
 
     // ]
+    React.useEffect(() => {
+        if (typeof window != undefined) {
+            let data = FetchDataFromStorageByKey();
+            setListProductCart(data?.product as ProductCartItem[])
+        }
+    }, [])
 
 
 

@@ -1,31 +1,45 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import { MainLayout } from 'src/Layouts'
 import { Product, ProductModel } from 'src/Model'
-import { FetchDataFromStorageByKey } from 'src/service/api'
-import { ProductCartItem, ProductMock } from 'src/utils/constant'
+import { FetchDataFromStorageByKey, UpdateProductToLocalStorage } from 'src/service/api'
+import { ProductCart, ProductCartItem, ProductMock } from 'src/utils/constant'
 import { ICON, IconSolid } from 'src/utils/icon'
+import { linkRouting } from 'src/utils/routelink'
+import { useSelector, useDispatch } from "react-redux"
 
+interface CardCartInf extends ProductCartItem {
 
-interface CardCartInf {
-    imageProduct?: string,
-    nameProduct?: string,
-    pricePerProduct?: string,
-    quantity?: number
-    onChooseProduct: (item: ProductCartItem) => any
+    onChooseProduct?: (item: ProductCartItem) => any
 }
 
 
-function CardCart({ onChooseProduct, imageProduct, nameProduct, pricePerProduct, quantity }: CardCartInf) {
-    const [quantityCart, setQuantityCard] = React.useState<number>(0)
-
+function CardCart({ item, quantity, onChooseProduct }: CardCartInf) {
+    const globalState = useSelector(state => state)
+    console.log("Global State ", globalState)
+    const [quantityCart, setQuantityCard] = React.useState<number>(quantity as number)
+    const [totalPrice, setTotalPrice] = React.useState(quantity * item.price)
+    console.log(quantity * item.price)
+    const {
+        push
+    } = useRouter()
+    const handleUpdateProductIncart = function (item: CardCartInf) {
+        // console.log("Number Product After Updated")
+        // console.log(quantityCart)
+        const { onChooseProduct, ...data } = item
+        data.quantity = quantityCart
+        UpdateProductToLocalStorage(data)
+    }
     return <>
-        <tr >
+        <tr className='hover:cursor-pointer hover:bg-slate-50 mt-10 transition-all' onClick={() => {
+            push(`${linkRouting.detailproduct}/${item.productId}`)
+        }} >
             <td className="p-2 whitespace-nowrap">
                 <div className="flex items-center">
                     <div className="w=full h-full flex-shrink-0 mr-2 sm:mr-3">
                         <img
                             className="h-20 w-20 object-contain"
-                            src={imageProduct}
+                            src={item.image}
                             width={40}
                             height={40}
                             alt="Alex Shatov"
@@ -33,11 +47,13 @@ function CardCart({ onChooseProduct, imageProduct, nameProduct, pricePerProduct,
                     </div>
                     <div className="font-medium text-gray-800  h-full">
                         <h3 className='mb-10 whitespace-normal'>
-                            {nameProduct}
+                            {item.name}
                         </h3>
-                        {/* <h3>
-                            Vàng/XL
-                        </h3> */}
+                        <h3>
+                            {
+                                item.size
+                            }
+                        </h3>
                     </div>
                 </div>
             </td>
@@ -48,26 +64,57 @@ function CardCart({ onChooseProduct, imageProduct, nameProduct, pricePerProduct,
                 {/* <div className="text-left">alexshatov@gmail.com</div> */}
             </td>
             <td className="p-2 whitespace-nowrap">
-                <div className="text-left font-medium text-green-500">
-                    $ {pricePerProduct}
+                <div className="text-left font-medium ">
+                    $ {item.price}
                 </div>
             </td>
             <td className="p-2 whitespace-nowrap">
                 <div className="text-lg text-center">
                     <div className='flex items-center justify-between bg-white border-[1px] border-gray-400 rounded-lg overflow-hidden'>
-                        <ICON onClick={() => {
-                            setQuantityCard(prev => prev + 1)
+                        <ICON onClick={(e) => {
+                            e.stopPropagation()
+                            setQuantityCard(prev => {
+                                UpdateProductToLocalStorage({
+                                    item,
+                                    quantity: prev + 1
+                                })
+                                return prev + 1
+                            }
+                            )
+
                         }} className='bg-white p-2 border-[1px] border-gray-400' icon={IconSolid.faPlus} />
                         <h3 className='bg-white p-1 px-2 '>
                             {/* {quantity} */}
-                            {quantity}
+                            {quantityCart}
                         </h3>
-                        <ICON onClick={() => {
-                            setQuantityCard(prev => prev - 1)
+                        <ICON onClick={(e) => {
+                            e.stopPropagation()
+                            setQuantityCard(prev => {
+                                UpdateProductToLocalStorage({
+                                    item,
+                                    quantity: prev - 1
+                                })
+                                return prev - 1
+                            })
+
+
+
 
                         }} className='bg-white p-2 border-[1px] border-gray-400' icon={IconSolid.faMinus} />
                     </div>
                 </div>
+            </td>
+            <td>
+                <h3 className='font-medium text-center'>
+                    {
+                        quantityCart * item.price
+                    }
+                    {
+                        " "
+                    }
+                    đ
+                </h3>
+
             </td>
 
         </tr>
@@ -87,6 +134,7 @@ function CartProduct() {
     React.useEffect(() => {
         if (typeof window != undefined) {
             let data = FetchDataFromStorageByKey();
+            console.log(data?.product)
             setListProduct(data?.product as ProductCartItem[])
         }
     }, [])
@@ -157,8 +205,11 @@ function CartProduct() {
                                                 <tbody className="text-sm divide-y divide-gray-100">
                                                     {
                                                         listProduct.map((item: ProductCartItem, index: number) => {
+                                                            console.log(item)
                                                             return <>
-                                                                <CardCart key={index} nameProduct={item.item.size} imageProduct={item.item.image} />
+                                                                <CardCart onChooseProduct={() => {
+
+                                                                }} key={index}    {...item} />
                                                             </>
                                                         })
                                                     }

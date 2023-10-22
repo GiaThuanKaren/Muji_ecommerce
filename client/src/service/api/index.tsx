@@ -86,8 +86,8 @@ export const LoginCustomer = async function (loginModel: LoginModel) {
     try {
         let { data } = await axios.post(`${BASE_DEV}/customer/login`, loginModel)
         switch (data.message) {
-            case "Wrong Password":{
-                ShowToast("Wrong Password ","INFO")
+            case "Wrong Password": {
+                ShowToast("Wrong Password ", "INFO")
                 return false
             }
             case "Can not find user accout": {
@@ -157,6 +157,58 @@ export const ResetPasswordCustomer = async function (newPassword: string, token:
                 "token": token
             })
 
+    } catch (error) {
+
+    }
+}
+
+
+export const UpdateProductToLocalStorage = function (productCart: ProductCartItem) {
+    try {
+        let previousProduct = FetchDataFromStorageByKey();
+        let result: ProductCartItem | undefined = previousProduct?.product.find((item: ProductCartItem, index: number) => {
+            return item.item.productsku == productCart.item.productsku &&
+                item.item.productId == productCart.item.productId &&
+                item.item.size == productCart.item.size
+        })
+        if (result) {
+            if (productCart.quantity != 0) {
+                for (let item of previousProduct?.product as ProductCartItem[]) {
+
+                    if (item.item.productsku == productCart.item.productsku &&
+                        item.item.productId == productCart.item.productId &&
+                        item.item.size == productCart.item.size) {
+                        item.quantity = productCart.quantity
+                        break
+                    }
+                }
+                localStorage.setItem(Key_Product_Storage, JSON.stringify(previousProduct))
+            } else {
+                let NewData: ProductCartItem[] = []
+                for (let item of previousProduct?.product as ProductCartItem[]) {
+
+                    if (item.item.productsku == productCart.item.productsku &&
+                        item.item.productId == productCart.item.productId &&
+                        item.item.size == productCart.item.size) {
+
+
+                    } else {
+                        NewData.push(item)
+                    }
+                }
+                previousProduct={
+                    ...previousProduct,
+                    product:NewData
+                }
+                localStorage.setItem(Key_Product_Storage, JSON.stringify(previousProduct))
+            }
+
+
+        } else {
+
+
+
+        }
     } catch (error) {
 
     }
