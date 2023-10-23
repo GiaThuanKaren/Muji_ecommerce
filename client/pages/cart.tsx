@@ -7,7 +7,9 @@ import { ProductCart, ProductCartItem, ProductMock } from 'src/utils/constant'
 import { ICON, IconSolid } from 'src/utils/icon'
 import { linkRouting } from 'src/utils/routelink'
 import { useSelector, useDispatch } from "react-redux"
-
+import { _pickProductToPay, _unPickProductToPay, _updateProductToLocalStorage } from 'src/store/app/slices/cartSlices'
+import { RootState } from 'src/store/app'
+import { useGlobal } from 'src/hook'
 interface CardCartInf extends ProductCartItem {
 
     onChooseProduct?: (item: ProductCartItem) => any
@@ -15,25 +17,44 @@ interface CardCartInf extends ProductCartItem {
 
 
 function CardCart({ item, quantity, onChooseProduct }: CardCartInf) {
-    const globalState = useSelector(state => state)
+    // const globalState = useSelector((state: RootState) => state)
+
+    // const dispatch = useDispatch();
+    const { dispatch, globalState } = useGlobal()
     console.log("Global State ", globalState)
+    const checkBoxInputRed = React.useRef<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>(null);
     const [quantityCart, setQuantityCard] = React.useState<number>(quantity as number)
     const [totalPrice, setTotalPrice] = React.useState(quantity * item.price)
     console.log(quantity * item.price)
     const {
         push
     } = useRouter()
-    const handleUpdateProductIncart = function (item: CardCartInf) {
-        // console.log("Number Product After Updated")
-        // console.log(quantityCart)
-        const { onChooseProduct, ...data } = item
-        data.quantity = quantityCart
-        UpdateProductToLocalStorage(data)
-    }
+
+    React.useEffect(() => {
+        console.log(checkBoxInputRed.current?.checked)
+    }, [])
     return <>
         <tr className='hover:cursor-pointer hover:bg-slate-50 mt-10 transition-all' onClick={() => {
-            push(`${linkRouting.detailproduct}/${item.productId}`)
+            // push(`${linkRouting.detailproduct}/${item.productId}`)
         }} >
+            <td>
+                <input className='p-3 ml-4' onChange={(e) => {
+                    if (e.target.checked) {
+                        dispatch(_pickProductToPay({
+                            item,
+                            quantity
+                        }))
+
+                    } else {
+                        dispatch(_unPickProductToPay({
+                            item,
+                            quantity
+                        }))
+                    }
+
+                    console.log(e.target.checked)
+                }} type='checkbox' ref={checkBoxInputRed} name="" id="" />
+            </td>
             <td className="p-2 whitespace-nowrap">
                 <div className="flex items-center">
                     <div className="w=full h-full flex-shrink-0 mr-2 sm:mr-3">
@@ -74,10 +95,14 @@ function CardCart({ item, quantity, onChooseProduct }: CardCartInf) {
                         <ICON onClick={(e) => {
                             e.stopPropagation()
                             setQuantityCard(prev => {
-                                UpdateProductToLocalStorage({
-                                    item,
-                                    quantity: prev + 1
-                                })
+                                dispatch(
+                                    _updateProductToLocalStorage(
+                                        {
+                                            item,
+                                            quantity: prev + 1
+                                        }
+                                    )
+                                )
                                 return prev + 1
                             }
                             )
@@ -90,10 +115,14 @@ function CardCart({ item, quantity, onChooseProduct }: CardCartInf) {
                         <ICON onClick={(e) => {
                             e.stopPropagation()
                             setQuantityCard(prev => {
-                                UpdateProductToLocalStorage({
-                                    item,
-                                    quantity: prev - 1
-                                })
+                                dispatch(
+                                    _updateProductToLocalStorage(
+                                        {
+                                            item,
+                                            quantity: prev - 1
+                                        }
+                                    )
+                                )
                                 return prev - 1
                             })
 
@@ -124,18 +153,21 @@ function CardCart({ item, quantity, onChooseProduct }: CardCartInf) {
 
 
 function CartProduct() {
+    const { dispatch, globalState } = useGlobal()
     const [productCart, setProductCart] = React.useState<ProductModel[]>([
         ProductMock, ProductMock, ProductMock, ProductMock
     ])
     const [isLoading, setIsLoading] = React.useState(true);
-    const [listProduct, setListProduct] = React.useState<ProductCartItem[]>([])
+    // const [listProduct, setListProduct] = React.useState<ProductCartItem[]>(() => {
+
+    // })
     const [chooseProduct, setChooseProduct] = React.useState<ProductCartItem[]>([])
 
     React.useEffect(() => {
         if (typeof window != undefined) {
-            let data = FetchDataFromStorageByKey();
-            console.log(data?.product)
-            setListProduct(data?.product as ProductCartItem[])
+            // let data = FetchDataFromStorageByKey();
+            // console.log(data?.product)
+            // setListProduct(data?.product as ProductCartItem[])
         }
     }, [])
 
@@ -156,7 +188,7 @@ function CartProduct() {
                                             Giỏ hàng
                                         </p>
                                         <p className='capitalize'>
-                                            ( {listProduct.length} ) sản phẩm
+                                            ( {globalState.cartUser.listProduct.length} ) sản phẩm
                                         </p>
                                     </div>
                                     {/* <CardCart /> */}
@@ -168,6 +200,9 @@ function CartProduct() {
                                             <table className="table-auto w-full">
                                                 <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                                                     <tr>
+                                                        <th>
+
+                                                        </th>
                                                         <th className="p-2 whitespace-nowrap">
                                                             <div className=" text-left font-medium text-black">
                                                                 Sản phẩm
@@ -204,7 +239,7 @@ function CartProduct() {
 
                                                 <tbody className="text-sm divide-y divide-gray-100">
                                                     {
-                                                        listProduct.map((item: ProductCartItem, index: number) => {
+                                                        globalState.cartUser.listProduct.map((item: ProductCartItem, index: number) => {
                                                             console.log(item)
                                                             return <>
                                                                 <CardCart onChooseProduct={() => {
@@ -249,7 +284,14 @@ function CartProduct() {
                                         </p>
 
                                         <p className='font-medium'>
-                                            224.300 d
+                                            {/* 224.300 d */}
+                                            {
+                                                globalState.cartUser.chooseProduct.reduce((prev, curent, index) => {
+                                                    return prev + curent.item.price
+                                                }, 0)
+                                            }
+                                            {" "}
+                                            đ
                                         </p>
 
                                     </div>

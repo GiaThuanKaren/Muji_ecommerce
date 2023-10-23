@@ -1,11 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { FetchDataFromStorageByKey } from 'src/service/api'
+import { AddProductToLocalStorage, FetchDataFromStorageByKey, UpdateProductToLocalStorage } from 'src/service/api'
 import { ProductCartItem, localStorageInf } from 'src/utils/constant'
 
-export interface CartSliceInf {
-    value: number
-}
 
 // const initialState: localStorageInf = {
 
@@ -18,20 +15,24 @@ let initBucket: localStorageInf = {
     ]
 }
 
-
+export interface cartSlicesInf {
+    "chooseProduct": ProductCartItem[],
+    listProduct: ProductCartItem[]
+}
 
 
 
 export const cartSlices = createSlice({
     name: 'counter',
     initialState: () => {
-        let result = [1]
-        // return {
-        //     "a":initBucket.product
-        // }
+        let init: cartSlicesInf = {
+
+        }
+
+        let chooseProduct: ProductCartItem[] = []
         return {
             "listProduct": initBucket.product,
-            "chooseProduct": []
+            "chooseProduct": chooseProduct
         }
     },
     reducers: {
@@ -46,31 +47,42 @@ export const cartSlices = createSlice({
             // return state = action.payload.product
         },
         _addProductToCart: (state, action) => {
-
+            let payload: ProductCartItem = action.payload
+            AddProductToLocalStorage(payload)
+            state.listProduct.push(payload)
         },
         _updateProductToLocalStorage: (state, action) => {
+            let payload: ProductCartItem = action.payload
+            UpdateProductToLocalStorage(payload)
+            state.listProduct = FetchDataFromStorageByKey()?.product as ProductCartItem[]
+        },
+        _pickProductToPay: (state, aciton) => {
+            let payload: ProductCartItem = aciton.payload
+            console.log(payload)
+            state.chooseProduct.push(payload)
+        },
+        _unPickProductToPay: (state, action) => {
+            let payload: ProductCartItem = action.payload
+            let NewData: ProductCartItem[] = []
+            for (let item of state?.chooseProduct as ProductCartItem[]) {
 
-        },
-        pickProductToPay: (state, aciton) => {
-            
-            // aciton.payload
-        },
-        increment: (state) => {
+                if (item.item.productsku == payload.item.productsku &&
+                    item.item.productId == payload.item.productId &&
+                    item.item.size == payload.item.size) {
 
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            // state.value += 1
+
+                } else {
+                    NewData.push(item)
+                }
+            }
+            state.chooseProduct = NewData
         },
-        decrement: (state) => {
-            // state.value -= 1
-        },
+
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { firstLoadFromLocal, increment, decrement, getAllProductInCart } = cartSlices.actions
+export const { _addProductToCart, _updateProductToLocalStorage, _unPickProductToPay, _pickProductToPay, firstLoadFromLocal, getAllProductInCart } = cartSlices.actions
 
 export default cartSlices.reducer

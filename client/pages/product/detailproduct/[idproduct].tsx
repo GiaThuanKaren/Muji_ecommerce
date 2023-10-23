@@ -3,7 +3,9 @@ import React from 'react'
 import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
 import { OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model';
+import { useGlobal } from 'src/hook';
 import { AddProductToLocalStorage, GetDetailProductById } from 'src/service/api';
+import { _addProductToCart } from 'src/store/app/slices/cartSlices';
 import { ProductCartItem } from 'src/utils/constant';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
@@ -20,6 +22,9 @@ interface ProductSkuChooseInf {
 
 function DetailProductById() {
     const { query, isReady } = useRouter()
+    const {
+        globalState, dispatch
+    } = useGlobal()
     const [productSkuChoose, setProductSkuChoose] = React.useState<ProductSkuChooseInf>({
         img: "",
         productSkuId: "",
@@ -35,6 +40,7 @@ function DetailProductById() {
     const [chooseSize, setChooseSize] = React.useState(
         ""
     )
+
     async function FetchApi() {
         try {
             let result = await GetDetailProductById(query?.idproduct as string);
@@ -67,7 +73,8 @@ function DetailProductById() {
                 quantity: numberProductAddToCard
             }
             console.log(productAddCart)
-            AddProductToLocalStorage(productAddCart)
+            dispatch(_addProductToCart(productAddCart))
+            // AddProductToLocalStorage(productAddCart)
         } catch (error) {
 
         }
