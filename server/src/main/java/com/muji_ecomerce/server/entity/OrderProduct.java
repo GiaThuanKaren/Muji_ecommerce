@@ -27,4 +27,9 @@ public class OrderProduct {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "shipping_type_id")
+    private ShippingType shippingType;
+
 }

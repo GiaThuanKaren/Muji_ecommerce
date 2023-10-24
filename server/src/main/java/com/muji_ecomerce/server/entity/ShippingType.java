@@ -1,0 +1,22 @@
+package com.muji_ecomerce.server.entity;
+
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Set;
+
+@Entity
+@Getter
+@Setter
+public class ShippingType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long shippingtypeId;
+
+    private String name;
+
+    @OneToMany(mappedBy = "shippingType")
+    private Set<OrderProduct> orderProductSet;
+}

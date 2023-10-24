@@ -192,65 +192,86 @@ function CartProduct() {
                                         </p>
                                     </div>
                                     {/* <CardCart /> */}
-                                    <header className="px-5 py-4 border-b border-gray-100">
+                                    {/* <header className="px-5 py-4 border-b border-gray-100">
                                         <h2 className="font-semibold text-gray-800">Customers</h2>
-                                    </header>
+                                    </header> */}
                                     <div className="p-3">
+
                                         <div className="overflow-x-auto">
-                                            <table className="table-auto w-full">
-                                                <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
-                                                    <tr>
-                                                        <th>
+                                            {
+                                                globalState.cartUser.listProduct.length == 0 && <>
+                                                    <div className='w-full'>
+                                                        <img
+                                                            className='w-full'
+                                                            src="https://th.bing.com/th/id/OIP.r6aijQ7gtefVW3pa7N_t7AHaFQ?pid=ImgDet&rs=1"
+                                                            alt=""
+                                                        />
 
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className=" text-left font-medium text-black">
-                                                                Sản phẩm
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className="font-semibold text-left text-transparent">
-                                                                Sản phẩm
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className="font-semibold text-left text-transparent">
-                                                                Sản phẩm
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className=" text-left font-medium text-black">
-                                                                Đơn giá
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className="text-left font-medium text-black">
-                                                                Số lượng
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className=" text-center font-medium text-black">
-                                                                Tổng tiền
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
+                                                        {/* <h3 className='text-center font-medium text-xl my-5'>
+                                                    Giỏ hàng đang bị trống
+                                                </h3> */}
+                                                    </div>
+                                                </>
+                                            }
+                                            {
+                                                globalState.cartUser.listProduct.length > 0 &&
 
 
-                                                <tbody className="text-sm divide-y divide-gray-100">
-                                                    {
-                                                        globalState.cartUser.listProduct.map((item: ProductCartItem, index: number) => {
-                                                            console.log(item)
-                                                            return <>
-                                                                <CardCart onChooseProduct={() => {
+                                                <table className="table-auto w-full">
+                                                    <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                                                        <tr>
+                                                            <th>
 
-                                                                }} key={index}    {...item} />
-                                                            </>
-                                                        })
-                                                    }
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className=" text-left font-medium text-black">
+                                                                    Sản phẩm
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className="font-semibold text-left text-transparent">
+                                                                    Sản phẩm
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className="font-semibold text-left text-transparent">
+                                                                    Sản phẩm
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className=" text-left font-medium text-black">
+                                                                    Đơn giá
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className="text-left font-medium text-black">
+                                                                    Số lượng
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className=" text-center font-medium text-black">
+                                                                    Tổng tiền
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
 
-                                                </tbody>
-                                            </table>
+
+                                                    <tbody className="text-sm divide-y divide-gray-100">
+                                                        {
+                                                            globalState.cartUser.listProduct.map((item: ProductCartItem, index: number) => {
+                                                                console.log(item)
+                                                                return <>
+                                                                    <CardCart onChooseProduct={() => {
+
+                                                                    }} key={index}    {...item} />
+                                                                </>
+                                                            })
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            }
                                         </div>
                                     </div>
                                     {/* <div className='flex items-center justify-between my-3'>
