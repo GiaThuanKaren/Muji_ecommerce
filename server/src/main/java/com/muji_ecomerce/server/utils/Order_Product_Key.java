@@ -17,4 +17,7 @@ public class Order_Product_Key implements Serializable {
     @Column(name = "order_id")
     private Long orderId;
 
+    @Column(name = "sku_id")
+    private Long skuId;
+
 }
