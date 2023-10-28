@@ -4,6 +4,7 @@ import com.muji_ecomerce.server.model.OrderProductModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +26,9 @@ public class OrderProductController {
                 orderProductModel.toString()
         );
         return orderService.addNewOrder(orderProductModel);
+//        return new ResponeModelJson<>(HttpStatus.OK,"Done",orderProductModel);
     }
+
 
 
 

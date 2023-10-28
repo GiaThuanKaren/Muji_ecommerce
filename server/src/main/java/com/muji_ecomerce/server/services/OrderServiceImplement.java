@@ -3,16 +3,16 @@ package com.muji_ecomerce.server.services;
 import com.muji_ecomerce.server.entity.*;
 import com.muji_ecomerce.server.model.OrderProductModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
-import com.muji_ecomerce.server.repository.CustomerRepository;
-import com.muji_ecomerce.server.repository.OrderRepository;
-import com.muji_ecomerce.server.repository.ShippingTypeRepository;
-import com.muji_ecomerce.server.repository.StatusOrderRepository;
+import com.muji_ecomerce.server.repository.*;
+import com.muji_ecomerce.server.utils.Order_Product_Key;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class OrderServiceImplement implements OrderService{
@@ -20,10 +20,15 @@ public class OrderServiceImplement implements OrderService{
     private CustomerRepository customerRepository;
 
     @Autowired
+    private OrderDetailRepository orderDetailRepository;
+    @Autowired
     private ShippingTypeRepository shippingTypeRepository;
 
     @Autowired
     private StatusOrderRepository statusOrderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -43,7 +48,38 @@ public class OrderServiceImplement implements OrderService{
         orderProductNew.setStatus_order(statusFound.get());
         orderProductNew.setShippingType(shippingTypeFound.get());
 
-        orderRepository.save(orderProductNew);
+        OrderProduct orderProductCreated =orderRepository.save(orderProductNew);
+
+        List<OrderDetail> orderDetailsList= new ArrayList<>();
+        for(int i =0;i<orderProductModel.getListproductOrdered().size();i++){
+            Long productId=orderProductModel.getListproductOrdered().get(i).getProductId();
+            Optional<Product>  productFound = productRepository.findById(productId);
+            if(!productFound.isPresent())
+                return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Product Id");
+
+
+            OrderDetail orderDetailMew=
+                    new OrderDetail(
+                            new Order_Product_Key(
+                                    productId,
+                                    orderProductCreated.getOrderId(),
+                                    orderProductModel.getListproductOrdered().get(i).getSkuId()
+                            ),
+                            productFound.get(),
+                            orderProductCreated,
+                            orderProductModel.getListproductOrdered().get(i).getQuantity()
+
+                    );
+
+//            orderDetailMew.setQuantityOrdered(
+//                    orderProductModel.getListproductOrdered().get(i).getQuantity()
+//            );
+            orderDetailsList.add(
+                    orderDetailMew
+            );
+        }
+        orderDetailRepository.saveAll(orderDetailsList);
+
         return new ResponeModelJson(HttpStatus. OK,"Product ordered",orderProductNew);
     }
 

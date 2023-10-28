@@ -1,7 +1,10 @@
 package com.muji_ecomerce.server.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +24,10 @@ public class OrderProductModel {
 
     private Long shippingTypeID;
 
-    private Long productId;
+
+    private List<ProductOrderPayload> listproductOrdered;
+
+
 
 
     @Override
@@ -33,8 +39,6 @@ public class OrderProductModel {
                 ", shippedDate='" + shippedDate + '\'' +
                 ", customerId=" + customerId +
                 ", statusID=" + statusID +
-                ", shippingTypeID=" + shippingTypeID +
-                ", productId=" + productId +
-                '}';
+                ", shippingTypeID=" + shippingTypeID ;
     }
 }
