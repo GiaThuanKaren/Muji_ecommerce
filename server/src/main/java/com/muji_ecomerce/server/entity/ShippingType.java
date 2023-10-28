@@ -1,6 +1,7 @@
 package com.muji_ecomerce.server.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class ShippingType {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "shippingType")
     private Set<OrderProduct> orderProductSet;
 }
