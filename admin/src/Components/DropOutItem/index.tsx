@@ -5,14 +5,17 @@ import { ICON, IconSolid } from 'src/utils';
 
 function DropOutItem({ childrenItem, icon, title, link }: DropOutSideBarItem) {
     const [open, setOpen] = React.useState(true);
+    const [selected, setSelected] = React.useState(null); 
     const { push } = useRouter();
     return (
         <>
-            <div onClick={() => {
-                push(link as string)
-            }} className='text flex items-center justify-between px-3 py-3  w-full'>
+            <div 
+                onClick={() => {
+                    push(link as string)
+                }} 
+                className={`text flex items-center justify-between px-4 py-3  w-full cursor-pointer`}>
                 {icon}
-                <p className='font-medium w-full mx-3 text-sm capitalize '>
+                <p className='font-medium text-slate-600 w-full mx-4 text-sm capitalize '>
                     {title}
                 </p>
                 {

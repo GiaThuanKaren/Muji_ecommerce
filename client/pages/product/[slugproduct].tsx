@@ -12,8 +12,9 @@ interface PriceRange {
 
 function DisplayProductBySludPage2() {
     const { query, isReady } = useRouter()
+    const [selectedSize, setSelectedSize] = React.useState<string[]>([]);
     const [listProduct, setListProduct] = React.useState<ResponeModel<ProductModel>>()
-    const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
+    const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "2", "4", "6", "8", "10", "12"]
     const material: string[] = []
 
     async function FetchApi(idCategories: number) {
@@ -24,6 +25,16 @@ function DisplayProductBySludPage2() {
 
         }
     }
+
+    const HandleSelectedSize = (checked: boolean , size: string) => {
+        if (checked) {
+            setSelectedSize((prev) => [...prev, size])
+        } else {
+            setSelectedSize(selectedSize.filter((item) => item != size))
+        }
+    }
+
+    console.log('Selected ', selectedSize);
 
     React.useEffect(() => {
         if (isReady) {
@@ -37,14 +48,39 @@ function DisplayProductBySludPage2() {
             <div className='hidden md:block basis-1/6 px-1'>
                 <div className='w-full min-h-[50vh] '>
 
+                    <div>
+                        <ul className='mb-2 overflow-hidden flex flex-wrap'>
+                            {selectedSize.map((size, index) => (
+                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {size}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
                     <DropoutComp title='Loại sản phẩm' >
                         <div className='max-h-72 overflow-y-auto bg-red-200 w-full'>
-
+                            a
                         </div>
                     </DropoutComp>
 
                     <DropoutComp title='Kích Thước Sản Phẩm' >
-
+                        <ul className='flex flex-wrap'>
+                            {size.map((item, index) => (
+                                <li key={index} className='bg-[#F2F2F2] text-[#7A7A9D] rounded-[5px] mr-2 mb-2 cursor-pointer flex items-center justify-center peer-checked:border-[1px]  peer-checked:border-[#fcaf17]'>
+                                    <span className='cursor-pointer text-base py-1'>
+                                        <label className='relative'>
+                                            <input 
+                                                type="checkbox" 
+                                                className='hidden w-5 h-5 peer'
+                                                onChange={(e) => HandleSelectedSize(e.target.checked, item)}
+                                            />
+                                            <span className='px-3 after:content-[""] after:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/chose.svg")] after:absolute after:w-[22px] after:h-[22px] after:top-[-5px] after:right-[0px]'>{item}</span>
+                                        </label>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
                     </DropoutComp>
 
                     <DropoutComp title='Màu Sắc' >
@@ -68,14 +104,14 @@ function DisplayProductBySludPage2() {
                         listProduct?.data &&
 
                             listProduct?.data.length > 0 ? <>
-                            {/* {
+                            {
                                 listProduct.data.map((item: ProductModel, index: number) => {
                                     return <>
                                         <CardProduct key={index} {...item} />
                                     </>
                                 })
-                            } */}
-                            {
+                            }
+                            {/* {
                                 Array.from(Array(8).keys()).map(() => {
                                     return (
                                         <>
@@ -83,7 +119,7 @@ function DisplayProductBySludPage2() {
                                         </>
                                     )
                                 })
-                            }
+                            } */}
                         </>
                             : <>
                                 <h3 className='text-center w-full font-medium '>

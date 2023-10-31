@@ -1,6 +1,6 @@
 import { usePagination, DOTS } from "src/utils/usePagination";
 
-export const Pagination = (props) => {
+export const Pagination = (props: any) => {
 
     const {
         onPageChange,
@@ -37,7 +37,7 @@ export const Pagination = (props) => {
     return (
         <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
             <span className="flex items-center col-span-3">
-            Showing {22}-{30} of 100
+            Showing {1}-{2} of 100
             </span>
             <span className="col-span-2"></span>
 

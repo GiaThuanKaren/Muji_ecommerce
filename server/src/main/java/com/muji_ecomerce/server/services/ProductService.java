@@ -12,6 +12,8 @@ public interface ProductService {
 
     ResponeModelJson FetchAllProduct();
 
+    ResponeModelJson FetchPaginationProduct(int _page, int _limit, String _name, String[] _sizes, Double _minPrice, Double _maxPrice, String[] _sort);
+
     ResponeModelJson updateProductById(ProductModal productModal);
 
     ResponeModelJson deleteProductById(Long productId);

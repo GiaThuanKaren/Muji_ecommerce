@@ -85,7 +85,7 @@ function GetAllUser() {
         try {
             
             let result = await FetchAllCustomer(currentPage, CUSTOM_PER_PAGE)
-            let result2 = await FetchAllCustomers();
+            let result2 = await FetchAllCustomer();
             setGetTotalCount(result2?.data.length)
 
             // setFirstPageIndex((currentPage - 1) * CUSTOM_PER_PAGE);
@@ -158,7 +158,7 @@ function GetAllUser() {
                         </ModalWrapper>
                     </>
                 }
-                {properties && <TableComp handleDelete={() => { } } handleEdit={() => { } } headerRow={[
+                {properties && <TableComp h1="Customer" handleDelete={() => { } } handleEdit={() => { } } headerRow={[
                     "ID",
                     "First Name",
                     "Last Name",
@@ -223,7 +223,6 @@ function GetAllUser() {
                         onPageChange={onPageChange}
                     />
                 }
-
                 >
                 </TableComp>}
             </MainLayout>

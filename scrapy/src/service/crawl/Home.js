@@ -1,16 +1,21 @@
 const { GetCatologe, GetListProductFromCatologe } = require("./catologe");
+const { writeCSV } = require("./function");
 const { GetDetailProduct } = require("./product");
 
 const HomeCrawl = async function () {
     const ListCatologe = await GetCatologe();
-    console.log(ListCatologe)
+
+    if (ListCatologe) console.log('List Category -> ', ListCatologe)
+
     for (let catologeItem = 0; catologeItem < ListCatologe.length; catologeItem++) {
-        let data = await GetListProductFromCatologe(ListCatologe[catologeItem].originalLink)
-        
-        if(data.length>0){
+        let data = await GetListProductFromCatologe(ListCatologe[catologeItem].linkChild, 1, ListCatologe[catologeItem].catorgoryid)
+
+        console.log('data -> ', data);
+
+        if(data.length > 0){
             for(let product =0;product<data.length;product++){
-                await GetDetailProduct(`https://tiki.vn${data[product].linksp}`)
-                
+                let productItem = await GetDetailProduct(`https://yody.vn${data[product].linkProduct}`)
+                writeCSV(productItem, "RE_PRODUCT_SKU")
             }
         }
         

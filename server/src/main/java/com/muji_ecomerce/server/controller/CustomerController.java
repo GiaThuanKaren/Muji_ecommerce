@@ -35,18 +35,16 @@ public class CustomerController {
 
     @GetMapping("/fetch_all")
     public ResponeModelJson fetchAllCustomer(
-            @RequestParam(defaultValue = "1") int _page,
-            @RequestParam(defaultValue = "10") int _limit) {
-        Page<Customer> customerPage = customerRepository.findAll(PageRequest.of(_page - 1, _limit));
-        List<Customer> customers = customerPage.getContent();
-        return new ResponeModelJson<>(HttpStatus.OK, "OKE", customers);
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit) {
+        
+        if (_page != null && _limit != null) {
+            return customerService.FetchPaginationCustomer(_page, _limit);
+        } else {
+            return customerService.FetchAllCustomer();
+        }
     }
 
-    @GetMapping("/fetch_alls")
-    public ResponeModelJson fetchAllCustomers() {
-
-        return customerService.FetchAllCustomer();
-    }
 
     @PostMapping("/login")
     public ResponeModelJson loginCustomer(@RequestBody CustomerModel customerModel){

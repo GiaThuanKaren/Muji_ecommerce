@@ -27,22 +27,35 @@ export const FindPermissionByRole = async function (roleId: number) {
     }
 }
 
-export const UpdatePermissionById = async function (func: PermissionModel) {
-    // try {
-    //     await axios.put(`${BASE_DEV}/customer/update_customerbyid`, role)
-    //     ShowToast("Updated This Customer Successfully", "INFO")
-    // } catch (error) {
-    //     ShowToast("Failed to update this customer ", "ERROR")
-    // }
+export const CreatePermission = async function (per: PermissionModel) {
+    try {
+        await axios.post(`${BASE_DEV}/permission/create_new`, { roleId: per.permission.roleId, functionId: per.permission.functionId })
+        ShowToast("Created This Permission Successfully", "INFO")
+    } catch (error) {
+        ShowToast("Failed to create this permission ", "ERROR")
+    }
+}
+
+export const UpdatePermissionById = async function (per: PermissionModel) {
+    try {
+        await axios.put(`${BASE_DEV}/permission/updatePermissionByID`, { funnctionId: per.permission.functionId })
+        ShowToast("Updated This Permission Successfully", "INFO")
+    } catch (error) {
+        ShowToast("Failed to update this permission ", "ERROR")
+    }
 }
 
 
 
-export const DeletePermissionById = async function (id: number) {
-    // try {
-    //     await axios.delete(`${BASE_DEV}/customer/delete_customer_byid?id=${id}`)
-    //     ShowToast("Deleted Successfully", "INFO")
-    // } catch (error) {
-    //     ShowToast("Failed to delete this customer", "ERROR")
-    // }
+export const DeletePermissionById = async function (roleId: number, funcId: number) {
+    const params = {
+        roleId,
+        funcId
+    }
+    try {
+        await axios.delete(`${BASE_DEV}/permission/deletePermission`, { params })
+        ShowToast("Deleted Successfully", "INFO")
+    } catch (error) {
+        ShowToast("Failed to Delete this Function", "ERROR")
+    }
 }

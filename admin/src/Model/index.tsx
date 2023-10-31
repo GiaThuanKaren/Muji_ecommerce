@@ -14,5 +14,5 @@ export interface DropOutSideBarItem {
     icon: JSX.Element;
     title: string
     childrenItem: DropOutSideBarItem[]
-    link?: string
+    link?: string,
 }

@@ -5,9 +5,19 @@ import com.muji_ecomerce.server.model.OptionValueModel;
 import com.muji_ecomerce.server.model.ProductModal;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.repository.*;
+import com.muji_ecomerce.server.spec.ProductSpec;
 import com.muji_ecomerce.server.utils.OptionValueKey;
 import com.muji_ecomerce.server.utils.Product_Option_Key;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +40,16 @@ public class ProductServiceImplement implements  ProductService{
 
     @Autowired
     private OptionValueRepsitory optionValueRepsitory;
+
+    private Sort.Direction getSortDirection(String direction) {
+        if (direction.equals("asc")) {
+            return Sort.Direction.ASC;
+        } else if (direction.equals("desc")) {
+            return Sort.Direction.DESC;
+        }
+
+        return Sort.Direction.ASC;
+    }
     @Override
     public ResponeModelJson createNew(ProductModal productModal) {
         Product product = new Product();
@@ -86,6 +106,77 @@ public class ProductServiceImplement implements  ProductService{
     public ResponeModelJson FetchAllProduct() {
         List<Product> productList = productRepository.findAll();
         return new ResponeModelJson(HttpStatus.OK,"Done",productList);
+    }
+
+
+    @Override
+    public ResponeModelJson FetchPaginationProduct(
+            int _page, int _limit, String _name, String[] _sizes, Double _minPrice, Double _maxPrice, String[] _sort
+    ) {
+        try {
+            List<Sort.Order> orders = new ArrayList<Sort.Order>();
+
+            if (_sort[0].contains(",")) {
+                for (String sortOrder : _sort) {
+                    String[] __sort = sortOrder.split(",");
+                    orders.add(new Sort.Order(getSortDirection(__sort[1]), __sort[0]));
+                }
+            } else {
+                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
+            }
+
+            List<Product> products = new ArrayList<Product>();
+            Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
+
+            Page<Product> productPage;
+//            if (_name == null)
+//                productPage = productRepository.findAll(pageable);
+//            else
+//                productPage = productRepository.findByNameProductContaining(_product, pageable);
+            productPage = applyFilters(_name, _sizes, _minPrice, _maxPrice, pageable);
+
+            products = productPage.getContent();
+
+            return new ResponeModelJson(HttpStatus.OK, "OKE", products);
+
+        } catch (Exception e) {
+            return new ResponeModelJson(HttpStatus.INTERNAL_SERVER_ERROR, "FAIL", null);
+        }
+    }
+
+    private Page<Product> applyFilters(String _name, String[] _sizes, Double _minPrice, Double _maxPrice, Pageable pageable) {
+//        Specification<Product> spec = Specification.where(null);
+
+        Specification<Product> spec = Specification.where(ProductSpec.getSpec(_name));
+
+
+//        if (_name != null) {
+//            spec = spec.and((rootName, query, criteriaBuilder) ->
+//                criteriaBuilder.like(rootName.get("nameProduct"), "%" + _name + "%")
+//            );
+//        }
+//
+//        if (_sizes != null && _sizes.length > 0) {
+//            for (String size : _sizes) {
+//                spec = spec.or((rootSize, query, criteriaBuilder) ->
+//                    criteriaBuilder.equal(productOption_valueJoin.get("values_name"), size)
+//                );
+//            }
+//        }
+
+//        if (_minPrice != null) {
+//            spec = spec.and((rootMinPrice, query, criteriaBuilder) ->
+//                    criteriaBuilder.greaterThanOrEqualTo(productOption_valueJoin.get("price"), _minPrice)
+//            );
+//        }
+//
+//        if (_maxPrice != null) {
+//            spec = spec.and((rootMaxPrice, query, criteriaBuilder) ->
+//                    criteriaBuilder.lessThanOrEqualTo(productOption_valueJoin.get("price"), _maxPrice)
+//            );
+//        }
+
+        return productRepository.findAll(spec, pageable);
     }
 
     @Override

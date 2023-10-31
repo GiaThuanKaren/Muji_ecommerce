@@ -19,8 +19,6 @@ const Login: React.FC = () => {
       
       setIsLoading(true)
       let result = await LoginEmployee(employeeInfo);
-      console.log('1');
-        console.log('2');
         
         if (result == true) {
           push(routingLink.dashboard)

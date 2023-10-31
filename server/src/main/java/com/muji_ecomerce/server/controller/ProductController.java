@@ -5,6 +5,7 @@ import com.muji_ecomerce.server.model.OptionValueModel;
 import com.muji_ecomerce.server.model.ProductModal;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,12 +48,24 @@ public class ProductController {
 
 
     @GetMapping("/getproductbyid")
-    private ResponeModelJson getDetailProductById(@RequestParam("productid") Long produductID){
+    private ResponeModelJson getDetailProductById(@RequestParam("productid") Long produductID) {
         return productService.getDetailProductByProductId(produductID);
     }
 
     @GetMapping("/fetchAll")
-    private ResponeModelJson getAll(){
-        return productService.FetchAllProduct();
+    private ResponeModelJson getAllByFilter(
+            HttpServletRequest request,
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit,
+            @RequestParam(required = false) String _name,
+            @RequestParam(required = false) String[] _sizes,
+            @RequestParam(required = false) Double _minPrice,
+            @RequestParam(required = false) Double _maxPrice,
+            @RequestParam(defaultValue = "productId,desc") String[] _sort) {
+        if (!request.getParameterMap().isEmpty()) {
+            return productService.FetchPaginationProduct(_page, _limit, _name, _sizes, _minPrice, _maxPrice, _sort);
+        } else {
+            return productService.FetchAllProduct();
+        }
     }
 }

@@ -3,22 +3,13 @@ import { BASE_DEV } from ".";
 import { ShowToast } from "src/utils";
 import { CustomerResponeModel, ResponeModel } from "src/Model/apiModel";
 
-export const FetchAllCustomer = async function (currentPage: number, limit: number) {
+export const FetchAllCustomer = async function (currentPage?: number, limit?: number) {
     try {
         const params = {
             _page: currentPage,
             _limit: limit
         }
         let { data } = await axios.get<ResponeModel<CustomerResponeModel>>(`${BASE_DEV}/customer/fetch_all`, { params })
-        return data
-    } catch (error) {
-        ShowToast("Failed To Get All Customer ", "ERROR")
-    }
-}
-
-export const FetchAllCustomers = async function () {
-    try {
-        let { data } = await axios.get<ResponeModel<CustomerResponeModel>>(`${BASE_DEV}/customer/fetch_alls`)
         return data
     } catch (error) {
         ShowToast("Failed To Get All Customer ", "ERROR")

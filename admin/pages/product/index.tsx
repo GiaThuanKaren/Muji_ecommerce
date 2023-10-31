@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { InputComp, ModalWrapper, SelectInputComp, TableComp } from 'src/Components'
+import { Pagination } from 'src/Components/Pagination'
 import { MainLayout } from 'src/Layouts'
 import { CategoriesResponeModel, OptionModelRespone, ProductModel, ProductResponeModel } from 'src/Model/apiModel'
 import { FetchAllCategories } from 'src/services/api/categories'
@@ -9,7 +10,13 @@ import { DeleteProductById, FetchAllProduct, UpdateProductId } from 'src/service
 import { ICON, IconSolid } from 'src/utils'
 import { routingLink } from 'src/utils/routingLink'
 
+const PRODUCT_PER_PAGE = 5;
+
 function GetAllProduct() {
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [getTotalCount, setGetTotalCount] = React.useState(0);
+    const [indexPage, setIndexPage] = React.useState(1);
+
     const [properties, setProperties] = React.useState<ProductResponeModel[]>([])
     const [optionList, SetOptionList] = React.useState<OptionModelRespone[]>([])
     const [categoriesList, SetCategoriesList] = React.useState<CategoriesResponeModel[]>([])
@@ -24,6 +31,34 @@ function GetAllProduct() {
             [key]: value1,
 
         })
+    }
+
+    const statusStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '5px',
+        margin: '5px',
+        cursor: 'pointer',
+    }
+    const dotStyle = {
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        marginRight: '10px',
+    };
+    
+    const activeDotStyle = {
+        ...dotStyle,
+        backgroundColor: 'rgb(21 128 61)',
+    };
+
+    const inactiveDotStyle = {
+        ...dotStyle,
+        backgroundColor: 'rgb(185 28 28)',
+    };
+
+    const onPageChange = (page: number) => {
+        setCurrentPage(page)
     }
 
     const handleUpdate = async function () {
@@ -45,14 +80,16 @@ function GetAllProduct() {
     }
     async function FetchApi() {
         try {
-            let result = await FetchAllProduct();
+            let result = await FetchAllProduct(currentPage, PRODUCT_PER_PAGE);
+            let result2 = await FetchAllProduct();
             let optionList = await FetchAllOption();
             let categoriesList = await FetchAllCategories();
+
             setProperties(result?.data as ProductResponeModel[])
+            setGetTotalCount(result2?.data.length)
             SetOptionList(optionList?.data as OptionModelRespone[])
             SetCategoriesList(categoriesList?.data as CategoriesResponeModel[])
 
-          
         } catch (error) {
 
         }
@@ -60,7 +97,7 @@ function GetAllProduct() {
 
     React.useEffect(() => {
         FetchApi()
-    }, [])
+    }, [currentPage])
     console.log(value)
     return (
         <>
@@ -150,29 +187,29 @@ function GetAllProduct() {
                         </ModalWrapper>
                     </>
                 }
-                <TableComp data={[]} handleDelete={() => { }} handleEdit={() => { }} headerRow={[
+                {properties && <TableComp h1="Product" handleDelete={() => { }} handleEdit={() => { }} headerRow={[
                     " #",
-                    "First",
-                    "Last",
+                    "Product Name",
+                    "Quantity Stock",
                     "Handle",
 
-                ]} totalData={12} displayEachPage={4} >
-                    <tbody>
-
+                ]} totalData={properties.length} displayEachPage={4} 
+                children1={
+                    <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                         {
                             properties.map((item: ProductResponeModel, index: number) => {
                                 return <>
-                                    <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                    <tr key={index} className="text-gray-700 dark:text-gray-400">
+                                        <td className="px-4 py-3">
                                             {item.productId}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.nameProduct}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.productDescription}
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td className="px-4 py-3 text-sm">
                                             {item.quantityStock}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4">
@@ -196,10 +233,19 @@ function GetAllProduct() {
                                 </>
                             })
                         }
-
-
                     </tbody>
-                </TableComp>
+                }
+                children2={
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={getTotalCount}
+                        pageCount={PRODUCT_PER_PAGE}
+                        onPageChange={onPageChange}
+                    />
+                }
+                >
+
+                </TableComp>}
             </MainLayout>
         </>
     )

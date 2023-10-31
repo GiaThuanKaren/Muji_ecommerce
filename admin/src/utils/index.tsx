@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 export {
     FontAwesomeIcon as ICON,
     IconRegular,
-    IconSolid
+    IconSolid,
 }
 
 

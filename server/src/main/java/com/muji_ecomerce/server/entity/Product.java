@@ -35,7 +35,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
 //    @JsonIgnore
-    List<Product_Sku> productSkus;
+    Set<Product_Sku> productSkus;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
 //    @JsonIgnore

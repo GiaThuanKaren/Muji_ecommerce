@@ -13,13 +13,13 @@ interface Props{
     children2: React.ReactNode
 }
 
-function TableComp({children1, children2, handleDelete, handleEdit, headerRow }: Props) {
+function TableComp({h1, children1, children2, handleDelete, handleEdit, headerRow }: Props) {
     const [openModal, setOpenModal] = React.useState(false);
    
     return (
         <>
         <div className="w-full overflow-hidden">
-          <h3 className="mb-4 mt-2 ml-6 font-semibold dark:bg-gray-300 text-2xl">Customer</h3>
+          <h3 className="mb-4 mt-2 ml-6 font-semibold dark:bg-gray-300 text-2xl">{h1}</h3>
           <div className="w-full overflow-hidden rounded-sm shadow-xs">
                 <div className="w-full overflow-x-auto">
                   <table className="w-full whitespace-no-wrap">
