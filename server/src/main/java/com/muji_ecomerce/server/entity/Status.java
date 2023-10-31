@@ -1,5 +1,6 @@
 package com.muji_ecomerce.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class Status {
     private Long statusId;
 
     private String nameStatus;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "status_order",cascade=CascadeType.ALL)
     private List<OrderProduct> order_Product_statuses;
 }

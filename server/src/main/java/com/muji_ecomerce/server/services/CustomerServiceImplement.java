@@ -126,6 +126,7 @@ public class CustomerServiceImplement implements CustomerService{
             if(customerModel.getCustomerEmail() != null){
                 customerFound.get().setCustomerEmail(customerModel.getCustomerEmail());
             }
+
             if(customerModel.isEnableStatus()){
                 customerFound.get().setEnableStatus(customerModel.isEnableStatus());
             }
@@ -193,5 +194,35 @@ public class CustomerServiceImplement implements CustomerService{
             return new ResponeModelJson<>(HttpStatus.CONFLICT,"Token Expired");
         }
         return new ResponeModelJson(HttpStatus.OK,"Done");
+    }
+
+
+    @Override
+    public ResponeModelJson updateProfileUser(CustomerModel customerModel) {
+        Optional<Customer> customerFound= customerRepository.findById(customerModel.getCustomerId());
+        if(customerFound.isPresent()){
+            if(customerModel.getCustomerLastName() != null){
+                customerFound.get().setCustomerLastName(customerModel.getCustomerLastName());
+            }
+            if(customerModel.getCustomerFirstName() != null){
+                customerFound.get().setCustomerFirstName(customerModel.getCustomerFirstName());
+            }
+            if(customerModel.getCustomerPhone() != null){
+                customerFound.get().setCustomerPhone(customerModel.getCustomerPhone());
+            }
+            if(customerModel.getCustomerEmail() != null){
+                customerFound.get().setCustomerEmail(customerModel.getCustomerEmail());
+            }
+
+            if(customerModel.isEnableStatus()){
+                customerFound.get().setEnableStatus(customerModel.isEnableStatus());
+            }
+            if(customerModel.getPassword() != null){
+                customerFound.get().setPassword(customerModel.getPassword());
+            }
+            return new ResponeModelJson(HttpStatus.OK,"Updated Successfully",customerRepository.save(customerFound.get()));
+        }
+
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Customer Id");
     }
 }

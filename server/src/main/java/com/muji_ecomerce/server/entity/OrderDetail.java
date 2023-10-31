@@ -2,8 +2,17 @@ package com.muji_ecomerce.server.entity;
 
 import com.muji_ecomerce.server.utils.Order_Product_Key;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class OrderDetail {
     @EmbeddedId
     Order_Product_Key id;
@@ -22,7 +31,9 @@ public class OrderDetail {
 
     private int quantityOrdered;
 
-    private float priceEachProduct;
+
+
+//    private float priceEachProduct;
 
 
 }
