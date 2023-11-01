@@ -8,6 +8,8 @@ import com.muji_ecomerce.server.repository.CustomerRepository;
 import com.muji_ecomerce.server.repository.VerifyTokenRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +73,13 @@ public class CustomerServiceImplement implements CustomerService{
     @Override
     public ResponeModelJson FetchAllCustomer() {
         return new ResponeModelJson(HttpStatus.OK,"OKE",customerRepository.findAll());
+    }
+
+    @Override
+    public ResponeModelJson FetchPaginationCustomer(int _page, int _limit) {
+        Page<Customer> customerPage = customerRepository.findAll(PageRequest.of(_page - 1, _limit));
+        List<Customer> customers = customerPage.getContent();
+        return new ResponeModelJson(HttpStatus.OK, "OKE", customers);
     }
 
 
@@ -168,7 +177,7 @@ public class CustomerServiceImplement implements CustomerService{
 
     @Override
     public ResponeModelJson emailResetPassword(String emailCustomer) throws MessagingException {
-        Optional<Customer> customerFound = customerRepository.findByCustomerEmail(emailCustomer);
+        Optional<Customer> customerFound = customerRepository.findOptionalByCustomerEmail(emailCustomer);
         if(customerFound.isPresent()){
             String uuidToken = UUID.randomUUID().toString();
             emailService.sendMailResetPassword(emailCustomer,"Reset Email",uuidToken);

@@ -1,0 +1,78 @@
+catorgoryid,image_category,name_category,parent_id,product_line
+100,"","Áo nam",NULL,1
+101,"","Quần nam",NULL,1
+102,"","Đồ bộ nam",NULL,1
+103,"","Đồ mặc trong nam",NULL,1
+104,"","Phụ kiện nam",NULL,1
+200,"","Áo nữ",NULL,2
+201,"","Quần nữ",NULL,2
+202,"","Đồ mặc trong nữ",NULL,2
+203,"","Chân váy nữ",NULL,2
+204,"","Đầm nữ",NULL,2
+300,"","Áo trẻ em",NULL,3
+301,"","Quần trẻ em",NULL,3
+302,"",Đồ bộ trẻ em,NULL,3
+303,"","Chân váy bé gái",NULL,3
+304,"","Đầm bé gái",NULL,3
+1090,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_1_image.png?1698222119318,"
+Áo khoác",200,2
+1857,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_2_image.png?1698222119318,"
+Áo thun",200,2
+1014,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_3_image.png?1698222119318,"
+Áo polo",200,2
+1478,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_4_image.png?1698222119318,"
+Áo giữ nhiệt",202,2
+1215,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_5_image.png?1698222119318,"
+Quần bò",201,2
+838,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_6_image.png?1698222119318,"
+Chân váy",203,2
+1015,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_7_image.png?1698222119318,"
+Quần âu",201,2
+2130,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_8_image.png?1698222119318,"
+Váy đầm",204,2
+1057,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_9_image.png?1698222119318,"
+Áo sơ mi",200,2
+891,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_10_image.png?1698222119318,"
+Áo len",200,2
+1361,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_11_image.png?1698222119318,"
+Quần đùi",201,2
+1564,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_12_image.png?1698222119318,"
+Áo chống nắng",200,1
+1179,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_1_image.png?1698222119318,"
+Áo khoác",100,1
+1946,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1698222119318,"
+Áo thun",100,1
+1103,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_3_image.png?1698222119318,"
+Áo polo",100,1
+873,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_5_image.png?1698222119318,"
+Bộ đồ",102,1
+1146,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_6_image.png?1698222119318,"
+Áo sơ mi",100,1
+1306,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_7_image.png?1698222119318,"
+Quần kaki",101,1
+1304,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_8_image.png?1698222119318,"
+Quần bò",101,1
+1965,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_9_image.png?1698222119318,"
+Quần âu",101,1
+1450,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_10_image.png?1698222119318,"
+Quần đùi",101,1
+999,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_11_image.png?1698222119318,"
+Đồ lót",103,1
+1661,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_12_image.png?1698222119318,"
+Phụ kiện",104,1
+1449,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_1_image.png?1698222119318,"
+Áo khoác",300,3
+2216,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_2_image.png?1698222119318,"
+Áo thun",300,3
+1143,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_3_image.png?1698222119318,"
+Đồ bộ",302,3
+1373,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_4_image.png?1698222119318,"
+Áo polo",300,3
+1441,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_5_image.png?1698222119318,"
+Chân váy",303,3
+1016,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_6_image.png?1698222119318,"
+Váy đầm",304,3
+1434,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_7_image.png?1698222119318,"
+Quần dài",301,3
+1720,//bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_3_child_8_image.png?1698222119318,"
+Quần đùi",301,3

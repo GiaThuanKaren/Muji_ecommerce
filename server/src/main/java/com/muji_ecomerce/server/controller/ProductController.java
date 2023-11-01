@@ -5,6 +5,7 @@ import com.muji_ecomerce.server.model.OptionValueModel;
 import com.muji_ecomerce.server.model.ProductModal;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,19 +41,47 @@ public class ProductController {
         return productService.deleteProductById(id);
     }
 
-    @GetMapping("/getbyidcategories")
-    private ResponeModelJson getByIdCategories(@RequestParam("idcategories") Long idCategories){
-        return productService.getProductByIdCategories(idCategories);
+//    @GetMapping("/getbyidcategories")
+//    private ResponeModelJson getByIdCategories(@RequestParam("idcategories") Long idCategories){
+//        return productService.getProductByIdCategories(idCategories);
+//    }
+
+    @GetMapping("/getbyidcategoriesfilter")
+    private ResponeModelJson getAllByIdCategoriesFilter(
+            HttpServletRequest request,
+            @RequestParam(required = false) Long _idCategories,
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit,
+            @RequestParam(required = false) String _name,
+            @RequestParam(required = false) String[] _sizes,
+            @RequestParam(required = false) String _price,
+            @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
+        if (_idCategories != null && _page == null && _limit == null && _name == null && _sizes == null && _price == null && _sort == null) {
+            return productService.getProductByIdCategories(_idCategories);
+        } else {
+            return productService.getProductByIdCategoriesAndFilter(_page, _limit, _idCategories, _name, _sizes, _price, _sort);
+        }
     }
 
 
     @GetMapping("/getproductbyid")
-    private ResponeModelJson getDetailProductById(@RequestParam("productid") Long produductID){
+    private ResponeModelJson getDetailProductById(@RequestParam("productid") Long produductID) {
         return productService.getDetailProductByProductId(produductID);
     }
 
     @GetMapping("/fetchAll")
-    private ResponeModelJson getAll(){
-        return productService.FetchAllProduct();
+    private ResponeModelJson getAllByFilter(
+            HttpServletRequest request,
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit,
+            @RequestParam(required = false) String _name,
+            @RequestParam(required = false) String[] _sizes,
+            @RequestParam(required = false) String _price,
+            @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
+        if (!request.getParameterMap().isEmpty()) {
+            return productService.FetchPaginationProduct(_page, _limit, _name, _sizes, _price, _sort);
+        } else {
+            return productService.FetchAllProduct();
+        }
     }
 }

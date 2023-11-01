@@ -2,6 +2,8 @@ package com.muji_ecomerce.server.repository;
 
 import com.muji_ecomerce.server.entity.Customer;
 import com.muji_ecomerce.server.model.ResponeModelJson;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
     @Query(value = "select * from verification_token_customer,customer where verification_token_customer.customer_id = customer.customer_id and  customer.customer_email = :email" ,nativeQuery = true)
     List<Map<String,Object>> findTokenByEmailCustomer(@Param("email") String email);
 
-    Optional<Customer> findByCustomerEmail(String email);
+    Optional<Customer> findOptionalByCustomerEmail(String email);
+
+    Customer findByCustomerEmail(String email);
 
 }

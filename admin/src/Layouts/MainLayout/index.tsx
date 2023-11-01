@@ -1,4 +1,5 @@
 import { icon } from '@fortawesome/fontawesome-svg-core'
+import { type } from 'os'
 import React from 'react'
 import { Header } from 'src/Components'
 import DropOutItem from 'src/Components/DropOutItem'
@@ -7,12 +8,47 @@ import { PermissionResponeModel } from 'src/Model/apiModel'
 import { FindPermissionByRole } from 'src/services/api/permission'
 import { ICON, IconSolid } from 'src/utils'
 import { routingLink } from 'src/utils/routingLink'
-
+import { LiaUser } from 'react-icons/lia'
+import { PiShirtFolded } from 'react-icons/pi'
+import { IoShirtOutline } from 'react-icons/io5'
+import { LiaShippingFastSolid } from 'react-icons/lia'
+import { SiAdminer } from 'react-icons/si'
+import { PiOptionLight } from 'react-icons/pi'
+import { LiaProductHunt } from 'react-icons/lia'
+import { LuLayoutDashboard } from 'react-icons/lu'
+import { CiLogout } from 'react-icons/ci'
 interface Props {
     children: React.ReactNode
     errorFetch?: boolean
 }
 
+enum IconFunction {
+    CATEGORIES = "danhmucsanpham",
+    OPTION = "thuoctinh",
+    USER = "nguoidung",
+    PRODUCT = "sanpham",
+    SHIPPING = "donhang",
+    PERMISSION = "phanquyen"
+}
+
+const HandleIconFunction  = (icon: IconFunction) => {
+    switch (icon) {
+        case IconFunction.CATEGORIES:
+            return <LiaProductHunt style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+        case IconFunction.OPTION:
+            return <PiOptionLight style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+        case IconFunction.USER:
+            return <LiaUser style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+        case IconFunction.PRODUCT:
+            return <IoShirtOutline style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+        case IconFunction.SHIPPING:
+            return <LiaShippingFastSolid style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+        case IconFunction.PERMISSION:
+            return <SiAdminer style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+        default:
+            return <LuLayoutDashboard style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+    }
+}
 
 function ErrorFetching() {
     return <>
@@ -53,10 +89,10 @@ function MainLayout({ children, errorFetch }: Props) {
     
     let data: DropOutSideBarItem[] = rolePermission.map((item: PermissionResponeModel, index: number) => ({
         // [
-        icon: <ICON icon={IconSolid.faHome} />,
+        icon: HandleIconFunction(item.slug),
         title: item.function_name,
         childrenItem: [],
-        link: routingLink[item.slug]
+        link: routingLink[item.slug],
     }));
         
         // {
@@ -175,8 +211,15 @@ function MainLayout({ children, errorFetch }: Props) {
     return (
         <>
             <div className='flex max-w-screen h-screen'>
-                <div className={'h-full overflow-y-auto ' + `${openSideBarUser ? " basis-1/6" : " hidden"}`}>
-                    <div className='w-full min-h-[100vh] py-3 '>
+                <div className={'h-full overflow-y-auto transition-all ease-in-out duration-500 ' + `${openSideBarUser ? " w-[220px]" : " w-[56px] bg-slate-200"}`}>
+                    <div className='w-full py-5 '>
+                        <div className='px-3 py-6'>
+                            <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/logo.svg?1698399319969" alt="" />
+                        </div>
+                        <div className='px-2 w-full h-[10px] '>
+                            <div className='bg-gray-400 w-full h-[1px]'></div>
+                        </div>
+                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-gray-500'>Main</p>
                         {
                             data.map((item: DropOutSideBarItem, index: number) => {
                                 return <>
@@ -184,8 +227,16 @@ function MainLayout({ children, errorFetch }: Props) {
                                 </>
                             })
                         }
+                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-gray-500'>Oth</p>
+                        <DropOutItem 
+                            icon={<CiLogout style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />}
+                            title='Logout'
+                            link='/logout'
+                            childrenItem={[]}
+                        />
                     </div>
                 </div>
+                
                 <div className={'h-full overflow-y-auto   relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}`}>
                     <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
                     {
@@ -196,6 +247,7 @@ function MainLayout({ children, errorFetch }: Props) {
                     }
                 </div>
             </div>
+            
         </>
     )
 }

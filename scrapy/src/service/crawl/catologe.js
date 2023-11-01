@@ -5,40 +5,64 @@ const axios = require("axios").default
 
 
 const { stringify } = require("csv-stringify");
-const PageURL = "https://tiki.vn/";
+const PageURL = "https://yody.vn/";
+
 const GetCatologe = async function () {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(PageURL);
     const GetCatologe = await page.evaluate(() => {
-        const CatologeItemEle = document.querySelectorAll(
-            ".styles__StyledListItem-sc-w7gnxl-0.cjqkgR:nth-child(2) a"
-        );
-        let resutl = [];
-        CatologeItemEle.forEach((item, index) => {
-            const Img = item.querySelector("img");
-            resutl.push({
-                idCategorie: item.getAttribute("href")?.replace("https://tiki.vn", "").split("/")[2],
-                link: item.getAttribute("href")?.replace("https://tiki.vn", ""),
-                title: item.getAttribute("title"),
-                img: Img?.getAttribute("src")?.toString(),
-                originalLink: item.getAttribute("href"),
+        // const NavBarItem = document.querySelector(
+        //     ".header-nav .item_big:first-child"
+        // )
+        // const CatologeItemEle = NavBarItem.querySelectorAll(
+        //     ".nav-item.has-mega"
+        // );
+
+        const CategoriesElement = document?.querySelectorAll(".menu_silebar_wrapper .menu_silebar_list .menu_silebar_item");
+
+        let result = [];
+        CategoriesElement.forEach((item, index) => {
+            
+            // Function convert Categories
+            function ConvertToASCII(stringConvert) {
+                let sum = 0;
+                for (let i = 0; i < stringConvert.length; i++) {
+                    let asc = stringConvert.charCodeAt(i);
+                    sum += asc; 
+                }
+                return sum;
+            }
+
+            let idCategoriesAndLink = item?.querySelector(".category_item").getAttribute("href")
+            let thumbnail = item?.querySelector(".image img").getAttribute("src");
+            let title = item?.querySelector(".category_item .title").innerHTML;
+
+            result.push({
+                catorgoryid: ConvertToASCII(idCategoriesAndLink),
+                // image_category: thumbnail,
+                // name_category: title,
+                // parent_id: null,
+                // product_line: 1,
+                // linkParent: ParentCateloge.getAttribute("href"),
+                linkChild: "https://yody.vn" + idCategoriesAndLink,
+                // parentCateloge: ParentCateloge.getAttribute("title"),
             });
         });
-        return resutl;
-    });
 
+        return result;
+    });
+    
     await browser.close();
     return GetCatologe;
 }
 
-const GetListProductFromCatologe = async function (link, numberPage = 3, filenamesub) {
-    let Product = [];
 
+const GetListProductFromCatologe = async function (link, numberPage = 1, idCategory) {
+    let Product = [];
 
     try {
         for (var numpage = 1; numpage <= numberPage; numpage++) {
-
             const browser = await puppeteer.launch({
                 headless: true
             });
@@ -46,65 +70,68 @@ const GetListProductFromCatologe = async function (link, numberPage = 3, filenam
             const url = `${link}?page=${numpage}`
             await page.goto(url);
             await autoScroll(page);
-            const ListProduct = await page.evaluate(async () => {
+
+            console.log('link -> ', url);
+
+            console.log('idCate -> ', idCategory);
+            
+            const ListProduct = await page.evaluate(async (idCategory) => {
                 let resutl = [];
+                let productSku = [];
 
-                const ListProductEle = document.querySelectorAll(".ProductList__NewWrapper-sc-1dl80l2-0.jXFjHV .product-item")
+                // window.location.href -> https://yody.vn/ao-polo-nu?q=collections:2735856&page=2&view=grid
+                const ListProductEle = document?.querySelectorAll(".variants.product-action.wishItem")
+
                 ListProductEle.forEach((item, index) => {
-                    const urlParams = new URLSearchParams(window.location.search);
+                    const urlParams = new URLSearchParams(window.location.search); // ?page=2
+                    const myParam = urlParams.get('page'); // 2
+                    let id = item.querySelector(".product-thumbnail").getAttribute("data-id")
+                    let nameProduct = item?.querySelector(".image_thumb  img")?.getAttribute("alt");
+                    let linkProduct = item?.querySelector(".image_thumb").getAttribute("href").toString();
+                    // let price = item?.querySelector(".product-info .price ")?.innerHTML.replace(".000đ", "000");
+                    // let thumbnail = item?.querySelector(".image_thumb > img").getAttribute("src")?.replace("//", "https://").toString();
 
-                    let idCategories = window.location.href.split("/")[4].split("?")[0]
-                    let queryParam = window.location.href.split("/")[3]
-                    console.log(idCategories)
-                    // console.log(idCategories[4])
-                    const myParam = urlParams.get('page');
-                    let img = "";
-                    let linksp = "";
-                    linksp = item?.getAttribute("href").toString();
-                    img = item?.querySelector(".thumbnail .image-wrapper img")?.getAttribute("src");
-                    let altName = item?.querySelector(".thumbnail .image-wrapper img")?.getAttribute("alt");
-                    let idProduct = new URLSearchParams(linksp)
-                    let displayPrice = item?.querySelector(".price-discount__price")?.innerHTML.replace("<sup> ₫</sup>", "");
-                    console.log({
-                        img,
-                        altName,
-                        displayPrice,
-                        page: myParam,
-                        linksp
+                    const ProductVariants = item.querySelectorAll(".product-info .swatch-element");
 
-                    })
-                    let id = idProduct.get("spid")
+                    // ProductVariants.forEach(variants => {
+                    //     let color = variants.querySelector("label").getAttribute("title");
+                    //     let backgroundW38H50 = "";
+                    //     let backgroundSku = variants.querySelector("label").getAttribute("style");
+                    //     let backgroundOriginal = variants.querySelector("label").getAttribute("data-scolor")?.replace("//", "https://").toString();
+
+                    //     if (backgroundSku) backgroundW38H50 = backgroundSku.match(/background-image:url\(["']?([^"']*)["']?\)/gm)
+
+                    //     productSku.push({
+                    //         color,
+                    //         backgroundW38H50,
+                    //         backgroundOriginal
+                    //     })
+                    // })
+
+
                     if (id) {
                         resutl.push({
-                            idCategories,
-                            queryParam,
-                            img,
-                            altName,
-                            displayPrice,
-                            page: myParam,
-                            linksp,
-                            idProduct: id
+                            linkProduct,
+                            // product_id: id,
+                            // name_product: nameProduct,
+                            // product_description: '',
+                            // quantity_stock: 100,
+                            // price,
+                            // thumbnail,
+                            // sku: productSku
+                            // category_id: idCategory
                         })
                     }
-
-
                 })
-
                 return resutl;
-            })
+            }, idCategory)
             await browser.close();
             Product = [...Product, ...ListProduct];
             return Product;
-
         }
     } catch (error) {
 
     }
-    // 
-
-
-
-
 }
 
 
@@ -156,22 +183,28 @@ async function FetchProduct(idCate,page=1){
 
 async function main() {
 
-    const catologeList = await GetCatologe();
-    let products= []
-    for (let i in catologeList) {
-        // console.log(catologeList[i].link.split("/")[1])
-        // console.log()
-        if(catologeList[i].idCategorie.startsWith("c")){
-            console.log(catologeList[i])
-            let result = await FetchProduct(catologeList[i].idCategorie.replace("c",""),15);
-            products = [...products,...result]
-        }
+    // GetListProductFromCatologe("https://yody.vn/ao-polo-nu");
+
+    // Usage example:
+    // const catologeList = await GetCatologe();
+    // let products= []
+    // for (let i in catologeList) {
+    //     // console.log(catologeList[i].link.split("/")[1])
+    //     // console.log()
+    //     if(catologeList[i].idCategorie.startsWith("c")){
+    //         console.log(catologeList[i])
+    //         let result = await FetchProduct(catologeList[i].idCategorie.replace("c",""),15);
+    //         products = [...products,...result]
+    //     }
 
         
-    }
+    // }
+   
+    // Enable
+    // console.log(Object.keys(products[0]))
+    // writeCSV(products,"check1");
 
-    console.log(Object.keys(products[0]))
-    writeCSV(products,"check1");
+
     // console.log(catologeList)
     // const sub1 =await GetDetailSubCatories("https://tiki.vn/ta-bim-cho-be/c2551")
 
@@ -194,7 +227,7 @@ async function main() {
 
 
 
-main()
+// main()
 
 
 

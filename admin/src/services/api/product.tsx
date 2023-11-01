@@ -5,16 +5,20 @@ import { ShowToast } from "src/utils";
 
 
 
-export const FetchAllProduct = async function () {
+export const FetchAllProduct = async function (currentPage?: number, limit?: number) {
     try {
-        let { data } = await axios.get<ResponeModel<ProductResponeModel>>(`${BASE_DEV}/product/fetchAll`)
+        const params = {
+            _page: currentPage,
+            _limit: limit
+        }
+        let { data } = await axios.get<ResponeModel<ProductResponeModel>>(`${BASE_DEV}/product/fetchAll`, { params })
         // let arr = data.data.filter((item: ProductResponeModel) => {
         //     return item.categorie.parentID != null
         // })
         // data.data = arr
         return data
     } catch (error) {
-
+        ShowToast("Failed To Get All Product ", "ERROR")
     }
 }
 

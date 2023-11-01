@@ -42,9 +42,26 @@ export const FetchAllProductLine = async function () {
 }
 
 
-export const GetAllProductByIdCategories = async function (idCategories: number) {
+export const GetAllProductByIdCategories = async function (
+        idCategories: number,
+        currentPage?: number, 
+        limit?: number,
+        price?: string,
+        name?: string,
+        size?: string[],
+    ) {
     try {
-        let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategories?idcategories=${idCategories}`)
+
+        const params = {
+            _page: currentPage,
+            _limit: limit,
+            _idCategories: idCategories,
+            _name: name,
+            _price: price,
+            _size: size,
+        }
+
+        let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategoriesfilter`, { params })
         console.log(data)
         return data
     } catch (error) {

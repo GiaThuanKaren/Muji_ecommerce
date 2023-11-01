@@ -11,6 +11,8 @@ public interface CustomerService {
     ResponeModelJson loginCustomer(CustomerModel customerModel);
     ResponeModelJson FetchAllCustomer();
 
+    ResponeModelJson FetchPaginationCustomer(int _page, int _limit);
+
     void saveVerifycationToken(String token, Customer customer);
 
     ResponeModelJson validateToken(String token);
