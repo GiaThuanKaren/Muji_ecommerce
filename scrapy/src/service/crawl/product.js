@@ -18,45 +18,52 @@ const GetDetailProduct = async function (link) {
             const SwatchSize = InforProduct?.querySelectorAll(".swatch-size.swatch .swatch-element");
             const SwatchColor = InforProduct?.querySelectorAll(".swatch-color.swatch .swatch-element");
 
-            SwatchColor?.forEach((sizeItem, index) => {
-                function ConvertToASCII(stringConvert) {
-                    let sum = 0;
-                    for (let i = 0; i < stringConvert.length; i++) {
-                        let asc = stringConvert.charCodeAt(i);
-                        sum += asc; 
-                    }
-                    return sum;
-                }
+            let idProduct = DetailProductElement?.querySelector(".sapo-product-reviews-badge").getAttribute("data-id"); 
+            // in forEach
 
-                const LabelVariants = sizeItem?.querySelector("label");
+            result.push({
+                option_id: 1,
+                product_id: idProduct,
+            })
+
+            // SwatchColor?.forEach((sizeItem, index) => {
+            //     function ConvertToASCII(stringConvert) {
+            //         let sum = 0;
+            //         for (let i = 0; i < stringConvert.length; i++) {
+            //             let asc = stringConvert.charCodeAt(i);
+            //             sum += asc; 
+            //         }
+            //         return sum;
+            //     }
+
+            //     const LabelVariants = sizeItem?.querySelector("label");
     
-                let backgroundOriginal = "";
-                let idSku = sizeItem?.getAttribute("data-sku")
-                // let thumbnail = ThumbnailProduct.getAttribute("src");
-                let backgroundSku = sizeItem?.querySelector("span")?.getAttribute("style")
-                // let nameProduct = DetailProductElement?.querySelector(".title-head")?.innerHTML;
-                let idProduct = DetailProductElement?.querySelector(".sapo-product-reviews-badge").getAttribute("data-id");
-                let price = DetailProductElement?.querySelector(".product-price")?.innerHTML.replace(".000đ", "000");
-                let size = LabelVariants?.getAttribute("title");
-                // let color = LabelVariants.getAttribute("title");
+            //     let backgroundOriginal = "";
+            //     let idSku = sizeItem?.getAttribute("data-sku")
+            //     // let thumbnail = ThumbnailProduct.getAttribute("src");
+            //     let backgroundSku = sizeItem?.querySelector("span")?.getAttribute("style")
+            //     // let nameProduct = DetailProductElement?.querySelector(".title-head")?.innerHTML;
+            //     let price = DetailProductElement?.querySelector(".product-price")?.innerHTML.replace(".000đ", "000");
+            //     let size = LabelVariants?.getAttribute("title");
+            //     // let color = LabelVariants.getAttribute("title");
     
-                if (backgroundSku) backgroundOriginal = backgroundSku.match(/background-image:url\(([^)]+)\)/)[1]
-                backgroundOriginal = backgroundOriginal.replace("//", "https://")
-                backgroundOriginal = backgroundOriginal.replace("/thumb/small", "");
+            //     if (backgroundSku) backgroundOriginal = backgroundSku.match(/background-image:url\(([^)]+)\)/)[1]
+            //     backgroundOriginal = backgroundOriginal.replace("//", "https://")
+            //     backgroundOriginal = backgroundOriginal.replace("/thumb/small", "");
                 
-                result.push({
-                    product_id: idProduct,
-                    sku_id: ConvertToASCII(idSku),
-                    image_product: backgroundOriginal,
-                    price,
-                    quantity_stock: 100,
-                    sku_name: idSku,
-                    // option_id: 1,
-                    // value_id: index + 1,
-                    // values_name: size,
-                    // values_name: size
-                })
-            });
+            //     result.push({
+            //         option_id: 1,
+            //         product_id: idProduct,
+            //         // sku_id: ConvertToASCII(idSku),
+            //         // image_product: backgroundOriginal,
+            //         // price,
+            //         // quantity_stock: 100,
+            //         // sku_name: idSku,
+            //         // value_id: index + 1,
+            //         // values_name: size,
+            //         // values_name: size
+            //     })
+            // });
 
         return result;
     })

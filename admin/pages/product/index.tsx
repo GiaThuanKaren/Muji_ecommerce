@@ -15,7 +15,6 @@ const PRODUCT_PER_PAGE = 5;
 function GetAllProduct() {
     const [currentPage, setCurrentPage] = React.useState(1);
     const [getTotalCount, setGetTotalCount] = React.useState(0);
-    const [indexPage, setIndexPage] = React.useState(1);
 
     const [properties, setProperties] = React.useState<ProductResponeModel[]>([])
     const [optionList, SetOptionList] = React.useState<OptionModelRespone[]>([])
@@ -32,30 +31,6 @@ function GetAllProduct() {
 
         })
     }
-
-    const statusStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '5px',
-        margin: '5px',
-        cursor: 'pointer',
-    }
-    const dotStyle = {
-        width: '10px',
-        height: '10px',
-        borderRadius: '50%',
-        marginRight: '10px',
-    };
-    
-    const activeDotStyle = {
-        ...dotStyle,
-        backgroundColor: 'rgb(21 128 61)',
-    };
-
-    const inactiveDotStyle = {
-        ...dotStyle,
-        backgroundColor: 'rgb(185 28 28)',
-    };
 
     const onPageChange = (page: number) => {
         setCurrentPage(page)

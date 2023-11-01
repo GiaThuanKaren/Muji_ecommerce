@@ -111,8 +111,32 @@ public class ProductServiceImplement implements  ProductService{
 
     @Override
     public ResponeModelJson FetchPaginationProduct(
-            int _page, int _limit, String _name, String[] _sizes, Double _minPrice, Double _maxPrice, String[] _sort
+            int _page, int _limit, String _name, String[] _sizes, String _price, String[] _sort
     ) {
+
+        double _minPrice = 0;
+        double _maxPrice = 0;
+
+        if (_price.equals("<100000")) {
+            _minPrice = 0;
+            _maxPrice = 100000;
+        } else if (_price.equals(">=100000 AND <=200000")) {
+            _minPrice = 100000;
+            _maxPrice = 200000;
+        } else if (_price.equals(">=200000 AND <=350000")) {
+            _minPrice = 200000;
+            _maxPrice = 350000;
+        } else if (_price.equals(">=350000 AND <=500000")) {
+            _minPrice = 350000;
+            _maxPrice = 500000;
+        } else if (_price.equals(">=500000 AND <=700000")) {
+            _minPrice = 500000;
+            _maxPrice = 700000;
+        } else if (_price.equals(">700000")) {
+            _minPrice = 700000;
+            _maxPrice = 999999999;
+        }
+
         try {
             List<Sort.Order> orders = new ArrayList<Sort.Order>();
 
@@ -129,10 +153,6 @@ public class ProductServiceImplement implements  ProductService{
             Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
 
             Page<Product> productPage;
-//            if (_name == null)
-//                productPage = productRepository.findAll(pageable);
-//            else
-//                productPage = productRepository.findByNameProductContaining(_product, pageable);
             productPage = applyFilters(_name, _sizes, _minPrice, _maxPrice, pageable);
 
             products = productPage.getContent();
@@ -144,37 +164,9 @@ public class ProductServiceImplement implements  ProductService{
         }
     }
 
-    private Page<Product> applyFilters(String _name, String[] _sizes, Double _minPrice, Double _maxPrice, Pageable pageable) {
-//        Specification<Product> spec = Specification.where(null);
+    private Page<Product> applyFilters(String _name, String[] _sizes, double _minPrice, double _maxPrice, Pageable pageable) {
 
-        Specification<Product> spec = Specification.where(ProductSpec.getSpec(_name));
-
-
-//        if (_name != null) {
-//            spec = spec.and((rootName, query, criteriaBuilder) ->
-//                criteriaBuilder.like(rootName.get("nameProduct"), "%" + _name + "%")
-//            );
-//        }
-//
-//        if (_sizes != null && _sizes.length > 0) {
-//            for (String size : _sizes) {
-//                spec = spec.or((rootSize, query, criteriaBuilder) ->
-//                    criteriaBuilder.equal(productOption_valueJoin.get("values_name"), size)
-//                );
-//            }
-//        }
-
-//        if (_minPrice != null) {
-//            spec = spec.and((rootMinPrice, query, criteriaBuilder) ->
-//                    criteriaBuilder.greaterThanOrEqualTo(productOption_valueJoin.get("price"), _minPrice)
-//            );
-//        }
-//
-//        if (_maxPrice != null) {
-//            spec = spec.and((rootMaxPrice, query, criteriaBuilder) ->
-//                    criteriaBuilder.lessThanOrEqualTo(productOption_valueJoin.get("price"), _maxPrice)
-//            );
-//        }
+        Specification<Product> spec = Specification.where(ProductSpec.getSpec(_name)).and(ProductSpec.productOptionValue(_sizes, _minPrice, _maxPrice));
 
         return productRepository.findAll(spec, pageable);
     }
@@ -235,6 +227,69 @@ public class ProductServiceImplement implements  ProductService{
             return new ResponeModelJson(HttpStatus.OK,"OKE",productListFound);
         else
             return new ResponeModelJson(HttpStatus.OK,"Can not find any product with this categories id",productListFound);
+    }
+
+    @Override
+    public ResponeModelJson getProductByIdCategoriesAndFilter(
+            Integer _page, Integer _limit, Long _idCategories, String _name, String[] _sizes, String _price, String[] _sort
+    ) {
+
+        double _minPrice = 0;
+        double _maxPrice = 0;
+
+        if (_price != null ) {
+
+            if (_price.equals("<100000")) {
+                _minPrice = 0;
+                _maxPrice = 100000;
+            } else if (_price.equals(">=100000 AND <=200000")) {
+                _minPrice = 100000;
+                _maxPrice = 200000;
+            } else if (_price.equals(">=200000 AND <=350000")) {
+                _minPrice = 200000;
+                _maxPrice = 350000;
+            } else if (_price.equals(">=350000 AND <=500000")) {
+                _minPrice = 350000;
+                _maxPrice = 500000;
+            } else if (_price.equals(">=500000 AND <=700000")) {
+                _minPrice = 500000;
+                _maxPrice = 700000;
+            } else if (_price.equals(">700000")) {
+                _minPrice = 700000;
+                _maxPrice = 999999999;
+            }
+        }
+
+        try {
+            List<Sort.Order> orders = new ArrayList<Sort.Order>();
+
+            if (_sort[0].contains(",")) {
+                for (String sortOrder : _sort) {
+                    String[] __sort = sortOrder.split(",");
+                    orders.add(new Sort.Order(getSortDirection(__sort[1]), __sort[0]));
+                }
+            } else {
+                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
+            }
+
+            List<Product> productListFound = productRepository.findByCategoriesCatorgoryID(_idCategories);
+
+            if (_limit != null && _page != null ) {
+
+                Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
+
+                Page<Product> productPage;
+
+                productPage = applyFilters(_name, _sizes, _minPrice, _maxPrice, pageable);
+
+                productListFound = productPage.getContent();
+            }
+
+            return new ResponeModelJson(HttpStatus.OK, "OKE", productListFound);
+
+        } catch (Exception e) {
+            return new ResponeModelJson(HttpStatus.INTERNAL_SERVER_ERROR, "FAIL", null);
+        }
     }
 
     @Override

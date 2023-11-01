@@ -15,7 +15,7 @@ const HomeCrawl = async function () {
         if(data.length > 0){
             for(let product =0;product<data.length;product++){
                 let productItem = await GetDetailProduct(`https://yody.vn${data[product].linkProduct}`)
-                writeCSV(productItem, "RE_PRODUCT_SKU")
+                writeCSV(productItem, "Product_option")
             }
         }
         

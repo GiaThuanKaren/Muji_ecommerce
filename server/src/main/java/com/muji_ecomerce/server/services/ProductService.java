@@ -12,7 +12,7 @@ public interface ProductService {
 
     ResponeModelJson FetchAllProduct();
 
-    ResponeModelJson FetchPaginationProduct(int _page, int _limit, String _name, String[] _sizes, Double _minPrice, Double _maxPrice, String[] _sort);
+    ResponeModelJson FetchPaginationProduct(int _page, int _limit, String _name, String[] _sizes, String _price, String[] _sort);
 
     ResponeModelJson updateProductById(ProductModal productModal);
 
@@ -22,4 +22,8 @@ public interface ProductService {
 
 
     ResponeModelJson getDetailProductByProductId(Long ProductId);
+
+    ResponeModelJson getProductByIdCategoriesAndFilter(
+            Integer _page, Integer _limit, Long _idCategories, String _name, String[] _sizes, String _price, String[] _sort
+    );
 }

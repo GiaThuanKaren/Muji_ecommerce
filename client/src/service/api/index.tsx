@@ -42,9 +42,26 @@ export const FetchAllProductLine = async function () {
 }
 
 
-export const GetAllProductByIdCategories = async function (idCategories: number) {
+export const GetAllProductByIdCategories = async function (
+        idCategories: number,
+        currentPage?: number, 
+        limit?: number,
+        price?: string,
+        name?: string,
+        size?: string[],
+    ) {
     try {
-        let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategories?idcategories=${idCategories}`)
+
+        const params = {
+            _page: currentPage,
+            _limit: limit,
+            _idCategories: idCategories,
+            _name: name,
+            _price: price,
+            _size: size,
+        }
+
+        let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategoriesfilter`, { params })
         console.log(data)
         return data
     } catch (error) {
@@ -86,6 +103,10 @@ export const LoginCustomer = async function (loginModel: LoginModel) {
     try {
         let { data } = await axios.post(`${BASE_DEV}/customer/login`, loginModel)
         switch (data.message) {
+            case "Wrong Password": {
+                ShowToast("Wrong Password ", "INFO")
+                return false
+            }
             case "Can not find user accout": {
                 ShowToast("Can not find user accout", "INFO")
                 return false
@@ -159,6 +180,58 @@ export const ResetPasswordCustomer = async function (newPassword: string, token:
 }
 
 
+export const UpdateProductToLocalStorage = function (productCart: ProductCartItem) {
+    try {
+        let previousProduct = FetchDataFromStorageByKey();
+        let result: ProductCartItem | undefined = previousProduct?.product.find((item: ProductCartItem, index: number) => {
+            return item.item.productsku == productCart.item.productsku &&
+                item.item.productId == productCart.item.productId &&
+                item.item.size == productCart.item.size
+        })
+        if (result) {
+            if (productCart.quantity != 0) {
+                for (let item of previousProduct?.product as ProductCartItem[]) {
+
+                    if (item.item.productsku == productCart.item.productsku &&
+                        item.item.productId == productCart.item.productId &&
+                        item.item.size == productCart.item.size) {
+                        item.quantity = productCart.quantity
+                        break
+                    }
+                }
+                localStorage.setItem(Key_Product_Storage, JSON.stringify(previousProduct))
+            } else {
+                let NewData: ProductCartItem[] = []
+                for (let item of previousProduct?.product as ProductCartItem[]) {
+
+                    if (item.item.productsku == productCart.item.productsku &&
+                        item.item.productId == productCart.item.productId &&
+                        item.item.size == productCart.item.size) {
+
+
+                    } else {
+                        NewData.push(item)
+                    }
+                }
+                previousProduct={
+                    ...previousProduct,
+                    product:NewData
+                }
+                localStorage.setItem(Key_Product_Storage, JSON.stringify(previousProduct))
+            }
+
+
+        } else {
+
+
+
+        }
+    } catch (error) {
+
+    }
+}
+
+
 
 export const AddProductToLocalStorage = function (productCart: ProductCartItem) {
     try {
@@ -173,8 +246,8 @@ export const AddProductToLocalStorage = function (productCart: ProductCartItem) 
     } catch (error) {
         console.log(error)
     }
-}
 
+}
 
 export const FetchDataFromStorageByKey = function () {
     try {

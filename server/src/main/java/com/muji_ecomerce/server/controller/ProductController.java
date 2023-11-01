@@ -41,9 +41,26 @@ public class ProductController {
         return productService.deleteProductById(id);
     }
 
-    @GetMapping("/getbyidcategories")
-    private ResponeModelJson getByIdCategories(@RequestParam("idcategories") Long idCategories){
-        return productService.getProductByIdCategories(idCategories);
+//    @GetMapping("/getbyidcategories")
+//    private ResponeModelJson getByIdCategories(@RequestParam("idcategories") Long idCategories){
+//        return productService.getProductByIdCategories(idCategories);
+//    }
+
+    @GetMapping("/getbyidcategoriesfilter")
+    private ResponeModelJson getAllByIdCategoriesFilter(
+            HttpServletRequest request,
+            @RequestParam(required = false) Long _idCategories,
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit,
+            @RequestParam(required = false) String _name,
+            @RequestParam(required = false) String[] _sizes,
+            @RequestParam(required = false) String _price,
+            @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
+        if (_idCategories != null && _page == null && _limit == null && _name == null && _sizes == null && _price == null && _sort == null) {
+            return productService.getProductByIdCategories(_idCategories);
+        } else {
+            return productService.getProductByIdCategoriesAndFilter(_page, _limit, _idCategories, _name, _sizes, _price, _sort);
+        }
     }
 
 
@@ -59,11 +76,10 @@ public class ProductController {
             @RequestParam(required = false) Integer _limit,
             @RequestParam(required = false) String _name,
             @RequestParam(required = false) String[] _sizes,
-            @RequestParam(required = false) Double _minPrice,
-            @RequestParam(required = false) Double _maxPrice,
-            @RequestParam(defaultValue = "productId,desc") String[] _sort) {
+            @RequestParam(required = false) String _price,
+            @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
         if (!request.getParameterMap().isEmpty()) {
-            return productService.FetchPaginationProduct(_page, _limit, _name, _sizes, _minPrice, _maxPrice, _sort);
+            return productService.FetchPaginationProduct(_page, _limit, _name, _sizes, _price, _sort);
         } else {
             return productService.FetchAllProduct();
         }

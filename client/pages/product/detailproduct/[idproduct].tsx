@@ -3,7 +3,9 @@ import React from 'react'
 import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
 import { OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model';
+import { useGlobal } from 'src/hook';
 import { AddProductToLocalStorage, GetDetailProductById } from 'src/service/api';
+import { _addProductToCart } from 'src/store/app/slices/cartSlices';
 import { ProductCartItem } from 'src/utils/constant';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
@@ -13,18 +15,23 @@ interface ProductSkuChooseInf {
     productSkuId: string,
     size: string,
     skuName: string
-    productId?: string
+    productId?: string,
+    price: number
 }
 
 
 function DetailProductById() {
     const { query, isReady } = useRouter()
+    const {
+        globalState, dispatch
+    } = useGlobal()
     const [productSkuChoose, setProductSkuChoose] = React.useState<ProductSkuChooseInf>({
         img: "",
         productSkuId: "",
         size: "",
         skuName: "",
-        productId: ""
+        productId: "",
+        price: 0
     })
     const [product, setProduct] = React.useState<ProductModel>()
     // const [currentProductSku, setCurrentProductSku] = React.useState<ProductSkuModel>()
@@ -33,6 +40,7 @@ function DetailProductById() {
     const [chooseSize, setChooseSize] = React.useState(
         ""
     )
+
     async function FetchApi() {
         try {
             let result = await GetDetailProductById(query?.idproduct as string);
@@ -42,7 +50,8 @@ function DetailProductById() {
                 productSkuId: result?.data.productSkus[0].id.skuId.toString() as string,
                 size: "",
                 skuName: result?.data.productSkus[0].skuName as string,
-                productId: query.idproduct as string
+                productId: query.idproduct as string,
+                price: result?.data.productSkus[0].price as number
             })
             setProduct(result?.data as ProductModel)
         } catch (error) {
@@ -57,13 +66,15 @@ function DetailProductById() {
                     image: productSkuChoose.img,
                     productId: productSkuChoose.productId as string,
                     productsku: productSkuChoose.productSkuId,
-                    size: productSkuChoose.size
-
+                    size: productSkuChoose.size,
+                    name: product?.nameProduct as string,
+                    price: productSkuChoose.price
                 },
                 quantity: numberProductAddToCard
             }
             console.log(productAddCart)
-            AddProductToLocalStorage(productAddCart)
+            dispatch(_addProductToCart(productAddCart))
+            // AddProductToLocalStorage(productAddCart)
         } catch (error) {
 
         }
@@ -168,16 +179,23 @@ function DetailProductById() {
                                     Màu Sắc : Xanh Biển
 
                                 </h3>
+                                <h3 className='font-medium'>
+                                    {
+                                        productSkuChoose.price
+                                    }
+                                </h3>
                                 <div className='flex flex-wrap w-full my-3'>
                                     {
                                         product?.productSkus.map((item: ProductSkuModel) => {
                                             return <>
                                                 <div onClick={() => {
                                                     setProductSkuChoose({
+                                                        ...productSkuChoose,
                                                         img: item.imageProduct,
                                                         productSkuId: item.id.skuId.toString() as string,
                                                         size: "",
-                                                        skuName: item.skuName
+                                                        skuName: item.skuName,
+                                                        price: item.price
                                                     })
                                                 }} className={'h-16 w-12 my-2 mx-2 border-[3px] hover:border-yellow-500  ' + `${item.id.skuId.toString() == productSkuChoose.productSkuId ? " border-[2px] border-yellow-500  " : " "}`}>
                                                     <img className='w-full h-full object-contain'
@@ -194,7 +212,9 @@ function DetailProductById() {
                                             item.option.optionID == 252
                                         ) {
                                             return <>
+                                                {/* `${ item.option.optionName} 123  ${ productSkuChoose.size}` */}
                                                 <h3 className='font-medium '>
+
                                                     {
                                                         item.option.optionName
                                                     }
@@ -216,7 +236,7 @@ function DetailProductById() {
 
                                                                     })
                                                                     setChooseSize(item1.valuesName)
-                                                                }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-300"}`}>
+                                                                }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-600"}`}>
                                                                     <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
                                                                         {item1.valuesName}
                                                                     </p>
@@ -460,6 +480,12 @@ function DetailProductById() {
                         <h3>
                             Màu Sắc : Xanh Biển
                         </h3>
+                        <h3 className='font-medium'>
+                            {
+                                productSkuChoose.price
+                            }
+                            đ
+                        </h3>
                         <div className='flex flex-wrap w-full my-3'>
                             {
                                 product?.productSkus.map((item: ProductSkuModel) => {
@@ -471,7 +497,7 @@ function DetailProductById() {
                                                 productSkuId: item.id.skuId.toString() as string,
                                                 size: "",
                                                 skuName: item.skuName,
-
+                                                price: item.price
                                             })
                                         }} className={'h-16 w-12 my-2 mx-2 border-[3px] hover:border-yellow-500  ' + `${item.id.skuId.toString() == productSkuChoose.productSkuId ? " border-[2px] border-yellow-500  " : " "}`}>
                                             <img className='w-full h-full object-contain'
@@ -503,7 +529,9 @@ function DetailProductById() {
                                                 item.option.optionValues.map((item1: OptionValues) => {
                                                     return <>
                                                         <div onClick={() => {
-
+                                                            console.log(
+                                                                item1.valuesName
+                                                            )
                                                             setProductSkuChoose({
                                                                 ...productSkuChoose,
                                                                 size: item1.valuesName

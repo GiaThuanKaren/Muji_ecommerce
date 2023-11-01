@@ -1,28 +1,66 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import { MainLayout } from 'src/Layouts'
 import { Product, ProductModel } from 'src/Model'
-import { ProductMock } from 'src/utils/constant'
+import { FetchDataFromStorageByKey, UpdateProductToLocalStorage } from 'src/service/api'
+import { ProductCart, ProductCartItem, ProductMock } from 'src/utils/constant'
 import { ICON, IconSolid } from 'src/utils/icon'
+import { linkRouting } from 'src/utils/routelink'
+import { useSelector, useDispatch } from "react-redux"
+import { _pickProductToPay, _unPickProductToPay, _updateProductToLocalStorage } from 'src/store/app/slices/cartSlices'
+import { RootState } from 'src/store/app'
+import { useGlobal } from 'src/hook'
+interface CardCartInf extends ProductCartItem {
 
-
-interface CardCartInf {
-    imageProduct?: string,
-    nameProduct?: string,
-    pricePerProduct?: string,
-    quantity?: number
+    onChooseProduct?: (item: ProductCartItem) => any
 }
 
 
-function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: CardCartInf) {
-    const [quantityCart, setQuantityCard] = React.useState<number>(0)
+function CardCart({ item, quantity, onChooseProduct }: CardCartInf) {
+    // const globalState = useSelector((state: RootState) => state)
+
+    // const dispatch = useDispatch();
+    const { dispatch, globalState } = useGlobal()
+    console.log("Global State ", globalState)
+    const checkBoxInputRed = React.useRef<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>(null);
+    const [quantityCart, setQuantityCard] = React.useState<number>(quantity as number)
+    const [totalPrice, setTotalPrice] = React.useState(quantity * item.price)
+    console.log(quantity * item.price)
+    const {
+        push
+    } = useRouter()
+
+    React.useEffect(() => {
+        console.log(checkBoxInputRed.current?.checked)
+    }, [])
     return <>
-        <tr>
+        <tr className='hover:cursor-pointer hover:bg-slate-50 mt-10 transition-all' onClick={() => {
+            // push(`${linkRouting.detailproduct}/${item.productId}`)
+        }} >
+            <td>
+                <input className='p-3 ml-4' onChange={(e) => {
+                    if (e.target.checked) {
+                        dispatch(_pickProductToPay({
+                            item,
+                            quantity
+                        }))
+
+                    } else {
+                        dispatch(_unPickProductToPay({
+                            item,
+                            quantity
+                        }))
+                    }
+
+                    console.log(e.target.checked)
+                }} type='checkbox' ref={checkBoxInputRed} name="" id="" />
+            </td>
             <td className="p-2 whitespace-nowrap">
                 <div className="flex items-center">
                     <div className="w=full h-full flex-shrink-0 mr-2 sm:mr-3">
                         <img
-                            className="h-full w-full object-contain"
-                            src="https://bizweb.dktcdn.net/thumb/compact/100/438/408/products/ao-polo-nam-apm6079-vag-1-yodyvn.jpg"
+                            className="h-20 w-20 object-contain"
+                            src={item.image}
                             width={40}
                             height={40}
                             alt="Alex Shatov"
@@ -30,10 +68,12 @@ function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: Card
                     </div>
                     <div className="font-medium text-gray-800  h-full">
                         <h3 className='mb-10 whitespace-normal'>
-                            Áo Polo Nam Mắt Chim Bo Hiệu Ứng Dệt Nổi
+                            {item.name}
                         </h3>
                         <h3>
-                            Vàng/XL
+                            {
+                                item.size
+                            }
                         </h3>
                     </div>
                 </div>
@@ -45,26 +85,65 @@ function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: Card
                 {/* <div className="text-left">alexshatov@gmail.com</div> */}
             </td>
             <td className="p-2 whitespace-nowrap">
-                <div className="text-left font-medium text-green-500">
-                    $2,890.66
+                <div className="text-left font-medium ">
+                    $ {item.price}
                 </div>
             </td>
             <td className="p-2 whitespace-nowrap">
                 <div className="text-lg text-center">
                     <div className='flex items-center justify-between bg-white border-[1px] border-gray-400 rounded-lg overflow-hidden'>
-                        <ICON onClick={() => {
-                            setQuantityCard(prev => prev + 1)
+                        <ICON onClick={(e) => {
+                            e.stopPropagation()
+                            setQuantityCard(prev => {
+                                dispatch(
+                                    _updateProductToLocalStorage(
+                                        {
+                                            item,
+                                            quantity: prev + 1
+                                        }
+                                    )
+                                )
+                                return prev + 1
+                            }
+                            )
+
                         }} className='bg-white p-2 border-[1px] border-gray-400' icon={IconSolid.faPlus} />
                         <h3 className='bg-white p-1 px-2 '>
                             {/* {quantity} */}
                             {quantityCart}
                         </h3>
-                        <ICON onClick={() => {
-                            setQuantityCard(prev => prev - 1)
+                        <ICON onClick={(e) => {
+                            e.stopPropagation()
+                            setQuantityCard(prev => {
+                                dispatch(
+                                    _updateProductToLocalStorage(
+                                        {
+                                            item,
+                                            quantity: prev - 1
+                                        }
+                                    )
+                                )
+                                return prev - 1
+                            })
+
+
+
 
                         }} className='bg-white p-2 border-[1px] border-gray-400' icon={IconSolid.faMinus} />
                     </div>
                 </div>
+            </td>
+            <td>
+                <h3 className='font-medium text-center'>
+                    {
+                        quantityCart * item.price
+                    }
+                    {
+                        " "
+                    }
+                    đ
+                </h3>
+
             </td>
 
         </tr>
@@ -74,9 +153,25 @@ function CardCart({ imageProduct, nameProduct, pricePerProduct, quantity }: Card
 
 
 function CartProduct() {
+    const { dispatch, globalState } = useGlobal()
     const [productCart, setProductCart] = React.useState<ProductModel[]>([
         ProductMock, ProductMock, ProductMock, ProductMock
     ])
+    const [isLoading, setIsLoading] = React.useState(true);
+    // const [listProduct, setListProduct] = React.useState<ProductCartItem[]>(() => {
+
+    // })
+    const [chooseProduct, setChooseProduct] = React.useState<ProductCartItem[]>([])
+
+    React.useEffect(() => {
+        if (typeof window != undefined) {
+            // let data = FetchDataFromStorageByKey();
+            // console.log(data?.product)
+            // setListProduct(data?.product as ProductCartItem[])
+        }
+    }, [])
+
+
 
     return (
         <>
@@ -93,63 +188,90 @@ function CartProduct() {
                                             Giỏ hàng
                                         </p>
                                         <p className='capitalize'>
-                                            ( {productCart.length + 1} ) sản phẩm
+                                            ( {globalState.cartUser.listProduct.length} ) sản phẩm
                                         </p>
                                     </div>
                                     {/* <CardCart /> */}
-                                    <header className="px-5 py-4 border-b border-gray-100">
+                                    {/* <header className="px-5 py-4 border-b border-gray-100">
                                         <h2 className="font-semibold text-gray-800">Customers</h2>
-                                    </header>
+                                    </header> */}
                                     <div className="p-3">
+
                                         <div className="overflow-x-auto">
-                                            <table className="table-auto w-full">
-                                                <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
-                                                    <tr>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className=" text-left font-medium text-black">
-                                                                Sản phẩm
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className="font-semibold text-left text-transparent">
-                                                                Sản phẩm
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className="font-semibold text-left text-transparent">
-                                                                Sản phẩm
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className=" text-left font-medium text-black">
-                                                                Đơn giá
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className="text-left font-medium text-black">
-                                                                Số lượng
-                                                            </div>
-                                                        </th>
-                                                        <th className="p-2 whitespace-nowrap">
-                                                            <div className=" text-center font-medium text-black">
-                                                                Tổng tiền
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
+                                            {
+                                                globalState.cartUser.listProduct.length == 0 && <>
+                                                    <div className='w-full'>
+                                                        <img
+                                                            className='w-full'
+                                                            src="https://th.bing.com/th/id/OIP.r6aijQ7gtefVW3pa7N_t7AHaFQ?pid=ImgDet&rs=1"
+                                                            alt=""
+                                                        />
+
+                                                        {/* <h3 className='text-center font-medium text-xl my-5'>
+                                                    Giỏ hàng đang bị trống
+                                                </h3> */}
+                                                    </div>
+                                                </>
+                                            }
+                                            {
+                                                globalState.cartUser.listProduct.length > 0 &&
 
 
-                                                <tbody className="text-sm divide-y divide-gray-100">
-                                                    {
-                                                        productCart.map((item: ProductModel, index: number) => {
-                                                            return <>
-                                                                <CardCart />
-                                                            </>
-                                                        })
-                                                    }
+                                                <table className="table-auto w-full">
+                                                    <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                                                        <tr>
+                                                            <th>
 
-                                                </tbody>
-                                            </table>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className=" text-left font-medium text-black">
+                                                                    Sản phẩm
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className="font-semibold text-left text-transparent">
+                                                                    Sản phẩm
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className="font-semibold text-left text-transparent">
+                                                                    Sản phẩm
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className=" text-left font-medium text-black">
+                                                                    Đơn giá
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className="text-left font-medium text-black">
+                                                                    Số lượng
+                                                                </div>
+                                                            </th>
+                                                            <th className="p-2 whitespace-nowrap">
+                                                                <div className=" text-center font-medium text-black">
+                                                                    Tổng tiền
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+
+                                                    <tbody className="text-sm divide-y divide-gray-100">
+                                                        {
+                                                            globalState.cartUser.listProduct.map((item: ProductCartItem, index: number) => {
+                                                                console.log(item)
+                                                                return <>
+                                                                    <CardCart onChooseProduct={() => {
+
+                                                                    }} key={index}    {...item} />
+                                                                </>
+                                                            })
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            }
                                         </div>
                                     </div>
                                     {/* <div className='flex items-center justify-between my-3'>
@@ -183,7 +305,14 @@ function CartProduct() {
                                         </p>
 
                                         <p className='font-medium'>
-                                            224.300 d
+                                            {/* 224.300 d */}
+                                            {
+                                                globalState.cartUser.chooseProduct.reduce((prev, curent, index) => {
+                                                    return prev + curent.item.price
+                                                }, 0)
+                                            }
+                                            {" "}
+                                            đ
                                         </p>
 
                                     </div>
