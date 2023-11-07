@@ -11,5 +11,7 @@ public interface CatogoriesService {
 
     ResponeModelJson updateByID(CategoriesModel categoriesModel);
 
+    ResponeModelJson FetchPaginationCategories(Integer _page, Integer _limit);
+
     boolean DeleteByid(Long id);
 }

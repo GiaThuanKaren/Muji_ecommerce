@@ -166,8 +166,16 @@ function GetAllUser() {
                     "Customer Email",
                     "Enable Status",
                 ]} totalData={properties.length} displayEachPage={4} 
-                
-                children1={
+
+                pageable={
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={getTotalCount}
+                        pageCount={CUSTOM_PER_PAGE}
+                        onPageChange={onPageChange}
+                    />
+                }
+                >
                     <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                         {
                             properties.map((item: CustomerResponeModel, index: number) => {
@@ -213,17 +221,6 @@ function GetAllUser() {
                             })
                         }
                     </tbody>
-                }
-
-                children2={
-                    <Pagination
-                        currentPage={currentPage}
-                        totalCount={getTotalCount}
-                        pageCount={CUSTOM_PER_PAGE}
-                        onPageChange={onPageChange}
-                    />
-                }
-                >
                 </TableComp>}
             </MainLayout>
         </>

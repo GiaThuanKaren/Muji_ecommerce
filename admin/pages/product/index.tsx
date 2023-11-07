@@ -169,7 +169,16 @@ function GetAllProduct() {
                     "Handle",
 
                 ]} totalData={properties.length} displayEachPage={4} 
-                children1={
+                
+                pageable={
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={getTotalCount}
+                        pageCount={PRODUCT_PER_PAGE}
+                        onPageChange={onPageChange}
+                    />
+                }
+                >
                     <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                         {
                             properties.map((item: ProductResponeModel, index: number) => {
@@ -209,17 +218,6 @@ function GetAllProduct() {
                             })
                         }
                     </tbody>
-                }
-                children2={
-                    <Pagination
-                        currentPage={currentPage}
-                        totalCount={getTotalCount}
-                        pageCount={PRODUCT_PER_PAGE}
-                        onPageChange={onPageChange}
-                    />
-                }
-                >
-
                 </TableComp>}
             </MainLayout>
         </>

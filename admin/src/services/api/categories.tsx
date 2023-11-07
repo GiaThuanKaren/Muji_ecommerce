@@ -3,9 +3,13 @@ import { CategoriesModel, CategoriesResponeModel, ResponeModel } from "src/Model
 import { BASE_DEV } from ".";
 import { ShowToast } from "src/utils";
 
-export const FetchAllCategories = async function () {
+export const FetchAllCategories = async function (currentPage?: number, limit?: number) {
     try {
-        let { data } = await axios.get<ResponeModel<CategoriesResponeModel>>(`${BASE_DEV}/categories/fetchAll`)
+        const params = {
+            _page: currentPage,
+            _limit: limit
+        }
+        let { data } = await axios.get<ResponeModel<CategoriesResponeModel>>(`${BASE_DEV}/categories/fetchAll`, { params })
         let arr = data.data.filter((item: CategoriesResponeModel) => {
             return item.parentID != null
         })

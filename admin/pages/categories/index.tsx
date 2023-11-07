@@ -1,13 +1,19 @@
 import Link from 'next/link';
 import React from 'react'
 import { InputComp, ModalWrapper, TableComp } from 'src/Components';
+import { Pagination } from 'src/Components/Pagination';
 import { MainLayout } from 'src/Layouts'
 import { CategoriesModel, CategoriesResponeModel } from 'src/Model/apiModel'
 import { DeleteCatorgiesById, FetchAllCategories, UpdateCategoriesById } from 'src/services/api/categories';
 import { ICON, IconSolid } from 'src/utils';
 import { routingLink } from 'src/utils/routingLink';
 
+const CATEGORY_PER_PAGE = 5;
+
 function CatogoriesIndex() {
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [getTotalCount, setGetTotalCount] = React.useState(0);
+
     const [properties, setProperties] = React.useState<CategoriesResponeModel[]>([])
     const [openModal, setOpenModal] = React.useState(false)
     const [value, setValue] = React.useState<CategoriesModel>({
@@ -16,6 +22,10 @@ function CatogoriesIndex() {
         parentID: undefined,
         imageCategory: ""
     })
+
+    const onPageChange = (page: number) => {
+        setCurrentPage(page)
+    }
 
     const HandleDelete = async function (id: number) {
         try {
@@ -36,9 +46,13 @@ function CatogoriesIndex() {
     }
     async function FetchApi() {
         try {
-            let result = await FetchAllCategories();
+            let result = await FetchAllCategories(
+                currentPage, CATEGORY_PER_PAGE
+            );
+            let result2 = await FetchAllCategories()
             console.log(result)
             setProperties(result?.data as CategoriesResponeModel[])
+            setGetTotalCount(result2?.data.length)
         } catch (error) {
 
         }
@@ -46,7 +60,7 @@ function CatogoriesIndex() {
     React.useEffect(() => {
 
         FetchApi()
-    }, [])
+    }, [currentPage])
 
 
     return (
@@ -128,12 +142,20 @@ function CatogoriesIndex() {
                         </ModalWrapper>
                     </>
                 }
-                <TableComp handleDelete={() => { }} handleEdit={() => { }} headerRow={[
+                {properties && <TableComp h1="Categories" handleDelete={() => { }} handleEdit={() => { }} headerRow={[
                     "Categories ID",
                     "Categories Name",
                     "Parent Categories ID"
-                ]} totalData={properties.length} displayEachPage={4} >
-
+                ]} totalData={properties.length} displayEachPage={4} 
+                pageable={
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={getTotalCount}
+                        pageCount={CATEGORY_PER_PAGE}
+                        onPageChange={onPageChange}
+                    />
+                }
+                >
                     <tbody>
 
                         {
@@ -175,7 +197,7 @@ function CatogoriesIndex() {
                             })
                         }
                     </tbody>
-                </TableComp>
+                </TableComp>}
             </MainLayout >
         </>
     )

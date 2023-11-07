@@ -11,10 +11,11 @@ interface PriceRange {
     max: number
 }
 
-const PRODUCT_PER_PAGE = 5;
+const PRODUCT_PER_PAGE = 10;
 
 function DisplayProductBySludPage2() {
     const { query, isReady } = useRouter()
+    const [name, setName] = React.useState<string>();
     const [selectedSize, setSelectedSize] = React.useState<string[]>([]);
     const [selectedColor, setSelectedColor] = React.useState<string[]>([]);
     const [selectedPrice, setSelectedPrice] = React.useState<string>();
@@ -40,21 +41,21 @@ function DisplayProductBySludPage2() {
         setCurrentPage(page)
     }
 
-    async function FetchApi(idCategories: number) {
+  async function FetchApi(idCategories: number) {
         try {
-            // let listProductFilter = await GetAllProductByIdCategories(
-            //         idCategories,
-            //         currentPage,
-            //         PRODUCT_PER_PAGE,
-            //         selectedPrice,
-                    
-            //         selectedSize
-                    
-            //     );
+            let listProductFilter = await GetAllProductByIdCategories(
+                    idCategories,
+                    currentPage,
+                    PRODUCT_PER_PAGE,
+                    selectedPrice,
+                    name,
+                    selectedSize,
+                    selectedColor
+                );
             let listAllProduct = await GetAllProductByIdCategories(idCategories);
 
-            setListProduct(listAllProduct)
-            setGetTotalCount(listAllProduct?.data.length)
+            setListProduct(listProductFilter)
+            setGetTotalCount(listProductFilter?.total)
         } catch (error) {
 
         }
@@ -68,108 +69,14 @@ function DisplayProductBySludPage2() {
         }
     }
 
+    console.log('size -> ', selectedSize);
+    
+
     const HandleSelectedColor = (checked: boolean , color: any) => {
         if (checked) {
             setSelectedColor((prev) => [...prev, color.name])
         } else {
-            setSelectedColor(selectedColor.filter((item) => item != color.name))
-        }
-    }
-
-    const HandleSelectedPrice = (checked: boolean , price: any) => {
-        if (checkedPrice === price) {
-            setCheckedPrice(null); 
-            setSelectedPrice('')
-          } else {
-            setCheckedPrice(price);
-            setSelectedPrice(price)
-          }
-    }
-
-    React.useEffect(() => {
-        if (isReady) {
-            console.log(query.slugproduct)
-            FetchApi(parseInt(query.slugproduct as string))
-        }
-    }, [isReady, currentPage])
-
-    return <>
-        <div className='flex my-5 py-4 w-full h-full'>
-            <div className='hidden md:block basis-1/6 px-1'>
-                <div className='w-full min-h-[50vh] '>
-
-                    <div>
-                        <ul className='mb-2 overflow-hidden flex flex-wrap'>
-                            {selectedSize.map((size, index) => (
-                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
-                                    <span className='text-white'>&#215; {size}</span>
-                                </li>
-                            ))}
-                            {selectedColor.map((colour, index) => (
-                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
-                                    <span className='text-white'>&#215; {colour}</span>
-                                </li>
-                            ))}
-                            {selectedPrice && (
-                                <li className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
-                                    <span className='text-white'>&#215; {selectedPrice}</span>
-                                </li>
-                            )}
-                        </ul>
-                    </div>
-
-                    <DropoutComp title='Loại sản phẩm' >
-                        <div className='max-h-72 overflow-y-auto bg-red-200 w-full'>
-                        </div>
-                    </DropoutComp>
-
-                    <DropoutComp title='Kích Thước Sản Phẩm' >
-                        <ul className='flex flex-wrap'>
-                            {size.map((item, index) => (
-                                <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
-                                    <span>
-                                        <label className='relative flex'>
-                                            <input 
-                                                type="checkbox" 
-                                                className='hidden w-5 h-5 peer'
-                                                onChange={(e) => HandleSelectedSize(e.target.checked, item)}
-                                            />
-                                            <span className='peer-checked:border-[#fcaf17] leading-[33px] px-3 rounded-[5px] border-[1px] border-transparent  hover:border-[#fcaf17] peer-checked:after:content-[""] peer-checked:after:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/chose.svg")] peer-checked:after:absolute peer-checked:after:w-[22px] peer-checked:after:h-[22px] peer-checked:after:top-[-1px] peer-checked:after:right-[0px]'>{item}
-                                            </span>
-                                        </label>
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </DropoutComp>
-
-                    <DropoutComp title='Màu Sắc' >
-                    <ul className='flex flex-wrap'>
-                            {color.map((item, index) => (
-                                <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
-                                    <span>
-                                        <label className='relative flex'>
-                                            <input 
-                                                type="checkbox" 
-                                                className='hidden w-5 h-5 peer'
-                                                onChange={(e) => HandleSelectedColor(e.target.checked, item)}
-                                            />
-                                            <span className={`peer-checked:border-[#fcaf17] 
-                                            leading-[33px] px-3 rounded-[5px] border-[1px] border-transparent  hover:border-[${item.hex}] flex items-center
-                                            peer-checked:after:content-[""] 
-                                            peer-checked:after:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/chose.svg")] 
-                                            peer-checked:after:absolute 
-                                            peer-checked:after:w-[22px] 
-                                            peer-checked:after:h-[22px] 
-                                            peer-checked:after:top-[-1px] 
-                                            peer-checked:after:right-[0px] 
-                                            peer-checked:after:border-l-transparent 
-                                            peer-checked:after:border-t-[24px] 
-                                            peer-checked:after:border-l-[24px] 
-                                            peer-checked:after:border-t-[${item.hex}]
-                                            peer-checked:before:content-[""]
-                                            peer-checked:before:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/x-white.svg")]
-                                            peer-checked:before:absolute 
+peer-checked:before:absolute 
                                             peer-checked:before:w-[8px]
                                             peer-checked:before:h-[8px]
                                             peer-checked:before:top-[1px] 
@@ -217,7 +124,68 @@ function DisplayProductBySludPage2() {
                                         <input 
                                             type="checkbox" 
                                             className='hidden w-5 h-5 peer'
-                                            value=">=100000 AND <=200000"
+setSelectedColor(selectedColor.filter((item) => item != color.name))
+        }
+    }
+
+    const HandleSelectedPrice = (checked: boolean , price: any) => {
+        if (checkedPrice === price) {
+            setCheckedPrice(null); 
+            setSelectedPrice('')
+          } else {
+            setCheckedPrice(price);
+            setSelectedPrice(price)
+          }
+    }
+
+    React.useEffect(() => {
+        if (isReady) {
+            console.log(query.slugproduct)
+            FetchApi(parseInt(query.slugproduct as string))
+        }
+    }, [isReady, currentPage, selectedPrice, selectedColor, selectedSize])
+
+    return <>
+        <div className='flex my-5 py-4 w-full h-full'>
+            <div className='hidden md:block basis-1/6 px-1'>
+                <div className='w-full min-h-[50vh] '>
+
+                    <div>
+                        <ul className='mb-2 overflow-hidden flex flex-wrap'>
+                            {selectedSize.map((size, index) => (
+                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {size}</span>
+                                </li>
+                            ))}
+                            {selectedColor.map((colour, index) => (
+                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {colour}</span>
+                                </li>
+                            ))}
+                            {selectedPrice && (
+                                <li className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {selectedPrice}</span>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+
+                    <DropoutComp title='Loại sản phẩm' >
+                        <div className='max-h-72 overflow-y-auto bg-red-200 w-full'>
+                        </div>
+                    </DropoutComp>
+
+                    <DropoutComp title='Kích Thước Sản Phẩm' >
+                        <ul className='flex flex-wrap'>
+                            {size.map((item, index) => (
+                                <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
+                                    <span>
+                                        <label className='relative flex'>
+                                            <input 
+                                                type="checkbox" 
+                                                className='hidden w-5 h-5 peer'
+                                                onChange={(e) => HandleSelectedSize(e.target.checked, item)}
+value=">=100000 AND <=200000"
                                             checked={checkedPrice === ">=100000 AND <=200000"}
                                             onChange={(e) => HandleSelectedPrice(e.target.checked, ">=100000 AND <=200000")}
                                         />
@@ -260,7 +228,7 @@ function DisplayProductBySludPage2() {
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
+<input 
                                             type="checkbox" 
                                             className='hidden w-5 h-5 peer'
                                             value=">=350000 AND <=500000"
@@ -303,7 +271,7 @@ function DisplayProductBySludPage2() {
                                     </label>
                                 </span>
                             </li>
-                            <li className='cursor-pointer mb-2.5 mr-2.5'>
+<li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
                                         <input 
@@ -362,7 +330,7 @@ function DisplayProductBySludPage2() {
                                 currentPage={currentPage}
                                 totalCount={getTotalCount}
                                 pageCount={PRODUCT_PER_PAGE}
-                                onPageChange={onPageChange}
+onPageChange={onPageChange}
                             />
                         </>
                             : <>

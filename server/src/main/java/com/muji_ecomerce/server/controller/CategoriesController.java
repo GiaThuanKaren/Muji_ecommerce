@@ -28,9 +28,21 @@ public class CategoriesController {
         else
             return new ResponeModelJson(HttpStatus.CONFLICT,"Done");
     }
+//    @GetMapping("/fetchAll")
+//    private  ResponeModelJson fetchAll(){
+//        return catogoriesService.fetchAll();
+//    }
+
     @GetMapping("/fetchAll")
-    private  ResponeModelJson fetchAll(){
-        return catogoriesService.fetchAll();
+    public ResponeModelJson fetchAll(
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit
+    ) {
+        if (_page != null && _limit != null) {
+            return catogoriesService.FetchPaginationCategories(_page, _limit);
+        } else {
+            return catogoriesService.fetchAll();
+        }
     }
 
     @PutMapping("/update")

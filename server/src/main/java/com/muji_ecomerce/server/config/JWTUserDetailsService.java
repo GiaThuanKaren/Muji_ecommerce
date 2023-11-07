@@ -21,15 +21,12 @@
 //        this.customerRepository = customerRepository;
 //    }
 //
-////    @Autowired
-////    private PasswordEncoder bcryptEncoder;
-//
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        Customer user = customerRepository.findByCustomerEmail(email);
 //
 //        if (user == null) {
-//            throw new UsernameNotFoundException("User not found with username: " + email);
+//            throw new UsernameNotFoundException("User not found with email: " + email);
 //        }
 //        return new org.springframework.security.core.userdetails.User(user.getCustomerEmail(), user.getPassword(),
 //                new ArrayList<>());

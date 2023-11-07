@@ -49,6 +49,7 @@ export const GetAllProductByIdCategories = async function (
         price?: string,
         name?: string,
         size?: string[],
+        color?: string[]
     ) {
     try {
 
@@ -58,17 +59,22 @@ export const GetAllProductByIdCategories = async function (
             _idCategories: idCategories,
             _name: name,
             _price: price,
-            _size: size,
+            ...(size && {
+                _sizes: size.join(",")
+            }),
+            ...(color && {
+                _colors: color.join(",")
+            })
         }
-
+        
         let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategoriesfilter`, { params })
+
         console.log(data)
         return data
     } catch (error) {
         console.log(error)
     }
 }
-
 
 export const GetDetailProductById = async function (productId: string) {
     try {
