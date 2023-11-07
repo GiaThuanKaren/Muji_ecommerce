@@ -17,6 +17,21 @@ public class OrderDetail {
     @EmbeddedId
     Order_Product_Key id;
 
+
+    public OrderDetail(     Order_Product_Key id,
+                            Product product,
+                            OrderProduct orderProduct,
+                            int quantityOrdered
+    ){
+        this.id=id;
+        this.product= product;
+        this.orderProduct=orderProduct;
+        this.quantityOrdered=quantityOrdered;
+
+    }
+
+
+
     @ManyToOne
 
     @MapsId("productId")
@@ -31,6 +46,9 @@ public class OrderDetail {
 
     private int quantityOrdered;
 
+    private Long optionId;
+
+    private Long valueId;
 
 
 //    private float priceEachProduct;

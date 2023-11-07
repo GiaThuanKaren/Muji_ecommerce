@@ -42,17 +42,18 @@ function DisplayProductBySludPage2() {
 
     async function FetchApi(idCategories: number) {
         try {
-            let listProductFilter = await GetAllProductByIdCategories(
-                    idCategories,
-                    currentPage,
-                    PRODUCT_PER_PAGE,
-                    selectedPrice,
-                    "o",
-                    selectedSize
-                );
+            // let listProductFilter = await GetAllProductByIdCategories(
+            //         idCategories,
+            //         currentPage,
+            //         PRODUCT_PER_PAGE,
+            //         selectedPrice,
+                    
+            //         selectedSize
+                    
+            //     );
             let listAllProduct = await GetAllProductByIdCategories(idCategories);
 
-            setListProduct(listProductFilter)
+            setListProduct(listAllProduct)
             setGetTotalCount(listAllProduct?.data.length)
         } catch (error) {
 
