@@ -30,7 +30,6 @@ public class Product {
     private Categories categories;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.REMOVE)
-
     List<Product_Option> products;
 
     @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)

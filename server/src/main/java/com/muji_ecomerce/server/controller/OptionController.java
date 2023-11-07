@@ -35,8 +35,16 @@ public class OptionController {
         return new ResponeModelJson(HttpStatus.CONFLICT,"Error");
     }
     @GetMapping("/fetch_all")
-    public ResponeModelJson fetchAll(){
-        return new ResponeModelJson(HttpStatus.OK,"Done",optionService.fetchAll());
+    public ResponeModelJson fetchAll(
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit
+    ){
+        if (_page != null && _limit != null) {
+            return optionService.FetchPaginationOption(_page, _limit);
+        } else {
+            return optionService.FetchAllOption();
+        }
+//        return new ResponeModelJson(HttpStatus.OK,"Done",optionService.fetchAll());
     }
 
     @PostMapping("/create_new")

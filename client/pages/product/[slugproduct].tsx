@@ -11,10 +11,11 @@ interface PriceRange {
     max: number
 }
 
-const PRODUCT_PER_PAGE = 5;
+const PRODUCT_PER_PAGE = 10;
 
 function DisplayProductBySludPage2() {
     const { query, isReady } = useRouter()
+    const [name, setName] = React.useState<string>();
     const [selectedSize, setSelectedSize] = React.useState<string[]>([]);
     const [selectedColor, setSelectedColor] = React.useState<string[]>([]);
     const [selectedPrice, setSelectedPrice] = React.useState<string>();
@@ -47,13 +48,14 @@ function DisplayProductBySludPage2() {
                     currentPage,
                     PRODUCT_PER_PAGE,
                     selectedPrice,
-                    "o",
-                    selectedSize
+                    name,
+                    selectedSize,
+                    selectedColor
                 );
             let listAllProduct = await GetAllProductByIdCategories(idCategories);
 
             setListProduct(listProductFilter)
-            setGetTotalCount(listAllProduct?.data.length)
+            setGetTotalCount(listProductFilter?.total)
         } catch (error) {
 
         }
@@ -66,6 +68,9 @@ function DisplayProductBySludPage2() {
             setSelectedSize(selectedSize.filter((item) => item != size))
         }
     }
+
+    console.log('size -> ', selectedSize);
+    
 
     const HandleSelectedColor = (checked: boolean , color: any) => {
         if (checked) {
@@ -90,7 +95,7 @@ function DisplayProductBySludPage2() {
             console.log(query.slugproduct)
             FetchApi(parseInt(query.slugproduct as string))
         }
-    }, [isReady, currentPage])
+    }, [isReady, currentPage, selectedPrice, selectedColor, selectedSize])
 
     return <>
         <div className='flex my-5 py-4 w-full h-full'>

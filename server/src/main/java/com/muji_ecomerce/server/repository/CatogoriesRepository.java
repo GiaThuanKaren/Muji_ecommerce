@@ -2,6 +2,7 @@ package com.muji_ecomerce.server.repository;
 
 import com.muji_ecomerce.server.entity.Categories;
 import com.muji_ecomerce.server.entity.ProductLine;
+import com.muji_ecomerce.server.model.ResponeModelJson;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

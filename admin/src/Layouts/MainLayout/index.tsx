@@ -17,10 +17,19 @@ import { PiOptionLight } from 'react-icons/pi'
 import { LiaProductHunt } from 'react-icons/lia'
 import { LuLayoutDashboard } from 'react-icons/lu'
 import { CiLogout } from 'react-icons/ci'
+import useAuth from 'src/utils/useAuth'
+import Unauthorized from 'pages/unauthorized'
 interface Props {
     children: React.ReactNode
     errorFetch?: boolean
 }
+
+const ROLES_PERMISSION = {
+    'Admin': 0,
+    'Employee': 1
+}
+
+const ROLES = Object.values(ROLES_PERMISSION)
 
 enum IconFunction {
     CATEGORIES = "danhmucsanpham",
@@ -66,11 +75,14 @@ function ErrorFetching() {
 function MainLayout({ children, errorFetch }: Props) {
 
     const [rolePermission, setRolePermission] = React.useState<PermissionResponeModel[]>([]);
+    const { auth } = useAuth();
+
+    console.log('Auth -> ', auth.roles);
+    
 
     const FetchApi = async () => {
         try {
-            const item: any = localStorage.getItem("roleId")
-            let result = await FindPermissionByRole(JSON.parse(item))
+            let result = await FindPermissionByRole(auth.roles)
             console.log(result.data);
             
             setRolePermission(result.data)
@@ -209,6 +221,7 @@ function MainLayout({ children, errorFetch }: Props) {
     const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
     // console.log(openSideBarUser)
     return (
+        ROLES.includes(auth?.roles) ? 
         <>
             <div className='flex max-w-screen h-screen'>
                 <div className={'h-full overflow-y-auto transition-all ease-in-out duration-500 ' + `${openSideBarUser ? " w-[220px]" : " w-[56px] bg-slate-200"}`}>
@@ -248,7 +261,7 @@ function MainLayout({ children, errorFetch }: Props) {
                 </div>
             </div>
             
-        </>
+        </> : <Unauthorized />
     )
 }
 

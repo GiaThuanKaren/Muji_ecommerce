@@ -2,11 +2,13 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { LoginEmployee } from "src/services/api/employee";
+import { ShowToast } from "src/utils";
 import { routingLink } from 'src/utils/routingLink'
+import useAuth from "src/utils/useAuth";
 
 const Login: React.FC = () => {
-
   const { push } = useRouter()
+  const { setAuth } = useAuth();
   const [isLoading, setIsLoading] = React.useState(false);
   const [employeeInfo, setEmployeeInfo] = React.useState({
     employeeEmail: "",
@@ -19,10 +21,20 @@ const Login: React.FC = () => {
       
       setIsLoading(true)
       let result = await LoginEmployee(employeeInfo);
-        
-        if (result == true) {
-          push(routingLink.dashboard)
+      const roles = result.data?.roleid.roleId;
+
+      switch (result.message) {
+            case "Can not find user accout": {
+                ShowToast("Can not find user accout", "INFO")
+            }
+
+            case "Authenticated": {
+                setAuth({ roles })
+                ShowToast(`You are successfully logged in with ${result.data?.roleid.roleName} rights`, "INFO")
+                push(routingLink.dashboard)
+            }
         }
+
     } catch (error) {
         console.error('Error fetching ', error)
     } finally {

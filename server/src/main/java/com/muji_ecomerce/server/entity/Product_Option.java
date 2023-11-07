@@ -26,7 +26,6 @@ public class Product_Option {
     Product product;
 
     @ManyToOne
-
     @MapsId("optionId")
     @JoinColumn(name = "option_id")
     Option option;

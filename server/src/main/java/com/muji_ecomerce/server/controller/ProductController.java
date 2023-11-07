@@ -53,13 +53,16 @@ public class ProductController {
             @RequestParam(required = false) Integer _page,
             @RequestParam(required = false) Integer _limit,
             @RequestParam(required = false) String _name,
-            @RequestParam(required = false) String[] _sizes,
+            @RequestParam(required = false) String _sizes,
+            @RequestParam(required = false) String _colors,
             @RequestParam(required = false) String _price,
             @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
-        if (_idCategories != null && _page == null && _limit == null && _name == null && _sizes == null && _price == null && _sort == null) {
+        if (_idCategories != null && (_page == null || _limit == null)) {
             return productService.getProductByIdCategories(_idCategories);
         } else {
-            return productService.getProductByIdCategoriesAndFilter(_page, _limit, _idCategories, _name, _sizes, _price, _sort);
+            return productService.getProductByIdCategoriesAndFilter(
+                    _page, _limit, _idCategories, _name, _sizes, _colors, _price, _sort
+            );
         }
     }
 
@@ -73,13 +76,9 @@ public class ProductController {
     private ResponeModelJson getAllByFilter(
             HttpServletRequest request,
             @RequestParam(required = false) Integer _page,
-            @RequestParam(required = false) Integer _limit,
-            @RequestParam(required = false) String _name,
-            @RequestParam(required = false) String[] _sizes,
-            @RequestParam(required = false) String _price,
-            @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
+            @RequestParam(required = false) Integer _limit) {
         if (!request.getParameterMap().isEmpty()) {
-            return productService.FetchPaginationProduct(_page, _limit, _name, _sizes, _price, _sort);
+            return productService.FetchPaginationProduct(_page, _limit);
         } else {
             return productService.FetchAllProduct();
         }

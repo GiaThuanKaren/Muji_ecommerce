@@ -4,16 +4,15 @@ import { ICON, IconSolid } from 'src/utils'
 interface Props{
     handleEdit: Function,
     handleDelete: Function
-
     headerRow: string[]
-  
+    h1: string,
+    pageable: React.ReactNode
     totalData: number;
     displayEachPage?: number
-    children1:React.ReactNode,
-    children2: React.ReactNode
+    children:React.ReactNode,
 }
 
-function TableComp({h1, children1, children2, handleDelete, handleEdit, headerRow }: Props) {
+function TableComp({children, h1, pageable, handleDelete, handleEdit, headerRow }: Props) {
     const [openModal, setOpenModal] = React.useState(false);
    
     return (
@@ -36,10 +35,10 @@ function TableComp({h1, children1, children2, handleDelete, handleEdit, headerRo
                           }
                       </tr>
                     </thead>
-                      {children1}
+                      {children}
                   </table>
                 </div>
-                {children2}
+                {pageable}
 
                 {/* <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                   <span className="flex items-center col-span-3">

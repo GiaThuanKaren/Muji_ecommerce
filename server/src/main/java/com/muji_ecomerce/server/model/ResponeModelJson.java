@@ -14,6 +14,7 @@ public class ResponeModelJson<T>{
     private String message;
 
     T data;
+    Long total;
 
     public ResponeModelJson() {
 
@@ -29,5 +30,12 @@ public class ResponeModelJson<T>{
         this.status = status;
         this.message = message;
         this.data = data;
+    }
+
+    public ResponeModelJson(HttpStatus status, String message, T data, Long total) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
+        this.total = total;
     }
 }

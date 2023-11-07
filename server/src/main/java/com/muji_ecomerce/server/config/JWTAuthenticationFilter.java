@@ -26,9 +26,9 @@
 //    protected void doFilterInternal(HttpServletRequest request,
 //                                    HttpServletResponse response,
 //                                    FilterChain filterChain) throws ServletException, IOException {
-//       String token = getJWTFromRequest(request);
 //
-//       if(StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
+//       String token = getJWTFromRequest(request);
+//       if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
 //           String username = tokenGenerator.getUsernameFromJWT(token);
 //
 //           UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);

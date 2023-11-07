@@ -8,18 +8,13 @@ import com.muji_ecomerce.server.repository.*;
 import com.muji_ecomerce.server.spec.ProductSpec;
 import com.muji_ecomerce.server.utils.OptionValueKey;
 import com.muji_ecomerce.server.utils.Product_Option_Key;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,49 +106,16 @@ public class ProductServiceImplement implements  ProductService{
 
     @Override
     public ResponeModelJson FetchPaginationProduct(
-            int _page, int _limit, String _name, String[] _sizes, String _price, String[] _sort
+            int _page, int _limit
     ) {
 
-        double _minPrice = 0;
-        double _maxPrice = 0;
-
-        if (_price.equals("<100000")) {
-            _minPrice = 0;
-            _maxPrice = 100000;
-        } else if (_price.equals(">=100000 AND <=200000")) {
-            _minPrice = 100000;
-            _maxPrice = 200000;
-        } else if (_price.equals(">=200000 AND <=350000")) {
-            _minPrice = 200000;
-            _maxPrice = 350000;
-        } else if (_price.equals(">=350000 AND <=500000")) {
-            _minPrice = 350000;
-            _maxPrice = 500000;
-        } else if (_price.equals(">=500000 AND <=700000")) {
-            _minPrice = 500000;
-            _maxPrice = 700000;
-        } else if (_price.equals(">700000")) {
-            _minPrice = 700000;
-            _maxPrice = 999999999;
-        }
-
         try {
-            List<Sort.Order> orders = new ArrayList<Sort.Order>();
-
-            if (_sort[0].contains(",")) {
-                for (String sortOrder : _sort) {
-                    String[] __sort = sortOrder.split(",");
-                    orders.add(new Sort.Order(getSortDirection(__sort[1]), __sort[0]));
-                }
-            } else {
-                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
-            }
 
             List<Product> products = new ArrayList<Product>();
-            Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
+            Pageable pageable = PageRequest.of(_page - 1, _limit);
 
             Page<Product> productPage;
-            productPage = applyFilters(_name, _sizes, _minPrice, _maxPrice, pageable);
+            productPage = productRepository.findAll(pageable);
 
             products = productPage.getContent();
 
@@ -164,11 +126,33 @@ public class ProductServiceImplement implements  ProductService{
         }
     }
 
-    private Page<Product> applyFilters(String _name, String[] _sizes, double _minPrice, double _maxPrice, Pageable pageable) {
+    private Page<Product> applyFilters(Long _idCategories, String _name, String[] _sizes, String[] _colors, double _minPrice, double _maxPrice, Pageable pageable) {
+        Specification<Product> spec = Specification
+                .where(ProductSpec.getSpecFindCategories(_idCategories));
 
-        Specification<Product> spec = Specification.where(ProductSpec.getSpec(_name)).and(ProductSpec.productOptionValue(_sizes, _minPrice, _maxPrice));
+        if (!StringUtils.isEmpty(_name)) {
+            spec = spec.and(ProductSpec.getSpecFindName(_name));
+        }
 
-        return productRepository.findAll(spec, pageable);
+        if ((_sizes != null && _sizes.length > 0)) {
+            spec = spec.and(ProductSpec.getSpecFilterSize(_sizes));
+        }
+
+        if ((_colors != null && _colors.length > 0)) {
+            spec = spec.and(ProductSpec.getSpecFilterColor(_colors));
+        }
+
+        if (_minPrice != 0 && _maxPrice != 0) {
+            spec = spec.and(ProductSpec.getSpecFilterPrice(_minPrice, _maxPrice));
+        }
+
+        List<Product> products = productRepository.findAll(spec);
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), products.size());
+
+        Page<Product> productPage = new PageImpl<Product>(products.subList(start, end), pageable, products.size());
+
+        return productPage;
     }
 
     @Override
@@ -223,7 +207,8 @@ public class ProductServiceImplement implements  ProductService{
     public ResponeModelJson getProductByIdCategories(Long idCategories) {
 
         List<Product> productListFound = productRepository.findByCategoriesCatorgoryID(idCategories);
-        if(productListFound.size()>0)
+
+        if (productListFound.size() > 0)
             return new ResponeModelJson(HttpStatus.OK,"OKE",productListFound);
         else
             return new ResponeModelJson(HttpStatus.OK,"Can not find any product with this categories id",productListFound);
@@ -231,16 +216,30 @@ public class ProductServiceImplement implements  ProductService{
 
     @Override
     public ResponeModelJson getProductByIdCategoriesAndFilter(
-            Integer _page, Integer _limit, Long _idCategories, String _name, String[] _sizes, String _price, String[] _sort
+            Integer _page, Integer _limit, Long _idCategories, String _name,
+            String _sizes, String _colors, String _price, String[] _sort
     ) {
+
+        // Split _sizes
+        String[] size = {};
+        if (!StringUtils.isEmpty(_sizes)) {
+            size = _sizes.split(",");
+        }
+
+        // Split _colors
+        String[] color = {};
+        if (!StringUtils.isEmpty(_colors)) {
+            color = _colors.split(",");
+        }
 
         double _minPrice = 0;
         double _maxPrice = 0;
 
+        // Min PRICE / Max PRICE
         if (_price != null ) {
 
             if (_price.equals("<100000")) {
-                _minPrice = 0;
+                _minPrice = 1;
                 _maxPrice = 100000;
             } else if (_price.equals(">=100000 AND <=200000")) {
                 _minPrice = 100000;
@@ -272,20 +271,24 @@ public class ProductServiceImplement implements  ProductService{
                 orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
             }
 
-            List<Product> productListFound = productRepository.findByCategoriesCatorgoryID(_idCategories);
-
+            List<Product> productListFound = new ArrayList<Product>();
+            Long totalProduct = null;
             if (_limit != null && _page != null ) {
 
                 Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
 
                 Page<Product> productPage;
-
-                productPage = applyFilters(_name, _sizes, _minPrice, _maxPrice, pageable);
+                productPage = applyFilters(_idCategories, _name, size, color, _minPrice, _maxPrice, pageable);
 
                 productListFound = productPage.getContent();
+
+                totalProduct = productPage.getTotalElements();
             }
 
-            return new ResponeModelJson(HttpStatus.OK, "OKE", productListFound);
+            System.out.println("Total data --> " + totalProduct);
+
+
+            return new ResponeModelJson(HttpStatus.OK, "OKE", productListFound, totalProduct);
 
         } catch (Exception e) {
             return new ResponeModelJson(HttpStatus.INTERNAL_SERVER_ERROR, "FAIL", null);
