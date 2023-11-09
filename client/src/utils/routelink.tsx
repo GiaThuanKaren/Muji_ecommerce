@@ -3,6 +3,7 @@ export const linkRouting = {
     home: "/",
     cart: "/cart",
     login: "/login",
+    search: '/search',
     listproduct: "/product",
     detailproduct: "/product/detailproduct",
     register: "/register",

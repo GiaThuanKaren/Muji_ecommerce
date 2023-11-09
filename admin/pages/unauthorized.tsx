@@ -1,7 +1,8 @@
 import { useRouter } from "next/router"
+import { routingLink } from "src/utils/routingLink"
 
 const Unauthorized = () => {
-    const router = useRouter()
+    const { push } = useRouter()
 
     return (
         <section>
@@ -9,7 +10,7 @@ const Unauthorized = () => {
             <br />
             <p>You do not have access to the requested page.</p>
             <div className="flex flex-grow">
-                <button onClick={() => router.back()}>Go Back</button>
+                <button onClick={() => push(routingLink.login)}>Go to Login</button>
             </div>
         </section>
     )

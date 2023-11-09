@@ -1,29 +1,42 @@
-import { useRouter } from 'next/router'
 import React from 'react'
+import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { CardProduct, DropoutComp } from 'src/Components'
 import { Pagination } from 'src/Components/Pagination/Pagination'
 import { MainLayout } from 'src/Layouts'
 import { Product, ProductModel, ResponeModel } from 'src/Model'
-import { GetAllProductByIdCategories } from 'src/service/api'
+import { GetAllProduct, GetAllProductByIdCategories } from 'src/service/api'
 import { ProductMock } from 'src/utils/constant'
-interface PriceRange {
-    min: number,
-    max: number
+
+interface IProduct {
+    onCurrentPage: number,
+    setListProduct: (listProduct: ResponeModel<ProductModel>) => void
+    setGetTotalCount: (getTotalCount: number) => void
+}
+
+interface FilterAPI {
+    ListProductApi: IProduct,
+    FetchType: 'FetchApi' | 'FetchApi2'
+}
+
+interface DisplayProductBySludPage2Props {
+    children: React.ReactNode,
+    handle: () => FilterAPI
 }
 
 const PRODUCT_PER_PAGE = 10;
 
-function DisplayProductBySludPage2() {
+export function DisplayProductBySludPage2({ children, handle }: DisplayProductBySludPage2Props) {
     const { query, isReady } = useRouter()
-    const [name, setName] = React.useState<string>();
     const [selectedSize, setSelectedSize] = React.useState<string[]>([]);
     const [selectedColor, setSelectedColor] = React.useState<string[]>([]);
     const [selectedPrice, setSelectedPrice] = React.useState<string>();
     const [checkedPrice, setCheckedPrice] = React.useState<string | null>(null);
-    const [listProduct, setListProduct] = React.useState<ResponeModel<ProductModel>>()
 
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [getTotalCount, setGetTotalCount] = React.useState(0);
+    const searchQuery = useSearchParams();
+    const name: string = searchQuery.get('name');
+
+    const { ListProductApi, FetchType } = handle()
 
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "2", "4", "6", "8", "10", "12"]
     const color: {name: string, hex: string, icon: string} [] = [
@@ -35,27 +48,39 @@ function DisplayProductBySludPage2() {
         { name: "Xanh mint", hex: "#8CD6C4", icon: "xanh-mint" },
         { name: "Xám", hex: "#C1C5C0", icon: "xam" },
     ]
-    const material: string[] = []
 
-    const onPageChange = (page: number) => {
-        setCurrentPage(page)
-    }
-
-  async function FetchApi(idCategories: number) {
+    async function FetchApi(idCategories: number) {
         try {
             let listProductFilter = await GetAllProductByIdCategories(
                     idCategories,
-                    currentPage,
+                    ListProductApi.onCurrentPage,
                     PRODUCT_PER_PAGE,
                     selectedPrice,
                     name,
                     selectedSize,
                     selectedColor
                 );
-            let listAllProduct = await GetAllProductByIdCategories(idCategories);
 
-            setListProduct(listProductFilter)
-            setGetTotalCount(listProductFilter?.total)
+            ListProductApi.setListProduct(listProductFilter)
+            ListProductApi.setGetTotalCount(listProductFilter?.total)
+        } catch (error) {
+
+        }
+    }
+
+    async function FetchApi2() {
+        try {
+            let result = await GetAllProduct(
+                    ListProductApi.onCurrentPage,
+                    PRODUCT_PER_PAGE,
+                    selectedPrice,
+                    name,
+                    selectedSize,
+                    selectedColor
+                );
+
+            ListProductApi.setListProduct(result)
+            ListProductApi.setGetTotalCount(result?.total)
         } catch (error) {
 
         }
@@ -69,14 +94,114 @@ function DisplayProductBySludPage2() {
         }
     }
 
-    console.log('size -> ', selectedSize);
-    
-
     const HandleSelectedColor = (checked: boolean , color: any) => {
         if (checked) {
             setSelectedColor((prev) => [...prev, color.name])
         } else {
-peer-checked:before:absolute 
+            setSelectedColor(selectedColor.filter((item) => item != color.name))
+        }
+    }
+
+    const HandleSelectedPrice = (checked: boolean , price: any) => {
+        if (checkedPrice === price) {
+            setCheckedPrice(null); 
+            setSelectedPrice('')
+          } else {
+            setCheckedPrice(price);
+            setSelectedPrice(price)
+          }
+    }
+
+    React.useEffect(() => {
+        if (isReady) {
+
+            if (FetchType == 'FetchApi') {
+                console.log(query.slugproduct)
+                FetchApi(parseInt(query.slugproduct as string))
+            } else if (FetchType == 'FetchApi2') {
+                FetchApi2()
+            }
+        }
+    }, [isReady, name, ListProductApi.onCurrentPage, selectedPrice, selectedColor, selectedSize])
+
+
+    return <>
+        <div className='flex my-5 py-4 w-full h-full'>
+            <div className='hidden md:block basis-1/6 px-1'>
+                <div className='w-full min-h-[50vh] '>
+
+                    <div>
+                        <ul className='mb-2 overflow-hidden flex flex-wrap'>
+                            {selectedSize.map((size, index) => (
+                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {size}</span>
+                                </li>
+                            ))}
+                            {selectedColor.map((colour, index) => (
+                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {colour}</span>
+                                </li>
+                            ))}
+                            {selectedPrice && (
+                                <li className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
+                                    <span className='text-white'>&#215; {selectedPrice}</span>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+
+                    <DropoutComp title='Loại sản phẩm' >
+                        <div className='max-h-72 overflow-y-auto bg-red-200 w-full'>
+                        </div>
+                    </DropoutComp>
+
+                    <DropoutComp title='Kích Thước Sản Phẩm' >
+                        <ul className='flex flex-wrap'>
+                            {size.map((item, index) => (
+                                <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
+                                    <span>
+                                        <label className='relative flex'>
+                                            <input 
+                                                type="checkbox" 
+                                                className='hidden w-5 h-5 peer'
+                                                onChange={(e) => HandleSelectedSize(e.target.checked, item)}
+                                            />
+                                            <span className='peer-checked:border-[#fcaf17] leading-[33px] px-3 rounded-[5px] border-[1px] border-transparent  hover:border-[#fcaf17] peer-checked:after:content-[""] peer-checked:after:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/chose.svg")] peer-checked:after:absolute peer-checked:after:w-[22px] peer-checked:after:h-[22px] peer-checked:after:top-[-1px] peer-checked:after:right-[0px]'>{item}
+                                            </span>
+                                        </label>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </DropoutComp>
+
+                    <DropoutComp title='Màu Sắc' >
+                    <ul className='flex flex-wrap'>
+                            {color.map((item, index) => (
+                                <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
+                                    <span>
+                                        <label className='relative flex'>
+                                            <input 
+                                                type="checkbox" 
+                                                className='hidden w-5 h-5 peer'
+                                                onChange={(e) => HandleSelectedColor(e.target.checked, item)}
+                                            />
+                                            <span className={`peer-checked:border-[#fcaf17] 
+                                            leading-[33px] px-3 rounded-[5px] border-[1px] border-transparent  hover:border-[${item.hex}] flex items-center
+                                            peer-checked:after:content-[""] 
+                                            peer-checked:after:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/chose.svg")] 
+                                            peer-checked:after:absolute 
+                                            peer-checked:after:w-[22px] 
+                                            peer-checked:after:h-[22px] 
+                                            peer-checked:after:top-[-1px] 
+                                            peer-checked:after:right-[0px] 
+                                            peer-checked:after:border-l-transparent 
+                                            peer-checked:after:border-t-[24px] 
+                                            peer-checked:after:border-l-[24px] 
+                                            peer-checked:after:border-t-[${item.hex}]
+                                            peer-checked:before:content-[""]
+                                            peer-checked:before:bg-[url("https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/x-white.svg")]
+                                            peer-checked:before:absolute 
                                             peer-checked:before:w-[8px]
                                             peer-checked:before:h-[8px]
                                             peer-checked:before:top-[1px] 
@@ -124,68 +249,7 @@ peer-checked:before:absolute
                                         <input 
                                             type="checkbox" 
                                             className='hidden w-5 h-5 peer'
-setSelectedColor(selectedColor.filter((item) => item != color.name))
-        }
-    }
-
-    const HandleSelectedPrice = (checked: boolean , price: any) => {
-        if (checkedPrice === price) {
-            setCheckedPrice(null); 
-            setSelectedPrice('')
-          } else {
-            setCheckedPrice(price);
-            setSelectedPrice(price)
-          }
-    }
-
-    React.useEffect(() => {
-        if (isReady) {
-            console.log(query.slugproduct)
-            FetchApi(parseInt(query.slugproduct as string))
-        }
-    }, [isReady, currentPage, selectedPrice, selectedColor, selectedSize])
-
-    return <>
-        <div className='flex my-5 py-4 w-full h-full'>
-            <div className='hidden md:block basis-1/6 px-1'>
-                <div className='w-full min-h-[50vh] '>
-
-                    <div>
-                        <ul className='mb-2 overflow-hidden flex flex-wrap'>
-                            {selectedSize.map((size, index) => (
-                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
-                                    <span className='text-white'>&#215; {size}</span>
-                                </li>
-                            ))}
-                            {selectedColor.map((colour, index) => (
-                                <li key={index} className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
-                                    <span className='text-white'>&#215; {colour}</span>
-                                </li>
-                            ))}
-                            {selectedPrice && (
-                                <li className='mr-[10px] mb-2 bg-[#fcaf17] px-2 py-0.5 rounded-md font-normal'>
-                                    <span className='text-white'>&#215; {selectedPrice}</span>
-                                </li>
-                            )}
-                        </ul>
-                    </div>
-
-                    <DropoutComp title='Loại sản phẩm' >
-                        <div className='max-h-72 overflow-y-auto bg-red-200 w-full'>
-                        </div>
-                    </DropoutComp>
-
-                    <DropoutComp title='Kích Thước Sản Phẩm' >
-                        <ul className='flex flex-wrap'>
-                            {size.map((item, index) => (
-                                <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
-                                    <span>
-                                        <label className='relative flex'>
-                                            <input 
-                                                type="checkbox" 
-                                                className='hidden w-5 h-5 peer'
-                                                onChange={(e) => HandleSelectedSize(e.target.checked, item)}
-value=">=100000 AND <=200000"
+                                            value=">=100000 AND <=200000"
                                             checked={checkedPrice === ">=100000 AND <=200000"}
                                             onChange={(e) => HandleSelectedPrice(e.target.checked, ">=100000 AND <=200000")}
                                         />
@@ -228,7 +292,7 @@ value=">=100000 AND <=200000"
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-<input 
+                                        <input 
                                             type="checkbox" 
                                             className='hidden w-5 h-5 peer'
                                             value=">=350000 AND <=500000"
@@ -271,7 +335,7 @@ value=">=100000 AND <=200000"
                                     </label>
                                 </span>
                             </li>
-<li className='cursor-pointer mb-2.5 mr-2.5'>
+                            <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
                                         <input 
@@ -303,44 +367,7 @@ value=">=100000 AND <=200000"
 
                 </div>
             </div>
-
-            <div className='flex-1 px-2 py-3'>
-                <div className='w-full  flex flex-wrap'>
-                    {
-                        listProduct?.data &&
-
-                            listProduct?.data.length > 0 ? <>
-                            {
-                                listProduct.data.map((item: ProductModel, index: number) => {
-                                    return <>
-                                        <CardProduct key={index} {...item} />
-                                    </>
-                                })
-                            }
-                            {/* {
-                                Array.from(Array(8).keys()).map(() => {
-                                    return (
-                                        <>
-                                            <CardProduct {...ProductMock} />
-                                        </>
-                                    )
-                                })
-                            } */}
-                            <Pagination
-                                currentPage={currentPage}
-                                totalCount={getTotalCount}
-                                pageCount={PRODUCT_PER_PAGE}
-onPageChange={onPageChange}
-                            />
-                        </>
-                            : <>
-                                <h3 className='text-center w-full font-medium '>
-                                    {listProduct?.message}
-                                </h3>
-                            </>
-                    }
-                </div>
-            </div>
+            {children}
         </div>
     </>
 }
@@ -399,17 +426,78 @@ function DisplayProductBySludPage1() {
     </>
 }
 
-
 function DisplayProductBySludPage() {
     const [layoutPage, setlayoutPage] = React.useState<1 | 2>(2)
+    const [listProduct, setListProduct] = React.useState<ResponeModel<ProductModel>>()
+    const [getTotalCount, setGetTotalCount] = React.useState(0);
+    const [currentPage, setCurrentPage] = React.useState(1);
 
-    // Lấy param trên url để xác định layout trong trả về của useState
+    const onPageChange = (page: number) => {
+        setCurrentPage(page)
+    }
+
+    const FetchData = (currentPage: number,
+        setListProduct: (listProduct: ResponeModel<ProductModel>) => void,
+        setGetTotalCount: (getTotalCount: number) => void
+    ) : FilterAPI => {
+        const ProductApi: IProduct = {
+            onCurrentPage: currentPage, 
+            setListProduct: setListProduct ,
+            setGetTotalCount: setGetTotalCount
+        }
+
+        const FetchType = 'FetchApi'
+            
+        return { ListProductApi: ProductApi, FetchType }
+    }
 
     return (
         <>
             <MainLayout>
                 {layoutPage == 1 && <DisplayProductBySludPage1 />}
-                {layoutPage == 2 && <DisplayProductBySludPage2 />}
+                {layoutPage == 2 && 
+                    <>
+                    <DisplayProductBySludPage2 handle={() => FetchData(currentPage, setListProduct, setGetTotalCount)}>
+                        <div className='flex-1 px-2 py-3'>
+                            <div className='w-full  flex flex-wrap'>
+                                {
+                                    listProduct?.data &&
+
+                                        listProduct?.data.length > 0 ? <>
+                                        {
+                                            listProduct.data.map((item: ProductModel, index: number) => {
+                                                return <>
+                                                    <CardProduct key={index} {...item} />
+                                                </>
+                                            })
+                                        }
+                                        {/* {
+                                            Array.from(Array(8).keys()).map(() => {
+                                                return (
+                                                    <>
+                                                        <CardProduct {...ProductMock} />
+                                                    </>
+                                                )
+                                            })
+                                        } */}
+                                        <Pagination
+                                            currentPage={currentPage}
+                                            totalCount={getTotalCount}
+                                            pageCount={PRODUCT_PER_PAGE}
+                                            onPageChange={onPageChange}
+                                        />
+                                        </>
+                                        :      
+                                        <>
+                                            <h3 className='text-center w-full font-medium '>
+                                                {/* {listProduct?.message} */}
+                                                <p>Can't find product</p>
+                                            </h3>
+                                        </>
+                                }
+                            </div>
+                        </div>
+                    </DisplayProductBySludPage2></>}
             </MainLayout>
         </>
     )
