@@ -13,4 +13,10 @@ public interface SkuValuesService {
     ResponeModelJson deleteSkuValeById(Sku_Values_Key skuValuesKeyID);
 
     ResponeModelJson createMultiSkuVale(MultiSkuValueModel multiSkuValueModel);
+
+
+
+    ResponeModelJson updateSkuValuesAfterPayment(Long orderId);
+
+
 }

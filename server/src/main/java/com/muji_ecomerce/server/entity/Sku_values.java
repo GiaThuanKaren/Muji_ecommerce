@@ -52,8 +52,8 @@ public class Sku_values {
     Option option;
 
 
-
-//    private int quantity;
+    @Column(name="quantity")
+    private int quantity =0;
 
 
 

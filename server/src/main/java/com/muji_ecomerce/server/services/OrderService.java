@@ -15,4 +15,6 @@ public interface OrderService {
     ResponeModelJson getAllOrderByIdCustomer(Long customerId);
 
 
+    ResponeModelJson getAllOrderDetailByIdOrder(Long IdOrder);
+
 }

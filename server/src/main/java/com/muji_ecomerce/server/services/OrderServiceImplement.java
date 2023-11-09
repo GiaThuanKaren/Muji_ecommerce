@@ -88,9 +88,18 @@ public class OrderServiceImplement implements OrderService{
         return new ResponeModelJson(HttpStatus.OK,"DOne",orderRepository.findAll());
     }
 
+
+
+
     @Override
     public ResponeModelJson getAllOrderByIdCustomer(Long customerId) {
-        return null;
 //        return new ResponeModelJson(HttpStatus.OK,"Done",);
+    return  null;
+    }
+
+    @Override
+    public ResponeModelJson getAllOrderDetailByIdOrder(Long IdOrder) {
+
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Done",orderRepository.findAllOrderAndOrderDetailById(IdOrder));
     }
 }

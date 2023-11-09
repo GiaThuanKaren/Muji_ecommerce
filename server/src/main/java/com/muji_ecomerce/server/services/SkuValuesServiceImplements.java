@@ -7,6 +7,7 @@ import com.muji_ecomerce.server.model.MultiSkuValueModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.model.SkuValueModel;
 import com.muji_ecomerce.server.repository.OptionRepository;
+import com.muji_ecomerce.server.repository.OrderDetailRepository;
 import com.muji_ecomerce.server.repository.ProductSkuRepository;
 import com.muji_ecomerce.server.repository.SkuValuesRepository;
 import com.muji_ecomerce.server.utils.Product_Sku_Key;
@@ -26,6 +27,8 @@ public class SkuValuesServiceImplements implements SkuValuesService{
     @Autowired
     private OptionRepository optionRepository;
 
+    @Autowired
+    private OrderDetailRepository orderDetailRepository;
 
     @Autowired
     private ProductSkuRepository productSkuRepository;
@@ -82,5 +85,12 @@ public class SkuValuesServiceImplements implements SkuValuesService{
 
         return new ResponeModelJson(HttpStatus.CREATED,"OKE");
 
+    }
+
+
+    @Override
+    public ResponeModelJson updateSkuValuesAfterPayment(Long orderId) {
+
+        return null;
     }
 }
