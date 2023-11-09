@@ -7,11 +7,11 @@ import AuthProvider from 'src/Context/AuthProvider';
 const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   return <>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient} >
-        <Component {...pageProps} />
-        <ToastContainer autoClose={300} />
-      </QueryClientProvider >
-    </AuthProvider>
+    <QueryClientProvider client={queryClient} >
+      <AuthProvider>
+          <Component {...pageProps} />
+          <ToastContainer autoClose={300} />
+      </AuthProvider>
+    </QueryClientProvider >
   </>
 }

@@ -106,29 +106,86 @@ public class ProductServiceImplement implements  ProductService{
 
     @Override
     public ResponeModelJson FetchPaginationProduct(
-            int _page, int _limit
+            Integer _page, Integer _limit, String _name,
+            String _sizes, String _colors, String _price, String[] _sort
     ) {
 
+        // Split _sizes
+        String[] size = {};
+        if (!StringUtils.isEmpty(_sizes)) {
+            size = _sizes.split(",");
+        }
+
+        // Split _colors
+        String[] color = {};
+        if (!StringUtils.isEmpty(_colors)) {
+            color = _colors.split(",");
+        }
+
+        double _minPrice = 0;
+        double _maxPrice = 0;
+
+        // Min PRICE / Max PRICE
+        if (_price != null ) {
+
+            if (_price.equals("<100000")) {
+                _minPrice = 1;
+                _maxPrice = 100000;
+            } else if (_price.equals(">=100000 AND <=200000")) {
+                _minPrice = 100000;
+                _maxPrice = 200000;
+            } else if (_price.equals(">=200000 AND <=350000")) {
+                _minPrice = 200000;
+                _maxPrice = 350000;
+            } else if (_price.equals(">=350000 AND <=500000")) {
+                _minPrice = 350000;
+                _maxPrice = 500000;
+            } else if (_price.equals(">=500000 AND <=700000")) {
+                _minPrice = 500000;
+                _maxPrice = 700000;
+            } else if (_price.equals(">700000")) {
+                _minPrice = 700000;
+                _maxPrice = 999999999;
+            }
+        }
+
         try {
+            List<Sort.Order> orders = new ArrayList<Sort.Order>();
 
-            List<Product> products = new ArrayList<Product>();
-            Pageable pageable = PageRequest.of(_page - 1, _limit);
+            if (_sort[0].contains(",")) {
+                for (String sortOrder : _sort) {
+                    String[] __sort = sortOrder.split(",");
+                    orders.add(new Sort.Order(getSortDirection(__sort[1]), __sort[0]));
+                }
+            } else {
+                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
+            }
 
-            Page<Product> productPage;
-            productPage = productRepository.findAll(pageable);
+            List<Product> productListFound = new ArrayList<Product>();
+            Long totalProduct = null;
+            if (_limit != null && _page != null ) {
 
-            products = productPage.getContent();
+                Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
 
-            return new ResponeModelJson(HttpStatus.OK, "OKE", products);
+                Page<Product> productPage;
+                productPage = FilterProduct(_name, size, color, _minPrice, _maxPrice, pageable);
+
+                productListFound = productPage.getContent();
+
+                totalProduct = productPage.getTotalElements();
+            }
+
+            System.out.println("Total product -> " + totalProduct);
+
+            return new ResponeModelJson(HttpStatus.OK, "OKE", productListFound, totalProduct);
 
         } catch (Exception e) {
             return new ResponeModelJson(HttpStatus.INTERNAL_SERVER_ERROR, "FAIL", null);
         }
     }
 
-    private Page<Product> applyFilters(Long _idCategories, String _name, String[] _sizes, String[] _colors, double _minPrice, double _maxPrice, Pageable pageable) {
-        Specification<Product> spec = Specification
-                .where(ProductSpec.getSpecFindCategories(_idCategories));
+    private Page<Product> FilterProduct(String _name, String[] _sizes, String[] _colors, double _minPrice, double _maxPrice, Pageable pageable) {
+        Specification<Product> spec = Specification.where(null);
 
         if (!StringUtils.isEmpty(_name)) {
             spec = spec.and(ProductSpec.getSpecFindName(_name));
@@ -214,6 +271,35 @@ public class ProductServiceImplement implements  ProductService{
             return new ResponeModelJson(HttpStatus.OK,"Can not find any product with this categories id",productListFound);
     }
 
+    private Page<Product> FilterProductByIdCategories(Long _idCategories, String _name, String[] _sizes, String[] _colors, double _minPrice, double _maxPrice, Pageable pageable) {
+        Specification<Product> spec = Specification
+                .where(ProductSpec.getSpecFindCategories(_idCategories));
+
+        if (!StringUtils.isEmpty(_name)) {
+            spec = spec.and(ProductSpec.getSpecFindName(_name));
+        }
+
+        if ((_sizes != null && _sizes.length > 0)) {
+            spec = spec.and(ProductSpec.getSpecFilterSize(_sizes));
+        }
+
+        if ((_colors != null && _colors.length > 0)) {
+            spec = spec.and(ProductSpec.getSpecFilterColor(_colors));
+        }
+
+        if (_minPrice != 0 && _maxPrice != 0) {
+            spec = spec.and(ProductSpec.getSpecFilterPrice(_minPrice, _maxPrice));
+        }
+
+        List<Product> products = productRepository.findAll(spec);
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), products.size());
+
+        Page<Product> productPage = new PageImpl<Product>(products.subList(start, end), pageable, products.size());
+
+        return productPage;
+    }
+
     @Override
     public ResponeModelJson getProductByIdCategoriesAndFilter(
             Integer _page, Integer _limit, Long _idCategories, String _name,
@@ -278,7 +364,7 @@ public class ProductServiceImplement implements  ProductService{
                 Pageable pageable = PageRequest.of(_page - 1, _limit, Sort.by(orders));
 
                 Page<Product> productPage;
-                productPage = applyFilters(_idCategories, _name, size, color, _minPrice, _maxPrice, pageable);
+                productPage = FilterProductByIdCategories(_idCategories, _name, size, color, _minPrice, _maxPrice, pageable);
 
                 productListFound = productPage.getContent();
 

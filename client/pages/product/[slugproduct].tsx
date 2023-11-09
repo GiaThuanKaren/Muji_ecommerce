@@ -1,29 +1,42 @@
-import { useRouter } from 'next/router'
 import React from 'react'
+import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { CardProduct, DropoutComp } from 'src/Components'
 import { Pagination } from 'src/Components/Pagination/Pagination'
 import { MainLayout } from 'src/Layouts'
 import { Product, ProductModel, ResponeModel } from 'src/Model'
-import { GetAllProductByIdCategories } from 'src/service/api'
+import { GetAllProduct, GetAllProductByIdCategories } from 'src/service/api'
 import { ProductMock } from 'src/utils/constant'
-interface PriceRange {
-    min: number,
-    max: number
+
+interface IProduct {
+    onCurrentPage: number,
+    setListProduct: (listProduct: ResponeModel<ProductModel>) => void
+    setGetTotalCount: (getTotalCount: number) => void
+}
+
+interface FilterAPI {
+    ListProductApi: IProduct,
+    FetchType: 'FetchApi' | 'FetchApi2'
+}
+
+interface DisplayProductBySludPage2Props {
+    children: React.ReactNode,
+    handle: () => FilterAPI
 }
 
 const PRODUCT_PER_PAGE = 10;
 
-function DisplayProductBySludPage2() {
+export function DisplayProductBySludPage2({ children, handle }: DisplayProductBySludPage2Props) {
     const { query, isReady } = useRouter()
-    const [name, setName] = React.useState<string>();
     const [selectedSize, setSelectedSize] = React.useState<string[]>([]);
     const [selectedColor, setSelectedColor] = React.useState<string[]>([]);
     const [selectedPrice, setSelectedPrice] = React.useState<string>();
     const [checkedPrice, setCheckedPrice] = React.useState<string | null>(null);
-    const [listProduct, setListProduct] = React.useState<ResponeModel<ProductModel>>()
 
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [getTotalCount, setGetTotalCount] = React.useState(0);
+    const searchQuery = useSearchParams();
+    const name: string = searchQuery.get('name');
+
+    const { ListProductApi, FetchType } = handle()
 
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "2", "4", "6", "8", "10", "12"]
     const color: {name: string, hex: string, icon: string} [] = [
@@ -35,27 +48,39 @@ function DisplayProductBySludPage2() {
         { name: "Xanh mint", hex: "#8CD6C4", icon: "xanh-mint" },
         { name: "Xám", hex: "#C1C5C0", icon: "xam" },
     ]
-    const material: string[] = []
-
-    const onPageChange = (page: number) => {
-        setCurrentPage(page)
-    }
 
     async function FetchApi(idCategories: number) {
         try {
             let listProductFilter = await GetAllProductByIdCategories(
                     idCategories,
-                    currentPage,
+                    ListProductApi.onCurrentPage,
                     PRODUCT_PER_PAGE,
                     selectedPrice,
                     name,
                     selectedSize,
                     selectedColor
                 );
-            let listAllProduct = await GetAllProductByIdCategories(idCategories);
 
-            setListProduct(listProductFilter)
-            setGetTotalCount(listProductFilter?.total)
+            ListProductApi.setListProduct(listProductFilter)
+            ListProductApi.setGetTotalCount(listProductFilter?.total)
+        } catch (error) {
+
+        }
+    }
+
+    async function FetchApi2() {
+        try {
+            let result = await GetAllProduct(
+                    ListProductApi.onCurrentPage,
+                    PRODUCT_PER_PAGE,
+                    selectedPrice,
+                    name,
+                    selectedSize,
+                    selectedColor
+                );
+
+            ListProductApi.setListProduct(result)
+            ListProductApi.setGetTotalCount(result?.total)
         } catch (error) {
 
         }
@@ -68,9 +93,6 @@ function DisplayProductBySludPage2() {
             setSelectedSize(selectedSize.filter((item) => item != size))
         }
     }
-
-    console.log('size -> ', selectedSize);
-    
 
     const HandleSelectedColor = (checked: boolean , color: any) => {
         if (checked) {
@@ -92,10 +114,16 @@ function DisplayProductBySludPage2() {
 
     React.useEffect(() => {
         if (isReady) {
-            console.log(query.slugproduct)
-            FetchApi(parseInt(query.slugproduct as string))
+
+            if (FetchType == 'FetchApi') {
+                console.log(query.slugproduct)
+                FetchApi(parseInt(query.slugproduct as string))
+            } else if (FetchType == 'FetchApi2') {
+                FetchApi2()
+            }
         }
-    }, [isReady, currentPage, selectedPrice, selectedColor, selectedSize])
+    }, [isReady, name, ListProductApi.onCurrentPage, selectedPrice, selectedColor, selectedSize])
+
 
     return <>
         <div className='flex my-5 py-4 w-full h-full'>
@@ -339,44 +367,7 @@ function DisplayProductBySludPage2() {
 
                 </div>
             </div>
-
-            <div className='flex-1 px-2 py-3'>
-                <div className='w-full  flex flex-wrap'>
-                    {
-                        listProduct?.data &&
-
-                            listProduct?.data.length > 0 ? <>
-                            {
-                                listProduct.data.map((item: ProductModel, index: number) => {
-                                    return <>
-                                        <CardProduct key={index} {...item} />
-                                    </>
-                                })
-                            }
-                            {/* {
-                                Array.from(Array(8).keys()).map(() => {
-                                    return (
-                                        <>
-                                            <CardProduct {...ProductMock} />
-                                        </>
-                                    )
-                                })
-                            } */}
-                            <Pagination
-                                currentPage={currentPage}
-                                totalCount={getTotalCount}
-                                pageCount={PRODUCT_PER_PAGE}
-                                onPageChange={onPageChange}
-                            />
-                        </>
-                            : <>
-                                <h3 className='text-center w-full font-medium '>
-                                    {listProduct?.message}
-                                </h3>
-                            </>
-                    }
-                </div>
-            </div>
+            {children}
         </div>
     </>
 }
@@ -435,17 +426,78 @@ function DisplayProductBySludPage1() {
     </>
 }
 
-
 function DisplayProductBySludPage() {
     const [layoutPage, setlayoutPage] = React.useState<1 | 2>(2)
+    const [listProduct, setListProduct] = React.useState<ResponeModel<ProductModel>>()
+    const [getTotalCount, setGetTotalCount] = React.useState(0);
+    const [currentPage, setCurrentPage] = React.useState(1);
 
-    // Lấy param trên url để xác định layout trong trả về của useState
+    const onPageChange = (page: number) => {
+        setCurrentPage(page)
+    }
+
+    const FetchData = (currentPage: number,
+        setListProduct: (listProduct: ResponeModel<ProductModel>) => void,
+        setGetTotalCount: (getTotalCount: number) => void
+    ) : FilterAPI => {
+        const ProductApi: IProduct = {
+            onCurrentPage: currentPage, 
+            setListProduct: setListProduct ,
+            setGetTotalCount: setGetTotalCount
+        }
+
+        const FetchType = 'FetchApi'
+            
+        return { ListProductApi: ProductApi, FetchType }
+    }
 
     return (
         <>
             <MainLayout>
                 {layoutPage == 1 && <DisplayProductBySludPage1 />}
-                {layoutPage == 2 && <DisplayProductBySludPage2 />}
+                {layoutPage == 2 && 
+                    <>
+                    <DisplayProductBySludPage2 handle={() => FetchData(currentPage, setListProduct, setGetTotalCount)}>
+                        <div className='flex-1 px-2 py-3'>
+                            <div className='w-full  flex flex-wrap'>
+                                {
+                                    listProduct?.data &&
+
+                                        listProduct?.data.length > 0 ? <>
+                                        {
+                                            listProduct.data.map((item: ProductModel, index: number) => {
+                                                return <>
+                                                    <CardProduct key={index} {...item} />
+                                                </>
+                                            })
+                                        }
+                                        {/* {
+                                            Array.from(Array(8).keys()).map(() => {
+                                                return (
+                                                    <>
+                                                        <CardProduct {...ProductMock} />
+                                                    </>
+                                                )
+                                            })
+                                        } */}
+                                        <Pagination
+                                            currentPage={currentPage}
+                                            totalCount={getTotalCount}
+                                            pageCount={PRODUCT_PER_PAGE}
+                                            onPageChange={onPageChange}
+                                        />
+                                        </>
+                                        :      
+                                        <>
+                                            <h3 className='text-center w-full font-medium '>
+                                                {/* {listProduct?.message} */}
+                                                <p>Can't find product</p>
+                                            </h3>
+                                        </>
+                                }
+                            </div>
+                        </div>
+                    </DisplayProductBySludPage2></>}
             </MainLayout>
         </>
     )

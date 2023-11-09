@@ -76,6 +76,38 @@ export const GetAllProductByIdCategories = async function (
     }
 }
 
+export const GetAllProduct = async function (
+    currentPage?: number, 
+    limit?: number,
+    price?: string,
+    name?: string,
+    size?: string[],
+    color?: string[]
+) {
+try {
+
+    const params = {
+        _page: currentPage,
+        _limit: limit,
+        _name: name,
+        _price: price,
+        ...(size && {
+            _sizes: size.join(",")
+        }),
+        ...(color && {
+            _colors: color.join(",")
+        })
+    }
+    
+    let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/fetchAll`, { params })
+
+    console.log(data)
+    return data
+} catch (error) {
+    console.log(error)
+}
+}
+
 export const GetDetailProductById = async function (productId: string) {
     try {
         interface ResponeModel1<T> {
