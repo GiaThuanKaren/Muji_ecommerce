@@ -9,7 +9,7 @@ const Unauthorized = () => {
             <h1>Unauthorized</h1>
             <br />
             <p>You do not have access to the requested page.</p>
-            <div className="flex flex-grow">
+            <div className="flex justify-center items-center">
                 <button onClick={() => push(routingLink.login)}>Go to Login</button>
             </div>
         </section>

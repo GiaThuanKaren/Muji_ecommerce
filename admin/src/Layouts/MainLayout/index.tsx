@@ -28,7 +28,6 @@ const ROLES_PERMISSION = {
     'Admin': 0,
     'Employee': 1
 }
-
 const ROLES = Object.values(ROLES_PERMISSION)
 
 enum IconFunction {
@@ -75,14 +74,14 @@ function ErrorFetching() {
 function MainLayout({ children, errorFetch }: Props) {
 
     const [rolePermission, setRolePermission] = React.useState<PermissionResponeModel[]>([]);
-    const { auth } = useAuth();
+    const authContext = useAuth();
 
-    console.log('Auth -> ', auth.roles);
+    console.log('Auth context -> ', authContext?.isAuthenticated());
     
 
     const FetchApi = async () => {
         try {
-            let result = await FindPermissionByRole(auth.roles)
+            let result = await FindPermissionByRole(Number(authContext?.auth.role))
             console.log(result.data);
             
             setRolePermission(result.data)
@@ -92,7 +91,7 @@ function MainLayout({ children, errorFetch }: Props) {
     }
 
     React.useEffect(() => {
-   
+
         FetchApi()
 
     }, []);
@@ -219,9 +218,11 @@ function MainLayout({ children, errorFetch }: Props) {
     // ]
 
     const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
+
     // console.log(openSideBarUser)
     return (
-        ROLES.includes(auth?.roles) ? 
+        // ROLES.includes(Number(authContext?.auth.role)) ?
+        authContext?.isAuthenticated() ? 
         <>
             <div className='flex max-w-screen h-screen'>
                 <div className={'h-full overflow-y-auto transition-all ease-in-out duration-500 ' + `${openSideBarUser ? " w-[220px]" : " w-[56px] bg-slate-200"}`}>
