@@ -162,7 +162,9 @@ function GetAllProduct() {
                         </ModalWrapper>
                     </>
                 }
-                {properties && <TableComp h1="Product" handleDelete={() => { }} handleEdit={() => { }} headerRow={[
+                {properties && <TableComp h1="Product" handleDelete={() => { }} handleEdit={() => { 
+                    
+                }} headerRow={[
                     " #",
                     "Product Name",
                     "Quantity Stock",

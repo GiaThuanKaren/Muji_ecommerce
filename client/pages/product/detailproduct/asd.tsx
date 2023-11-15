@@ -13,7 +13,17 @@ interface PriceRange {
 
 const PRODUCT_PER_PAGE = 10;
 
-function DisplayProductBySludPage2() {
+interface ResutAPI{
+    listProduct:[],
+    listFilter:[]
+}
+
+interface Prop123 {
+    handle:()=>ResutAPI
+}
+
+
+function DisplayProductBySludPage2({handle}:Prop123) {
     const { query, isReady } = useRouter()
     const [name, setName] = React.useState<string>();
     const [selectedSize, setSelectedSize] = React.useState<string[]>([]);
@@ -43,25 +53,29 @@ function DisplayProductBySludPage2() {
 
     async function FetchApi(idCategories: number) {
         try {
-            let listProductFilter = await GetAllProductByIdCategories(
-                    idCategories,
-                    currentPage,
-                    PRODUCT_PER_PAGE,
-                    selectedPrice,
-                    name,
-                    selectedSize,
-                    selectedColor
-                );
-            let listAllProduct = await GetAllProductByIdCategories(idCategories);
-
+        
+            let {
+                listFilter,listProduct
+            } = handle()
             setListProduct(listProductFilter)
             setGetTotalCount(listProductFilter?.total)
         } catch (error) {
 
         }
     }
-
-    const HandleSelectedSize = (checked: boolean , size: string) => {
+async function Fetch2(){
+        let listProductFilter = await GetAllProductByIdCategories(
+                idCategories,
+                currentPage,
+                PRODUCT_PER_PAGE,
+                selectedPrice,
+                name,
+                selectedSize,
+                selectedColor
+            );
+        let listAllProduct = await GetAllProductByIdCategories(idCategories);
+}
+    const HandleSelect{edSize = (checked: boolean , size: string) => {
         if (checked) {
             setSelectedSize((prev) => [...prev, size])
         } else {
@@ -93,9 +107,16 @@ function DisplayProductBySludPage2() {
     React.useEffect(() => {
         if (isReady) {
             console.log(query.slugproduct)
-            FetchApi(parseInt(query.slugproduct as string))
+            // FetchApi(parseInt(query.slugproduct as string))
+            // call handle
         }
-    }, [isReady, currentPage, selectedPrice, selectedColor, selectedSize])
+    }, [])
+
+    
+
+    React.useEffect(()=>{
+        // call cho các tác vụ filter , ohana trnag 
+    },[isReady, currentPage, selectedPrice, selectedColor, selectedSize])
 
     return <>
         <div className='flex my-5 py-4 w-full h-full'>
@@ -445,7 +466,23 @@ function DisplayProductBySludPage() {
         <>
             <MainLayout>
                 {layoutPage == 1 && <DisplayProductBySludPage1 />}
-                {layoutPage == 2 && <DisplayProductBySludPage2 />}
+                {layoutPage == 2 && <DisplayProductBySludPage2 handle={()=>{
+                      let listProductFilter = await GetAllProductByIdCategories(
+                        idCategories,
+                        currentPage,
+                        PRODUCT_PER_PAGE,
+                        selectedPrice,
+                        name,
+                        selectedSize,
+                        selectedColor
+                    );
+                    let listAllProduct = await GetAllProductByIdCategories(idCategories);
+                    return {
+                        listFilter:listAllProduct,
+                        listProduct:listAllProduct
+                        
+                    }
+                }} />}
             </MainLayout>
         </>
     )
