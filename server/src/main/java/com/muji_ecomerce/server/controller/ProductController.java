@@ -46,9 +46,8 @@ public class ProductController {
 //        return productService.getProductByIdCategories(idCategories);
 //    }
 
-    @GetMapping("/getbyidcategoriesfilter")
+        @GetMapping("/getbyidcategoriesfilter")
     private ResponeModelJson getAllByIdCategoriesFilter(
-            HttpServletRequest request,
             @RequestParam(required = false) Long _idCategories,
             @RequestParam(required = false) Integer _page,
             @RequestParam(required = false) Integer _limit,
@@ -74,13 +73,19 @@ public class ProductController {
 
     @GetMapping("/fetchAll")
     private ResponeModelJson getAllByFilter(
-            HttpServletRequest request,
             @RequestParam(required = false) Integer _page,
-            @RequestParam(required = false) Integer _limit) {
-        if (!request.getParameterMap().isEmpty()) {
-            return productService.FetchPaginationProduct(_page, _limit);
-        } else {
+            @RequestParam(required = false) Integer _limit,
+            @RequestParam(required = false) String _name,
+            @RequestParam(required = false) String _sizes,
+            @RequestParam(required = false) String _colors,
+            @RequestParam(required = false) String _price,
+            @RequestParam(defaultValue = "nameProduct,desc") String[] _sort) {
+        if (_page == null || _limit == null) {
             return productService.FetchAllProduct();
+        } else {
+            return productService.FetchPaginationProduct(
+                    _page, _limit, _name, _sizes, _colors, _price, _sort
+            );
         }
     }
 }
