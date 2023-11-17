@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -32,4 +34,12 @@ public class Employee {
 
     @JoinColumn(name = "employee_role_id")
     private Role roleid;
+
+
+    @OneToMany(mappedBy = "employee")
+    private Set<OrderProduct> orderProductSet;
+
+
+
+
 }

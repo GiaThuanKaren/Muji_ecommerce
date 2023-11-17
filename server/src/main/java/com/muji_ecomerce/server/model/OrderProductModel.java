@@ -24,6 +24,8 @@ public class OrderProductModel {
 
     private Long shippingTypeID;
 
+    private Long employeeId;
+
 
     private List<ProductOrderPayload> listproductOrdered;
 
