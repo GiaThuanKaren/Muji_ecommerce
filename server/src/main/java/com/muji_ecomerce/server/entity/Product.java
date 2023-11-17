@@ -40,6 +40,11 @@ public class Product {
 //    @JsonIgnore
     Set<OrderDetail> orderProducts;
 
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<SupplierProductDetail> product_list;
+
     @Override
     public String toString() {
         return "Product{" +

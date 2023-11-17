@@ -32,6 +32,10 @@ public class OrderServiceImplement implements OrderService{
 
     @Autowired
     private OrderRepository orderRepository;
+
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
     @Override
     public ResponeModelJson addNewOrder(OrderProductModel orderProductModel) {
         Optional<Customer> customerFound = customerRepository.findById(orderProductModel.getCustomerId());
@@ -47,7 +51,17 @@ public class OrderServiceImplement implements OrderService{
         orderProductNew.setCustomer(customerFound.get());
         orderProductNew.setStatus_order(statusFound.get());
         orderProductNew.setShippingType(shippingTypeFound.get());
+        if(orderProductModel.getEmployeeId() != null ){
+            Optional<Employee> employeeFound = employeeRepository.findById(
+                    orderProductModel.getEmployeeId()
+            );
+            if(!employeeFound.isPresent())
+                return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Employee ID");
 
+            orderProductNew.setEmployee(
+                    employeeFound.get()
+            );
+        }
         OrderProduct orderProductCreated =orderRepository.save(orderProductNew);
 
         List<OrderDetail> orderDetailsList= new ArrayList<>();
@@ -67,7 +81,11 @@ public class OrderServiceImplement implements OrderService{
                             ),
                             productFound.get(),
                             orderProductCreated,
-                            orderProductModel.getListproductOrdered().get(i).getQuantity()
+                            orderProductModel.getListproductOrdered().get(i).getQuantity(),
+                            orderProductModel.getListproductOrdered().get(i).getOptionId(),
+                            orderProductModel.getListproductOrdered().get(i).getValuesId()
+
+
 
                     );
 

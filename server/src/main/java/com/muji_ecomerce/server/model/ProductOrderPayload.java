@@ -13,4 +13,8 @@ public class ProductOrderPayload{
 
     private int quantity;
 
+    private Long optionId;
+
+    private Long valuesId;
+
 }
