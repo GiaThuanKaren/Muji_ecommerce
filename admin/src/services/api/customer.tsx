@@ -16,6 +16,18 @@ export const FetchAllCustomer = async function (currentPage?: number, limit?: nu
     }
 }
 
+export const GetCustomerByFullName = async function (fullName?: string) {
+    try {
+        const params = {
+            fullName
+        }
+        let { data } = await axios.get<ResponeModel<CustomerResponeModel>>(`${BASE_DEV}/customer/getCustomerByFirstNameAndLastName`, { params })
+        return data
+    } catch (error) {
+        ShowToast("Failed To Get Customer By FullName", "ERROR")
+    }
+}
+
 export const UpdateCustomerById = async function (customer: CustomerResponeModel) {
     try {
         await axios.put(`${BASE_DEV}/customer/update_customerbyid`, customer)

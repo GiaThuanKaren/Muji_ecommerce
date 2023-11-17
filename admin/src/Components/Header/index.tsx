@@ -11,7 +11,7 @@ function Header({ handleCloseNav, stateSideBar }: Props) {
     const [openNavUser, setOpenNavUser] = React.useState(false);
     return (
         <>
-            <div className='flex items-center justify-between  bg-white px-4 py-4 w-full'>
+            <div className='flex items-center justify-between  bg-white px-4 py-4 w-full shadow-sm'>
 
                 <ICON onClick={() => {
                     handleCloseNav(!stateSideBar)

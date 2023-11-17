@@ -15,7 +15,7 @@ function DropOutItem({ childrenItem, icon, title, link }: DropOutSideBarItem) {
                 }} 
                 className={`text flex items-center justify-between px-4 py-3  w-full cursor-pointer`}>
                 {icon}
-                <p className='font-medium text-slate-600 w-full mx-4 text-sm capitalize '>
+                <p className='font-medium text-slate-500 w-full mx-4 text-sm capitalize '>
                     {title}
                 </p>
                 {

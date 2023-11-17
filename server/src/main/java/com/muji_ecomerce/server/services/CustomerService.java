@@ -32,5 +32,5 @@ public interface CustomerService {
 
     ResponeModelJson verifyTokenCutomerWithoutDelete(String Token);
 
-
+    ResponeModelJson getCustomerByFirstNameAndLastName(String fullName);
 };

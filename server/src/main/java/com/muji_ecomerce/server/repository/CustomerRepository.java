@@ -20,6 +20,7 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
     Optional<Customer> findOptionalByCustomerEmail(String email);
 
+    List<Customer> findByCustomerFirstNameContainingOrCustomerLastNameContaining(String FName, String LName);
     Customer findByCustomerEmail(String email);
 
 }

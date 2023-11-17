@@ -56,8 +56,9 @@ export interface ProductResponeModel {
   productDescription: string
   productSkus: ProductSkuResponeModel[]
   orderProducts: any[]
-  categorie: CategoriesResponeModel
-  list_option: number[]
+  categories: CategoriesResponeModel
+  products: Product[]
+  // list_option: number[]
 }
 
 
@@ -234,4 +235,49 @@ export interface SkuValueModel {
   skuId: string
   optionId: string
   valuesId: string
+}
+
+export interface Categories {
+  catorgoryID: number
+  nameCategory: string
+  imageCategory: string
+  parentID: ParentId
+}
+
+export interface ParentId {
+  catorgoryID: number
+  nameCategory: string
+  imageCategory: any
+  parentID: any
+}
+
+export interface Product {
+  id: Id
+  option: Option
+}
+
+export interface Id { }
+
+export interface ProductPOSModel {
+  productId: number
+  nameProduct: string
+  quantityStock: number
+  productDescription: string
+  categories: Categories
+  products: Product[]
+  productSkus: ProductSkuPOSModel[]
+  orderProducts: any[]
+}
+
+export interface ProductSkuPOSModel {
+  id: ProductSkuId
+  skuName: string
+  quantityStock: number
+  imageProduct: string
+  price: number
+}
+
+export interface ProductSkuId {
+  productId: number
+  skuId: number
 }

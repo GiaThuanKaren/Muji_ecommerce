@@ -24,12 +24,6 @@ interface Props {
     errorFetch?: boolean
 }
 
-const ROLES_PERMISSION = {
-    'Admin': 0,
-    'Employee': 1
-}
-const ROLES = Object.values(ROLES_PERMISSION)
-
 enum IconFunction {
     CATEGORIES = "danhmucsanpham",
     OPTION = "thuoctinh",
@@ -42,19 +36,19 @@ enum IconFunction {
 const HandleIconFunction  = (icon: IconFunction) => {
     switch (icon) {
         case IconFunction.CATEGORIES:
-            return <LiaProductHunt style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <LiaProductHunt style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         case IconFunction.OPTION:
-            return <PiOptionLight style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <PiOptionLight style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         case IconFunction.USER:
-            return <LiaUser style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <LiaUser style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         case IconFunction.PRODUCT:
-            return <IoShirtOutline style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <IoShirtOutline style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         case IconFunction.SHIPPING:
-            return <LiaShippingFastSolid style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <LiaShippingFastSolid style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         case IconFunction.PERMISSION:
-            return <SiAdminer style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <SiAdminer style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         default:
-            return <LuLayoutDashboard style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />
+            return <LuLayoutDashboard style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
     }
 }
 
@@ -76,8 +70,7 @@ function MainLayout({ children, errorFetch }: Props) {
     const [rolePermission, setRolePermission] = React.useState<PermissionResponeModel[]>([]);
     const authContext = useAuth();
 
-    console.log('Auth context -> ', authContext?.isAuthenticated());
-    
+    // console.log('Employee Authentication With Role ', authContext?.isAuthenticated());
 
     const FetchApi = async () => {
         try {
@@ -224,8 +217,8 @@ function MainLayout({ children, errorFetch }: Props) {
         // ROLES.includes(Number(authContext?.auth.role)) ?
         authContext?.isAuthenticated() ? 
         <>
-            <div className='flex max-w-screen h-screen'>
-                <div className={'h-full overflow-y-auto transition-all ease-in-out duration-500 ' + `${openSideBarUser ? " w-[220px]" : " w-[56px] bg-slate-200"}`}>
+            <div className='flex max-w-screen h-screen bg-[#f5f5f7]'>
+                <div className={'h-full overflow-y-auto transition-all ease-in-out duration-500 bg-white border-r-2 border-r-[#F5F5F7] ' + `${openSideBarUser ? " w-[220px]" : " w-[56px] bg-slate-200"}`}>
                     <div className='w-full py-5 '>
                         <div className='px-3 py-6'>
                             <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/logo.svg?1698399319969" alt="" />
@@ -233,7 +226,7 @@ function MainLayout({ children, errorFetch }: Props) {
                         <div className='px-2 w-full h-[10px] '>
                             <div className='bg-gray-400 w-full h-[1px]'></div>
                         </div>
-                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-gray-500'>Main</p>
+                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-[#FCAF17]'>Main</p>
                         {
                             data.map((item: DropOutSideBarItem, index: number) => {
                                 return <>
@@ -241,9 +234,9 @@ function MainLayout({ children, errorFetch }: Props) {
                                 </>
                             })
                         }
-                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-gray-500'>Oth</p>
+                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-[#fcaf17]'>Oth</p>
                         <DropOutItem 
-                            icon={<CiLogout style={{minWidth: "22px"}} size={25} color='rgb(71 85 105)' />}
+                            icon={<CiLogout style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />}
                             title='Logout'
                             link='/logout'
                             childrenItem={[]}
@@ -255,8 +248,10 @@ function MainLayout({ children, errorFetch }: Props) {
                     <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
                     {
                         errorFetch ? <ErrorFetching /> :
-                            <div className='w-full min-h-[100vh] '>
-                                {children}
+                            <div className='w-full min-h-[100vh]'>
+                                <div className='mx-5 my-5 bg-white rounded-lg'>
+                                    {children}
+                                </div>
                             </div>
                     }
                 </div>
