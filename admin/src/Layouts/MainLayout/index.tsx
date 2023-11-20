@@ -17,6 +17,9 @@ import { PiOptionLight } from 'react-icons/pi'
 import { LiaProductHunt } from 'react-icons/lia'
 import { LuLayoutDashboard } from 'react-icons/lu'
 import { CiLogout } from 'react-icons/ci'
+import { BsCartPlus } from "react-icons/bs";
+import { TfiPieChart } from "react-icons/tfi";
+import { TbPackageExport } from "react-icons/tb";
 import useAuth from 'src/utils/useAuth'
 import Unauthorized from 'pages/unauthorized'
 interface Props {
@@ -30,7 +33,10 @@ enum IconFunction {
     USER = "nguoidung",
     PRODUCT = "sanpham",
     SHIPPING = "donhang",
-    PERMISSION = "phanquyen"
+    PERMISSION = "phanquyen",
+    SUPPLIER = "supplier",
+    POS = "pos",
+    STATISTIC = "statistic"
 }
 
 const HandleIconFunction  = (icon: IconFunction) => {
@@ -47,6 +53,12 @@ const HandleIconFunction  = (icon: IconFunction) => {
             return <LiaShippingFastSolid style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         case IconFunction.PERMISSION:
             return <SiAdminer style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
+        case IconFunction.SUPPLIER:
+            return <TbPackageExport style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
+        case IconFunction.POS:
+            return <BsCartPlus style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
+        case IconFunction.STATISTIC:
+            return <TfiPieChart style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
         default:
             return <LuLayoutDashboard style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />
     }
@@ -84,15 +96,12 @@ function MainLayout({ children, errorFetch }: Props) {
     }
 
     React.useEffect(() => {
-
         FetchApi()
-
     }, []);
 
     // NOTE >> Menu navbar
     
     let data: DropOutSideBarItem[] = rolePermission.map((item: PermissionResponeModel, index: number) => ({
-        // [
         icon: HandleIconFunction(item.slug),
         title: item.function_name,
         childrenItem: [],
@@ -212,9 +221,7 @@ function MainLayout({ children, errorFetch }: Props) {
 
     const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
 
-    // console.log(openSideBarUser)
     return (
-        // ROLES.includes(Number(authContext?.auth.role)) ?
         authContext?.isAuthenticated() ? 
         <>
             <div className='flex max-w-screen h-screen bg-[#f5f5f7]'>
@@ -244,7 +251,7 @@ function MainLayout({ children, errorFetch }: Props) {
                     </div>
                 </div>
                 
-                <div className={'h-full overflow-y-auto   relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}`}>
+                <div className={'h-full overflow-y-auto relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}`}>
                     <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
                     {
                         errorFetch ? <ErrorFetching /> :

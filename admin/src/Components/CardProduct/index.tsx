@@ -75,8 +75,8 @@ function CardProduct({ item, product, quantity, setStorageOrders, setProductChoo
             // console.log(productAddCart)
             // AddProductToLocalStorage(productAddCart)
 
-            const store = localStorage.getItem('muji_order')
-            if (store) setStorageOrders(JSON.parse(store))
+            // const store = localStorage.getItem('muji_order')
+            // if (store) setStorageOrders(JSON.parse(store))
         } catch (error) {
 
         }
@@ -104,9 +104,9 @@ function CardProduct({ item, product, quantity, setStorageOrders, setProductChoo
 
     return (
         <>
-            <div className='basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-[140px] py-2 px-2 my-5 overflow-hidden shadow-lg'
+            <div className='basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-[140px] py-2 px-2 my-5 overflow-hidden shadow-lg '
             >
-                <div className='h-full w-full'>
+                <div className="h-full w-full">
                     <div className='block'>
                         <div className='h-[80%] w-full '>
                             <img
@@ -125,7 +125,7 @@ function CardProduct({ item, product, quantity, setStorageOrders, setProductChoo
                             <p>
                                 {nameProduct}
                             </p>
-                            <p className='font-medium'>329.000đ</p>
+                            <p className='font-medium'>{price}đ</p>
 
                         </div>
                     </div>

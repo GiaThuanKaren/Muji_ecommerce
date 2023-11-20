@@ -47,12 +47,7 @@ public class EmployeeServiceImplement implements EmployeeService{
     @Override
     public ResponeModelJson loginEmployee(EmployeeModel employeeModel) {
 
-        System.out.println("------> " + employeeModel.getEmployeeEmail() + "-" + employeeModel.getEmployeePassword());
         Employee employee = employeeRepository.findByEmployeeEmail(employeeModel.getEmployeeEmail());
-
-        if (employee != null) {
-            System.out.println("-------------------> " + employee.getEmployeePassword());
-        }
 
         if (employee == null) {
             return new ResponeModelJson(HttpStatus.NOT_FOUND, "Can not find user accout");

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginModel } from "src/Model/apiModel"
+import { LoginModel, ResponeModel } from "src/Model/apiModel"
 import { ShowToast } from "src/utils";
 import useAuth from "src/utils/useAuth";
 
@@ -15,4 +15,17 @@ export const LoginEmployee = async function (loginModel: LoginModel) {
         ShowToast("Failed To Login ", "ERROR")
     }
 
+}
+
+export const FetchAllCustomer = async function (currentPage?: number, limit?: number) {
+    try {
+        const params = {
+            _page: currentPage,
+            _limit: limit
+        }
+        let { data } = await axios.get<ResponeModel<EmployeeResponeModel>>(`${BASE_DEV}/customer/get_all`, { params } )
+        return data
+    } catch (error) {
+        ShowToast("Failed To Get All Customer ", "ERROR")
+    }
 }

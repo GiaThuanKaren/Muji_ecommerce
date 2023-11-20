@@ -19,6 +19,9 @@ export const routingLink = {
     donhang: "/shipping",
     phanquyen: "/permission",
     logout: "/logout",
-    login: "/login"
+    login: "/login",
+    pos: "/pos",
+    statistic: "/statistic",
+    supplier: "/supplier"
 }
 

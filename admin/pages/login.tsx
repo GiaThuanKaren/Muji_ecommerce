@@ -6,6 +6,12 @@ import { ShowToast } from "src/utils";
 import { routingLink } from 'src/utils/routingLink'
 import useAuth from "src/utils/useAuth";
 
+interface EmployeeResponeModel {
+  employeeFirstName: string,
+  employeeLastName: string,
+  employeeId: number
+}
+
 const Login: React.FC = () => {
   const authContext = useAuth();
   const { push } = useRouter()
@@ -22,7 +28,7 @@ const Login: React.FC = () => {
       setIsLoading(true)
       let result = await LoginEmployee(employeeInfo);
       const role: string = result.data?.roleid.roleId;
-
+      const infor: EmployeeResponeModel = result?.data
       switch (result.message) {
             case "Can not find user accout": {
                 ShowToast("Can not find user accout", "INFO")
@@ -30,6 +36,7 @@ const Login: React.FC = () => {
 
             case "Authenticated": {
                 authContext?.setAuth(role)
+                localStorage.setItem('employeeInfo', JSON.stringify(infor))
                 ShowToast(`You are successfully logged in with ${result.data?.roleid.roleName} rights`, "INFO")
                 push(routingLink.dashboard)
             }

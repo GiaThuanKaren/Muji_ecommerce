@@ -10,6 +10,8 @@ import CartItem from 'src/Components/CardItem'
 import { AddProductToLocalStorage } from 'src/services/api'
 import { useDebounce } from 'src/utils/useDebounce'
 import { GetCustomerByFullName } from 'src/services/api/customer'
+import useLocalStorage from 'src/utils/useLocalStorage'
+import { CreateNewOrder } from 'src/services/api/order'
 
 export interface ProductSkuChooseInf {
     img: string,
@@ -17,7 +19,17 @@ export interface ProductSkuChooseInf {
     size: string,
     skuName: string
     productId?: string,
-    price: number
+    price: number,
+    optionId: string,
+    valueId: string
+}
+
+export interface CartItem {
+    skuId: string;
+    productId: string;
+    quantity: number;
+    optionId: string;
+    valuesId: string;
 }
 
 function POS() {
@@ -33,20 +45,43 @@ function POS() {
         size: "",
         skuName: "",
         productId: "",
-        price: 0
+        price: 0,
+        optionId: "",
+        valueId: ""
     })
     const [productChoose, setProductChoose] = React.useState<string>('');
     const [chooseSize, setChooseSize] = React.useState(
         ""
     )
+    const [chooseCustomer, setChooseCustomer] = React.useState('');
     const [product, setProduct] = React.useState<ProductResponeModel>();
+    const [mujiOrder, setMujiOrder] = React.useState<ProductCartItem[]>([]);
+    const [totalValue, setTotalValue] = React.useState<number>(0);
+    console.log(mujiOrder);
 
-    console.log('search > ', searchFullName);
-    console.log('debounce > ', debounceSearch);
-    
-    
+    const HandleCheckout = async () => {
+        const CartCheckout: CartItem[] = []
+        // const employeeInfo = localStorage.getItem('employeeInfo')
 
-    // console.log('Product choose -> ', productSkuChoose);
+        mujiOrder.map((item: ProductCartItem) => {
+            CartCheckout.push({
+                skuId: item.item.productsku,
+                productId: item.item.productId,
+                quantity: item.quantity,
+                optionId: item.item.optionId,
+                valuesId: item.item.valueId
+            })
+        })
+
+        try {
+            let result = await CreateNewOrder(CartCheckout, 1, parseInt(chooseCustomer))
+
+            console.log(result);
+            
+        } catch (e) {
+
+        }
+    }
 
     async function FetchApi() {
         try {
@@ -73,7 +108,9 @@ function POS() {
                 size: "",
                 skuName: result?.data.productSkus[0].skuName as string,
                 productId:productChoose as string,
-                price: result?.data.productSkus[0].price as number
+                price: result?.data.productSkus[0].price as number,
+                optionId: "",
+                valueId: ""
             })
         } catch (error) {
 
@@ -85,12 +122,12 @@ function POS() {
             let result = await GetCustomerByFullName(
                     debounceSearch,
                 );
-
             setListCustomer(result)
         } catch (error) {
 
         }
     }
+
 
     React.useEffect(() => {
         FetchApi()
@@ -101,16 +138,48 @@ function POS() {
     }, [productChoose])
 
     React.useEffect(() => {
+        const newTotalValue = mujiOrder.reduce((total, item) => {
+            return total + item.item.price * item.quantity;
+        }, 0);
+        setTotalValue(newTotalValue);
+    }, [mujiOrder])
+
+    React.useEffect(() => {
         if (debounceSearch) {
             FetchApi3()
         } else {
             setListCustomer([])
+            setChooseCustomer('')
         }
     }, [debounceSearch])
 
+    const HandleQuantity = (index: number, newQuantity: number) => {
+        const updatedMujiOrder = [...mujiOrder];
+        updatedMujiOrder[index].quantity = newQuantity;
+        setMujiOrder(updatedMujiOrder);
+    }
+
     const HandleAddCart = async function () {
         try {
+            const isProductInCart = mujiOrder.some((item) =>
+            item.item.productsku === productSkuChoose.productSkuId && item.item.size === productSkuChoose.size
+        );
 
+        if (isProductInCart) {
+            // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng thêm 1 quantity
+            const updatedMujiOrder = mujiOrder.map((item) => {
+                if (item.item.productsku === productSkuChoose.productSkuId && item.item.size === productSkuChoose.size) {
+                    return {
+                        ...item,
+                        quantity: item.quantity + 1,
+                    };
+                }
+                return item;
+            });
+
+            setMujiOrder(updatedMujiOrder);
+        } else {
+            // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm mới vào giỏ hàng với quantity là 1
             let productAddCart: ProductCartItem = {
                 item: {
                     image: productSkuChoose.img,
@@ -118,17 +187,15 @@ function POS() {
                     productsku: productSkuChoose.productSkuId,
                     size: productSkuChoose.size,
                     name: product?.nameProduct as string,
-                    price: productSkuChoose.price
+                    price: productSkuChoose.price,
+                    optionId: productSkuChoose.optionId,
+                    valueId: productSkuChoose.valueId,
                 },
                 quantity: 1,
-            }
+            };
 
-
-            console.log(productAddCart)
-            AddProductToLocalStorage(productAddCart)
-
-            const store = localStorage.getItem('muji_order')
-            if (store) setStorageOrders(JSON.parse(store))
+            setMujiOrder([...mujiOrder, productAddCart]);
+        }
         } catch (error) {
 
         }
@@ -139,7 +206,7 @@ function POS() {
             <MainLayout >
                 <h1 className='px-3 py-5 font-bold text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[#11006F] to-[#FCAF17] inline-block'>Point of Sale</h1>
                
-                <div className='flex pb-4 w-full h-full'>
+                <div className="flex pb-4 w-full h-full">
                     <div className='basis-5/12 px-2'>
                         <div className='flex-col'>
                             <div className='flex justify-between items-end px-2'>
@@ -190,8 +257,8 @@ function POS() {
                     <div className='basis-4/12 px-2 py-3'>
                         <div>
                             <h1 className='font-semibold text-lg mb-6'>Item Detail</h1>
-                            <div className='flex items-end'>
-                                <div className='flex flex-col basis-2/4'>
+                            <div className='flex justify-end'>
+                                <div className='flex flex-col basis-3/5'>
                                     <div className='font-bold text-2xl mb-1'>{product?.nameProduct}</div>
                                         <span className='font-semibold text-lg'>250.000 đ</span>
                                     <div>
@@ -219,56 +286,59 @@ function POS() {
                                         }
 
                                     {
-                                        // product?.products.map((item: Product, index: number) => {
-                                        //     if (
-                                        //         item.option.optionID == 252
-                                        //     ) {
-                                        //         return <>
-                                        //             {/* `${ item.option.optionName} 123  ${ productSkuChoose.size}` */}
-                                        //             <h3 className='font-medium '>
+                                        product?.products.map((item: Product, index: number) => {
+                                            if (
+                                                item.option.optionID == 1
+                                            ) {
+                                                return <>
+                                                    {/* `${ item.option.optionName} 123  ${ productSkuChoose.size}` */}
+                                                    <h3 className='font-medium '>
 
-                                        //                 {
-                                        //                     item.option.optionName
-                                        //                 }
+                                                        {
+                                                            item.option.optionName
+                                                        }
 
-                                        //                 {
-                                        //                     productSkuChoose.size
-                                        //                 }
+                                                        {
+                                                            productSkuChoose.size
+                                                        }
 
-                                        //             </h3>
-                                        //             <div className='flex flex-wrap  my-3 '>
-                                        //                 {
-                                        //                     item.option.optionValues.map((item1: OptionValue) => {
-                                        //                         return <>
-                                        //                             <div onClick={() => {
+                                                    </h3>
+                                                    <div className='flex flex-wrap  my-3 '>
+                                                        {
+                                                            item.option.optionValues.map((item1: OptionValue) => {
+                                                                if (item1.id.productId == product.productId) {
+                                                                    return <>
+                                                                    <div onClick={() => {
 
-                                        //                                 setProductSkuChoose({
-                                        //                                     ...productSkuChoose,
-                                        //                                     size: item1.valuesName,
+                                                                        setProductSkuChoose({
+                                                                            ...productSkuChoose,
+                                                                            size: item1.valuesName,
+                                                                            optionId: item1.id.optionId.toString(),
+                                                                            valueId: item1.id.valueId.toString()
+                                                                        })
+                                                                        setChooseSize(item1.valuesName)
+                                                                    }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-600"}`}>
+                                                                        <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
+                                                                            {item1.valuesName}
+                                                                        </p>
+                                                                    </div>
+                                                                </>
+                                                                }
+                                                            })
+                                                        }
+                                                    </div>
+                                                </>
+                                            }
 
-                                        //                                 })
-                                        //                                 setChooseSize(item1.valuesName)
-                                        //                             }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-600"}`}>
-                                        //                                 <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
-                                        //                                     {item1.valuesName}
-                                        //                                 </p>
-                                        //                             </div>
-                                        //                         </>
-                                        //                     })
-                                        //                 }
-                                        //             </div>
-                                        //         </>
-                                        //     }
-
-                                        // })
+                                        })
                                     }
-                                    <button className='bg-slate-300'
+                                    <button className='bg-gray-300 rounded-md w-full p-2'
                                         onClick={HandleAddCart}
                                     >Add cart</button>
                                     </div>
                                 </div>
                                 </div>
-                                <div className='flex-1'>
+                                <div className='flex-1 ml-7'>
                                     <img src="https://bizweb.dktcdn.net/100/438/408/products/akn4024-xah-5.jpg?v=1690337555127" className='w-32 h-44 rounded-md' alt="" />
                                 </div>
                             </div>
@@ -290,7 +360,7 @@ function POS() {
                                     <div className='shadow-md absolute bg-slate-100 w-fit'>
                                         {listCustomer?.data &&
                                             listCustomer.data.map((item: CustomerResponeModel, index: number) => (
-                                                <ItemToopTip key={index} {...item} setSearchFullName={setSearchFullName} />
+                                                <ItemToopTip key={index} {...item} setChooseCustomer={setChooseCustomer} setSearchFullName={setSearchFullName} />
                                             ))
                                         }
                                     </div>
@@ -302,11 +372,12 @@ function POS() {
                             <div className='max-h-[285px] overflow-auto w-fit mb-3'>
                                 <div className='flex min-h-[290px]'> 
                                     <div className='flex flex-col'>
-                                        {storageOrders?.product.map((item: ProductCartItem, index: number) => {
+                                        {mujiOrder.map((item: ProductCartItem, index: number) => {
                                             return <>
                                                 <CartItem 
                                                     key={index} 
                                                     {...item}
+                                                    onQuantityChange={(newQuantity) => HandleQuantity(index, newQuantity)}
                                                 />
                                             </>
                                         })}
@@ -328,9 +399,11 @@ function POS() {
                                 </div>
                                 <div className='flex justify-between px-2 py-2'>
                                     <div>Total</div>
-                                    <div className='font-medium text-lg'>6.500.250 VNĐ</div>
+                                    <div className='font-medium text-lg'>
+                                        {totalValue}
+                                    </div>
                                 </div>
-                                <button className='w-full bg-slate-400 h-9 text-white rounded-md '>Checkout</button>
+                                <button onClick={HandleCheckout} className='w-full bg-slate-400 h-9 text-white rounded-md '>Checkout</button>
                             </div>
                         </div>
                     </div>
@@ -340,12 +413,15 @@ function POS() {
     )
 }
 
-type ToolTipProps =  CustomerResponeModel & { setSearchFullName: (search: string) => void }
+type ToolTipProps =  CustomerResponeModel & { setSearchFullName: (search: string) => void, setChooseCustomer: (customer: string) => void }
 
-function ItemToopTip({ customerId, customerFirstName, customerLastName, setSearchFullName }: ToolTipProps) {
+function ItemToopTip({ customerId, customerFirstName, customerLastName, setSearchFullName, setChooseCustomer }: ToolTipProps) {
 
     return (
-        <div className='w-full border-b-[1px] border-gray-300 p-2 cursor-pointer' onClick={() => setSearchFullName(customerFirstName + customerLastName)}>
+        <div className='w-full border-b-[1px] border-gray-300 p-2 cursor-pointer' onClick={() => {
+            setSearchFullName(customerFirstName + customerLastName)
+            setChooseCustomer(customerId.toString())
+        }}>
             <span className='font-medium mr-3 text-sm'>#{customerId}</span>
             <span className='text-sm'>{customerFirstName} {customerLastName}</span>
         </div>
