@@ -20,6 +20,7 @@ import { CiLogout } from 'react-icons/ci'
 import { BsCartPlus } from "react-icons/bs";
 import { TfiPieChart } from "react-icons/tfi";
 import { TbPackageExport } from "react-icons/tb";
+import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
 import useAuth from 'src/utils/useAuth'
 import Unauthorized from 'pages/unauthorized'
 interface Props {
@@ -82,8 +83,6 @@ function MainLayout({ children, errorFetch }: Props) {
     const [rolePermission, setRolePermission] = React.useState<PermissionResponeModel[]>([]);
     const authContext = useAuth();
 
-    // console.log('Employee Authentication With Role ', authContext?.isAuthenticated());
-
     const FetchApi = async () => {
         try {
             let result = await FindPermissionByRole(Number(authContext?.auth.role))
@@ -99,8 +98,6 @@ function MainLayout({ children, errorFetch }: Props) {
         FetchApi()
     }, []);
 
-    // NOTE >> Menu navbar
-    
     let data: DropOutSideBarItem[] = rolePermission.map((item: PermissionResponeModel, index: number) => ({
         icon: HandleIconFunction(item.slug),
         title: item.function_name,
@@ -220,38 +217,47 @@ function MainLayout({ children, errorFetch }: Props) {
     // ]
 
     const [openSideBarUser, setOpenSideBarUser] = React.useState(true);
+    const [isActive, setIsActive] = React.useState(false);
 
     return (
         authContext?.isAuthenticated() ? 
         <>
-            <div className='flex max-w-screen h-screen bg-[#f5f5f7]'>
-                <div className={'h-full overflow-y-auto transition-all ease-in-out duration-500 bg-white border-r-2 border-r-[#F5F5F7] ' + `${openSideBarUser ? " w-[220px]" : " w-[56px] bg-slate-200"}`}>
-                    <div className='w-full py-5 '>
-                        <div className='px-3 py-6'>
-                            <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/logo.svg?1698399319969" alt="" />
-                        </div>
-                        <div className='px-2 w-full h-[10px] '>
-                            <div className='bg-gray-400 w-full h-[1px]'></div>
-                        </div>
-                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-[#FCAF17]'>Main</p>
-                        {
-                            data.map((item: DropOutSideBarItem, index: number) => {
-                                return <>
-                                    <DropOutItem {...item} />
-                                </>
-                            })
-                        }
-                        <p className='px-3 pt-6 pb-1 font-medium text-[13px] text-[#fcaf17]'>Oth</p>
+            <aside className='flex max-w-screen h-screen bg-[#f5f5f7]'>
+                <nav className='h-full flex flex-col bg-white border-r shadow-sm flex-1'>
+                    <div className='p-6 pb-2 flex justify-between items-center'>
+                        <img 
+                            src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/logo.svg?1698399319969" alt="logo" 
+                            className={`overflow-hidden transition-all bg-white w-10 h-8 ${
+                                openSideBarUser ? "w-56" : "w-0 bg-slate-200"
+                              }`}
+                        />
+                        <button
+                            onClick={() => setOpenSideBarUser((curr) => !curr)}
+                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
+                        >
+                            {openSideBarUser ? <BsChevronBarLeft /> : <BsChevronBarRight />}
+                        </button>
+                    </div>
+                    <p className='px-6 pt-6 pb-1 font-medium text-[13px] text-[#FCAF17]'>Main</p>
+                    {
+                        data.map((item: DropOutSideBarItem, index: number) => {
+                            return <ul key={index} className='px-3'>
+                                <DropOutItem {...item} expanded={openSideBarUser} />
+                            </ul>
+                        })
+                    }
+                    <p className='px-6 pt-6 pb-1 font-medium text-[13px] text-[#fcaf17]'>Oth</p>
+                    <ul className='px-3'>
                         <DropOutItem 
-                            icon={<CiLogout style={{minWidth: "22px"}} size={25} color='rgb(17 0 111)' />}
+                            icon={<CiLogout style={{ minWidth: "22px" }} size={25} color='rgb(17 0 111)' />}
                             title='Logout'
                             link='/logout'
-                            childrenItem={[]}
+                            childrenItem={[]} expanded={openSideBarUser} 
                         />
-                    </div>
-                </div>
+                    </ul>
+                </nav>
                 
-                <div className={'h-full overflow-y-auto relative' + `${openSideBarUser ? " basis-5/6" : " w-full "}`}>
+                <div className={'h-full overflow-y-auto relative' + `${openSideBarUser ? " basis-11/12" : " w-full "}`}>
                     <Header handleCloseNav={setOpenSideBarUser} stateSideBar={openSideBarUser} />
                     {
                         errorFetch ? <ErrorFetching /> :
@@ -262,7 +268,7 @@ function MainLayout({ children, errorFetch }: Props) {
                             </div>
                     }
                 </div>
-            </div>
+            </aside>
             
         </> : <Unauthorized />
     )

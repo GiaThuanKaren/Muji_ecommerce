@@ -3,6 +3,7 @@ package com.muji_ecomerce.server.controller;
 import com.muji_ecomerce.server.model.OrderProductModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.OrderService;
+import com.muji_ecomerce.server.utils.OptionValueKey;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,26 +21,32 @@ public class OrderProductController {
 
 
     @GetMapping("/getall")
-    public ResponeModelJson getAllOrder(){
-        return orderService.getAllOrder();
+    public ResponeModelJson getAllOrder(
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit
+    ){
+        if (_page != null && _limit != null) {
+            return orderService.FetchPaginationOrder(_page, _limit);
+        } else {
+            return orderService.getAllOrder();
+        }
     }
 
     @PostMapping("/addNew")
     public ResponeModelJson addNewOrder(@RequestBody OrderProductModel orderProductModel){
-        System.out.println(
-                orderProductModel.toString()
-        );
-        System.out.println("---------> " + orderProductModel);
         return orderService.addNewOrder(orderProductModel);
 //        return new ResponeModelJson<>(HttpStatus.OK,"Done",orderProductModel);
     }
 
 
     @GetMapping("/getAllOrderDetailByIdOrder")
-    public ResponeModelJson getAllOrderDetailByIdOrder(){
-        return orderService.getAllOrderDetailByIdOrder((long)352);
+    public ResponeModelJson getAllOrderDetailByIdOrder(@RequestParam(required = false) Long id){
+        return orderService.getAllOrderDetailByIdOrder(id);
     }
 
-
+    @DeleteMapping("/delete/{id}")
+    private ResponeModelJson deleteProductById(@PathVariable("id") Long id){
+        return orderService.deleteOrder(id);
+    }
 
 }

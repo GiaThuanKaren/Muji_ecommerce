@@ -61,7 +61,7 @@ function POS() {
 
     const HandleCheckout = async () => {
         const CartCheckout: CartItem[] = []
-        // const employeeInfo = localStorage.getItem('employeeInfo')
+        const employeeInfo = JSON.parse(localStorage.getItem('employeeInfo'))
 
         mujiOrder.map((item: ProductCartItem) => {
             CartCheckout.push({
@@ -74,7 +74,7 @@ function POS() {
         })
 
         try {
-            let result = await CreateNewOrder(CartCheckout, 1, parseInt(chooseCustomer))
+            let result = await CreateNewOrder(CartCheckout, employeeInfo.employeeId, parseInt(chooseCustomer))
 
             console.log(result);
             
@@ -166,7 +166,6 @@ function POS() {
         );
 
         if (isProductInCart) {
-            // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng thêm 1 quantity
             const updatedMujiOrder = mujiOrder.map((item) => {
                 if (item.item.productsku === productSkuChoose.productSkuId && item.item.size === productSkuChoose.size) {
                     return {
@@ -179,7 +178,6 @@ function POS() {
 
             setMujiOrder(updatedMujiOrder);
         } else {
-            // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm mới vào giỏ hàng với quantity là 1
             let productAddCart: ProductCartItem = {
                 item: {
                     image: productSkuChoose.img,
@@ -278,7 +276,7 @@ function POS() {
                                                         })
                                                     }} className={'h-16 w-12 my-2 mx-2 border-[3px] hover:border-yellow-500  ' + `${item.id.skuId.toString() == productSkuChoose.productSkuId ? " border-[2px] border-yellow-500  " : " "}`}>
                                                         <img className='w-full h-full object-contain'
-                                                            src={item.imageProduct.trim().startsWith("https://") ? item.imageProduct : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`}
+                                                            src={item.imageProduct.trim().startsWith("https://") ? item.imageProduct : ``}
                                                         />
                                                     </div>
                                                 </>

@@ -54,31 +54,14 @@ export interface ProductResponeModel {
   nameProduct: string
   quantityStock: number
   productDescription: string
-  productSkus: ProductSkuResponeModel[]
+  productSkus: any[]
   orderProducts: any[]
-  categories: CategoriesResponeModel
-  products: Product[]
-  // list_option: number[]
+  // productSkus: ProductSkuResponeModel[]
+  // categories: CategoriesResponeModel
+  // products: Product[]
+  categories_id?: number
+  list_option: number[]
 }
-
-// export interface OrderResponeModel {
-//   orderId: number
-//   orderDate: string
-//   requiredDate: string
-//   shippedDate: string
-//   status_order: Status
-//   orderProducts: any[]
-//   categories: CategoriesResponeModel
-//   products: Product[]
-//   // list_option: number[]
-// }
-
-// export interface Status {
-//   statusId: number,
-//   nameStatus: string
-// }
-
-
 
 
 export interface ProductModel {
@@ -185,6 +168,22 @@ export interface OrderResponeModel {
   orderDate: string,
   requiredDate: string,
   shippedDate: string
+}
+
+export interface OrderDetailResponeModel {
+  order_date: string,
+  sku_id: number,
+  shipped_date: string,
+  shipping_type_id: number,
+  product_id: number,
+  quantity_ordered: number,
+  required_date: string,
+  employee_id: number,
+  status_order_id: number,
+  customer_id: number,
+  value_id: number,
+  option_id: number,
+  order_id: number
 }
 
 export interface OptionValueModel {

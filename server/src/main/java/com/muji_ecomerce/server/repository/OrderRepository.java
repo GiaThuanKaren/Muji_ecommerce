@@ -22,4 +22,5 @@ public interface OrderRepository extends JpaRepository<OrderProduct,Long> {
 
     @Query(value = "select customer.*, count(order_product.customer_id) as total from order_product, customer WHERE order_product.customer_id = customer.customer_id GROUP BY order_product.customer_id ORDER BY total LIMIT 5", nativeQuery = true)
     List<Map<String, Object>> Top5CustomerBuy();
+
 }

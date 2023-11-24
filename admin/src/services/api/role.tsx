@@ -12,22 +12,31 @@ export const FetchAllRole = async function () {
     }
 }
 
-export const UpdateRoleById = async function (role: RoleModel) {
-    // try {
-    //     await axios.put(`${BASE_DEV}/customer/update_customerbyid`, role)
-    //     ShowToast("Updated This Customer Successfully", "INFO")
-    // } catch (error) {
-    //     ShowToast("Failed to update this customer ", "ERROR")
-    // }
+export const CreateNewRole = async function (roleModel: RoleModel) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/role/create_new_role`, roleModel)
+        ShowToast("Created Sucessfully", "INFO");
+        return data
+    } catch (error) {
+        ShowToast("Failed To Create New Role", "ERROR");
+    }
 }
 
-
-
 export const DeleteRoleById = async function (id: number) {
-    // try {
-    //     await axios.delete(`${BASE_DEV}/customer/delete_customer_byid?id=${id}`)
-    //     ShowToast("Deleted Successfully", "INFO")
-    // } catch (error) {
-    //     ShowToast("Failed to delete this customer", "ERROR")
-    // }
+    try {
+        let { data } = await axios.delete(`${BASE_DEV}/role/delete/${id}`)
+        ShowToast("Deleted Sucessfully", "INFO")
+    } catch (error) {
+        ShowToast("Failed To Delete This Role", "ERROR")
+    }
+}
+
+export const UpdateRoleById = async function(role: RoleModel){
+    try {
+        
+        await axios.put(`${BASE_DEV}/role/edit`, role)
+        ShowToast("Update Role Sucessfully","INFO")
+    } catch (error) {
+        ShowToast("Error To Update This Role","ERROR")
+    }
 }

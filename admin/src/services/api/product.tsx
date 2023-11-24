@@ -49,6 +49,7 @@ export const GetDetailProductById = async function (productId?: string) {
 }
 
 export const UpdateProductId = async function (productModel: ProductResponeModel) {
+    console.log('cate ', productModel);
     try {
         interface UpdateProductMdodel {
             productId: number
@@ -64,7 +65,7 @@ export const UpdateProductId = async function (productModel: ProductResponeModel
             nameProduct: productModel.nameProduct,
             quantityStock: productModel.quantityStock,
             productDescription: productModel.productDescription,
-            categories_id: productModel.categorie.catorgoryID as number,
+            categories_id: productModel.categories_id as number,
             list_option: productModel.list_option,
             // product_sky
         }
