@@ -6,7 +6,7 @@ import { OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model'
 import { useGlobal } from 'src/hook';
 import { AddProductToLocalStorage, GetDetailProductById } from 'src/service/api';
 import { _addProductToCart } from 'src/store/app/slices/cartSlices';
-import { ProductCartItem } from 'src/utils/constant';
+import { ProductCartItem, ShowToast } from 'src/utils/constant';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
 
@@ -73,6 +73,7 @@ function DetailProductById() {
                 quantity: numberProductAddToCard
             }
             console.log(productAddCart)
+            ShowToast("Added To Cart","INFO")
             dispatch(_addProductToCart(productAddCart))
             // AddProductToLocalStorage(productAddCart)
         } catch (error) {

@@ -2,7 +2,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { MainLayout } from 'src/Layouts'
+import { useGlobal } from 'src/hook'
 import { LoginCustomer } from 'src/service/api'
+import { _addUserToStore } from 'src/store/app/slices/authSlices'
 import { ICON, IconBrand } from 'src/utils/icon'
 import { linkRouting } from 'src/utils/routelink'
 
@@ -23,6 +25,8 @@ function LoginPage() {
         }
     ]
     const { push } = useRouter()
+    const {dispatch,globalState} =useGlobal()
+    
     const [isLoading, setIsLoading] = React.useState(false)
     const [customerInfo, setCustomerInfo] = React.useState({
         customerEmail: "",
@@ -33,7 +37,9 @@ function LoginPage() {
         try {
             setIsLoading(true)
             let result = await LoginCustomer(customerInfo);
-            if (result == true) {
+            console.log(result[0])
+            dispatch(_addUserToStore(result[0]))
+            if (result != false) {
                 push(linkRouting.home)
             }
         } catch (error) {

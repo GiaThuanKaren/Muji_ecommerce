@@ -5,13 +5,33 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 import CardProduct from '../CardProduct';
 import { ProductMock } from 'src/utils/constant';
+import { GetProductRowDisplay } from 'src/service/api';
 
 interface Props {
     title: string;
     link: string;
+    id: string
 }
 
-function HorizontalProductList({ link, title }: Props) {
+function HorizontalProductList({ id, link, title }: Props) {
+
+    const [data, setData] = React.useState<any[]>([])
+
+
+    React.useEffect(() => {
+        async function FetchApi() {
+            try {
+                let result = await GetProductRowDisplay(id)
+                setData(result)
+            } catch (error) {
+
+            }
+        }
+        FetchApi()
+    }, [])
+    console.log(data,"Fetch")
+
+
     return (
         <>
             <div className='w -full h-fit mt-3 mb-10'>
@@ -40,10 +60,10 @@ function HorizontalProductList({ link, title }: Props) {
                             className="mySwiper h-fit "
                         >
                             {
-                                Array.from(Array(10).keys()).map((item, index) => {
+                                data.map((item, index) => {
                                     return <>
                                         <SwiperSlide>
-                                            <CardProduct {...ProductMock} />
+                                            <CardProduct {...item} />
                                         </SwiperSlide>
 
                                     </>

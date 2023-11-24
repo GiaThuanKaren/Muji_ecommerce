@@ -14,5 +14,6 @@ export const linkRouting = {
     viewrecently: "/account/viewrecently",
     productliked: "/account/productliked",
     resetpassword: "/resetpassword",
-    fogotpassword: "/fogotpassword"
+    fogotpassword: "/fogotpassword",
+    editInfo:"/account/edit_info"
 }

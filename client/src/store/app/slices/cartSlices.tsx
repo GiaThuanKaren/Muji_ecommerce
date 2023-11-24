@@ -54,6 +54,7 @@ export const cartSlices = createSlice({
         _updateProductToLocalStorage: (state, action) => {
             let payload: ProductCartItem = action.payload
             UpdateProductToLocalStorage(payload)
+            
             state.listProduct = FetchDataFromStorageByKey()?.product as ProductCartItem[]
         },
         _pickProductToPay: (state, aciton) => {
@@ -65,7 +66,7 @@ export const cartSlices = createSlice({
             let payload: ProductCartItem = action.payload
             let NewData: ProductCartItem[] = []
             for (let item of state?.chooseProduct as ProductCartItem[]) {
-
+                
                 if (item.item.productsku == payload.item.productsku &&
                     item.item.productId == payload.item.productId &&
                     item.item.size == payload.item.size) {

@@ -3,8 +3,10 @@ package com.muji_ecomerce.server.controller;
 import com.muji_ecomerce.server.model.OrderProductModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.services.OrderService;
+import jakarta.mail.MessagingException;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,7 @@ public class OrderProductController {
     }
 
     @PostMapping("/addNew")
-    public ResponeModelJson addNewOrder(@RequestBody OrderProductModel orderProductModel){
+    public ResponeModelJson addNewOrder(@RequestBody OrderProductModel orderProductModel) throws MessagingException {
         System.out.println(
                 orderProductModel.toString()
         );
@@ -32,10 +34,16 @@ public class OrderProductController {
 
 
     @GetMapping("/getAllOrderDetailByIdOrder")
-    public ResponeModelJson getAllOrderDetailByIdOrder(){
-        return orderService.getAllOrderDetailByIdOrder((long)352);
+    public ResponeModelJson getAllOrderDetailByIdOrder(@RequestParam("id") Long id){
+        return orderService.getAllOrderDetailByIdOrder(id);
     }
 
+    @GetMapping("/getAllOrderByIdCustomer")
+    public ResponeModelJson getAllOrderByIdCustomer(
+            @Param("customer_id") Long customerId
+    ){
+        return orderService.getAllOrderByIdCustomer(customerId);
 
+    }
 
 }

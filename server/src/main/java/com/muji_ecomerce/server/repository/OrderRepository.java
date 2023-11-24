@@ -16,4 +16,9 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<OrderProduct,Long> {
     @Query(value = "select * from order_product ,order_detail where order_product.order_id = order_detail.order_id and order_product.order_id = :idorder" ,nativeQuery = true)
     List<Map<String,Object>> findAllOrderAndOrderDetailById(@Param("idorder") Long orderId);
+
+
+
+    @Query(value = "select * from customer , order_product where order_product.customer_id = customer.customer_id and customer.customer_id = :idcustomer",nativeQuery = true)
+    List<Map<String,Object>> findAllOrderByIdCustomer(@Param("idcustomer") Long customerId);
 }

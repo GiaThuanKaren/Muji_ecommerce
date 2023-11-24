@@ -4,6 +4,21 @@ import { Key_Product_Storage, ProductCart, ProductCartItem, ShowToast, localStor
 const BASE_DEV: string = 'http://localhost:8080'
 
 
+
+
+export const GetProductRowDisplay = async function (id: string) {
+    try {
+        let { data } = await axios.get(
+            `${BASE_DEV}/product/getbyidcategoriesfilter?_page=1&_limit=5&_idCategories=${id}&_sizes=&_colors=`
+        )
+        return data.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
 export const VerifyAccountByToken = async function (token: string) {
     interface VerifyTokenINf {
         status: string
@@ -43,14 +58,14 @@ export const FetchAllProductLine = async function () {
 
 
 export const GetAllProductByIdCategories = async function (
-        idCategories: number,
-        currentPage?: number, 
-        limit?: number,
-        price?: string,
-        name?: string,
-        size?: string[],
-        color?: string[]
-    ) {
+    idCategories: number,
+    currentPage?: number,
+    limit?: number,
+    price?: string,
+    name?: string,
+    size?: string[],
+    color?: string[]
+) {
     try {
 
         const params = {
@@ -66,7 +81,7 @@ export const GetAllProductByIdCategories = async function (
                 _colors: color.join(",")
             })
         }
-        
+
         let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/getbyidcategoriesfilter`, { params })
 
         console.log(data)
@@ -77,35 +92,35 @@ export const GetAllProductByIdCategories = async function (
 }
 
 export const GetAllProduct = async function (
-    currentPage?: number, 
+    currentPage?: number,
     limit?: number,
     price?: string,
     name?: string,
     size?: string[],
     color?: string[]
 ) {
-try {
+    try {
 
-    const params = {
-        _page: currentPage,
-        _limit: limit,
-        _name: name,
-        _price: price,
-        ...(size && {
-            _sizes: size.join(",")
-        }),
-        ...(color && {
-            _colors: color.join(",")
-        })
+        const params = {
+            _page: currentPage,
+            _limit: limit,
+            _name: name,
+            _price: price,
+            ...(size && {
+                _sizes: size.join(",")
+            }),
+            ...(color && {
+                _colors: color.join(",")
+            })
+        }
+
+        let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/fetchAll`, { params })
+
+        console.log(data)
+        return data
+    } catch (error) {
+        console.log(error)
     }
-    
-    let { data } = await axios.get<ResponeModel<ProductModel>>(`${BASE_DEV}/product/fetchAll`, { params })
-
-    console.log(data)
-    return data
-} catch (error) {
-    console.log(error)
-}
 }
 
 export const GetDetailProductById = async function (productId: string) {
@@ -154,7 +169,8 @@ export const LoginCustomer = async function (loginModel: LoginModel) {
                 return false
             }
             case "Authenticated": {
-                return true
+
+                return data.data
             }
         }
 
@@ -251,9 +267,9 @@ export const UpdateProductToLocalStorage = function (productCart: ProductCartIte
                         NewData.push(item)
                     }
                 }
-                previousProduct={
+                previousProduct = {
                     ...previousProduct,
-                    product:NewData
+                    product: NewData
                 }
                 localStorage.setItem(Key_Product_Storage, JSON.stringify(previousProduct))
             }
@@ -310,3 +326,16 @@ export const initLocalStorage = function () {
 
 
 
+export const updateCustomer = async function (customerModel: any) {
+    try {
+        let { data } = await axios.put(
+            `${BASE_DEV}/customer/update_customerbyid_withoutstatus`,
+            customerModel
+        )
+        ShowToast(data.message, "INFO")
+        return data.data
+    } catch (error) {
+        ShowToast("Failed To Update User", "ERROR")
+        return false
+    }
+}

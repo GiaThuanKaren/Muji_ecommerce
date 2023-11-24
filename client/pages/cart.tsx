@@ -319,7 +319,7 @@ function CartProduct() {
 
                                     <div className='bg-yellow-500 rounded-md my-8'>
                                         <p className='text-center py-3 text-white font-medium'>
-                                            Đặt hàng ( {productCart.length + 1} )
+                                            Đặt hàng ( {globalState.cartUser.chooseProduct.length} )
                                         </p>
                                     </div>
 

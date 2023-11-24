@@ -15,6 +15,7 @@ import { FetchAllCategories, FetchAllProductLine, FetchDataFromStorageByKey } fr
 import { CategoriesModel, ProductLineModel } from 'src/Model';
 import { useRouter } from 'next/router';
 import { ProductCartItem } from 'src/utils/constant';
+import { useGlobal } from 'src/hook';
 
 
 interface ItemNavBarHeaderCatologe {
@@ -27,6 +28,7 @@ interface ItemNavBarHeaderCatologe {
 
 function Header() {
     const queryClient = useQueryClient()
+    const { globalState } = useGlobal()
     const [listProductCart, setListProductCart] = React.useState<ProductCartItem[]>([])
     const { push } = useRouter()
     const [openLeftBarMobile, setOpenLeftBarMobile] = React.useState(false)
@@ -198,10 +200,10 @@ function Header() {
                             }
                         </div>
 
-                        <div className='flex items-center justify-between group'>
+                        <div className='flex items-center justify-between '>
                             <div onClick={() => {
                                 push(`${linkRouting.cart}`)
-                            }} className='flex items-center hover:cursor-pointer '>
+                            }} className='flex items-center hover:cursor-pointer group '>
 
                                 <div className='relative '>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
@@ -236,22 +238,32 @@ function Header() {
                             </div>
 
 
-                            <p className='ml-7'>
-                                <ICON className='mx-3' icon={IconRegular.faUser} />
-                                <span>
-                                    <Link href={linkRouting.register}>
-                                        Đăng ký
-                                    </Link>
+                            <p className='ml-7 flex hover:cursor-pointer'>
 
-                                    <span className='mx-2'>
-                                        /
-                                    </span>
+                                {
+                                    globalState.auth.user ? <>
+                                        <ICON className='mx-3' icon={IconRegular.faUser} />
+                                        <Link href={`${linkRouting.account}`}>
+                                            {globalState.auth.user.customer_last_name}
+                                        </Link>
+                                    </> : <>
+                                        <span>
+                                            <Link href={linkRouting.register}>
+                                                Đăng ký
+                                            </Link>
 
-                                    <Link href={linkRouting.login}>
-                                        Đăng nhập
-                                    </Link>
+                                            <span className='mx-2'>
+                                                /
+                                            </span>
 
-                                </span>
+                                            <Link href={linkRouting.login}>
+                                                Đăng nhập
+                                            </Link>
+
+                                        </span>
+                                    </>
+                                }
+
                             </p>
                         </div>
 

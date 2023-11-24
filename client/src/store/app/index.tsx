@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartSlices, { cartSlicesInf } from "./slices/cartSlices";
+import authSlice from "./slices/authSlices";
 
 
 
@@ -10,7 +11,9 @@ export const store = configureStore({
         //     // do not do state = action.payload it will not update the store
         //     return action.payload
         // },
-        cartUser: cartSlices
+        cartUser: cartSlices,
+        auth: authSlice
+
     },
 })
 store.subscribe(() => {

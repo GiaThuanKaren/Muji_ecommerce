@@ -27,7 +27,7 @@ public interface CustomerService {
 
     ResponeModelJson deleteCustomerById(Long id);
 
-
+    ResponeModelJson updateCustomerByIdWithoutStatus(CustomerModel customerModel);
     ResponeModelJson updateProfileUser(CustomerModel customerModel);
 
     ResponeModelJson verifyTokenCutomerWithoutDelete(String Token);
