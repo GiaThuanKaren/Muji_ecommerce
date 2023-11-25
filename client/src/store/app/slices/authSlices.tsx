@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface UserStoreInf {
-    customer_email?: string
-    customer_first_name: string
-    customer_id: string
-    customer_last_name: string
-    customer_phone: string
-    enable_status?: boolean
-    expiration_date?: string
+    customerEmail?: string
+    customerFirstName: string
+    customerId: string
+    customerLastName: string
+    customerPhone: string
+    enableStatus?: boolean
+    expirationDate?: string
     // password: string
     token?: string
-    verification_token_customerid?: number
+    verificationTokenCustomerid?: number
 }
 
 

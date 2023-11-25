@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CategoriesModel, LoginModel, Product, ProductLineModel, ProductModel, RegisterModel, ResponeModel } from "src/Model";
+import { CategoriesModel, LoginModel, NewOrderInf, Product, ProductLineModel, ProductModel, RegisterModel, ResponeModel } from "src/Model";
 import { Key_Product_Storage, ProductCart, ProductCartItem, ShowToast, localStorageInf } from "src/utils/constant";
 const BASE_DEV: string = 'http://localhost:8080'
 
@@ -238,9 +238,10 @@ export const UpdateProductToLocalStorage = function (productCart: ProductCartIte
     try {
         let previousProduct = FetchDataFromStorageByKey();
         let result: ProductCartItem | undefined = previousProduct?.product.find((item: ProductCartItem, index: number) => {
-            return item.item.productsku == productCart.item.productsku &&
+            return item.item.optionId == productCart.item.optionId &&
                 item.item.productId == productCart.item.productId &&
-                item.item.size == productCart.item.size
+                item.item.valuesId == productCart.item.valuesId &&
+                item.item.productsku == productCart.item.productsku
         })
         if (result) {
             if (productCart.quantity != 0) {
@@ -337,5 +338,44 @@ export const updateCustomer = async function (customerModel: any) {
     } catch (error) {
         ShowToast("Failed To Update User", "ERROR")
         return false
+    }
+}
+
+
+export const addNewOrder = async function (newOrder: NewOrderInf) {
+    try {
+        let { data } = await axios.post(`${BASE_DEV}/order/addNew`, newOrder)
+        if (data.message == "Product ordered") {
+            ShowToast(
+                "Product ordered",
+                "INFO"
+            )
+            return data
+        }
+        ShowToast(
+            "Can not order .Please try again",
+            "ERROR"
+        )
+        return false
+    } catch (error) {
+        ShowToast(
+            "Can not order .Please try again",
+            "ERROR"
+        )
+        return false
+    }
+}
+
+
+
+export const getAllOptionByProductIdAndSkuId = async function (productId: string) {
+    try {
+        let { data } = await axios.get(`${BASE_DEV}/product/getalloption_byproductid_skuid?productid=${productId}`)
+        return data.data
+    } catch (error) {
+        ShowToast(
+            "Failed to get all option by this product id ",
+            "ERROR"
+        )
     }
 }

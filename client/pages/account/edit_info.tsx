@@ -19,21 +19,22 @@ function Editinfo() {
         push
     } = useRouter()
 
-    const [data, setData] = React.useState(() => {
+    const [data, setData] = React.useState<UserStoreInf>(() => {
 
         return {
-            customer_id: globalState.auth.user?.customer_id,
-            customer_last_name: globalState.auth.user?.customer_first_name,
-            customer_first_name: globalState.auth.user?.customer_last_name,
-            customer_phone: globalState.auth.user?.customer_phone,
+
+            customerLastName: globalState.auth.user?.customerFirstName,
+            customerFirstName: globalState.auth.user?.customerLastName,
+            customerPhone: globalState.auth.user?.customerPhone,
+            customerId: globalState.auth.user?.customerId,
         }
     })
     React.useEffect(() => {
         setData({
-            customer_id: globalState.auth.user?.customer_id,
-            customer_last_name: globalState.auth.user?.customer_first_name,
-            customer_first_name: globalState.auth.user?.customer_last_name,
-            customer_phone: globalState.auth.user?.customer_phone,
+            customerLastName: globalState.auth.user?.customerFirstName as string,
+            customerFirstName: globalState.auth.user?.customerLastName as string,
+            customerPhone: globalState.auth.user?.customerPhone as string,
+            customerId: globalState.auth.user?.customerId as string,
         })
     }, [globalState])
 
@@ -46,12 +47,12 @@ function Editinfo() {
             // "customerEmail": "giathuannguyen213@gmail.com",
             // "password": "giathuna123new123"
             let updateData = {
-                "customerId": globalState.auth.user?.customer_id as string ,
-                "customerLastName": globalState.auth.user?.customer_first_name as string ,
-                "customerFirstName": globalState.auth.user?.customer_last_name as string ,
-                "customerPhone": globalState.auth.user?.customer_phone as string ,
+                "customerId": globalState.auth.user?.customerId as string,
+                "customerLastName": globalState.auth.user?.customerFirstName as string,
+                "customerFirstName": globalState.auth.user?.customerLastName as string,
+                "customerPhone": globalState.auth.user?.customerPhone as string,
             }
-            let result = await updateCustomer(dupdateDataata)
+            let result = await updateCustomer(data)
             if (result) {
                 console.log(result)
                 dispatch(_addUserToStore(result))
@@ -74,19 +75,19 @@ function Editinfo() {
     return (
         <MainLayout>
             <AccountLayouts>
-                <InputComp value={data?.customer_first_name} onChangeCallBack={(e) => {
-                    handleInput("customer_first_name", e.target.value)
+                <InputComp value={data?.customerFirstName} onChangeCallBack={(e) => {
+                    handleInput("customerFirstName", e.target.value)
                 }} leftText={"First Name"} />
 
                 <InputComp
-                    value={data?.customer_last_name}
+                    value={data?.customerLastName}
                     onChangeCallBack={(e) => {
-                        handleInput("customer_last_name", e.target.value)
+                        handleInput("customerLastName", e.target.value)
                     }} leftText={"Last Name"} />
 
 
-                <InputComp value={data?.customer_phone} onChangeCallBack={(e) => {
-                    handleInput("customer_phone", e.target.value)
+                <InputComp value={data?.customerPhone} onChangeCallBack={(e) => {
+                    handleInput("customerPhone", e.target.value)
                 }} leftText={"Phone Number"} />
                 <div className='flex justify-end'>
                     <div onClick={handleUpdateCustomer} className='hover:cursor-pointer'>

@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import { MainLayout } from 'src/Layouts'
-import { Product, ProductModel } from 'src/Model'
-import { FetchDataFromStorageByKey, UpdateProductToLocalStorage } from 'src/service/api'
+import { NewOrderInf, Product, ProductModel } from 'src/Model'
+import { FetchDataFromStorageByKey, UpdateProductToLocalStorage, addNewOrder } from 'src/service/api'
 import { ProductCart, ProductCartItem, ProductMock } from 'src/utils/constant'
 import { ICON, IconSolid } from 'src/utils/icon'
 import { linkRouting } from 'src/utils/routelink'
@@ -172,6 +172,37 @@ function CartProduct() {
     }, [])
 
 
+    const handleAddOrder = async function () {
+        try {
+            let userId = globalState.auth.user?.customerId
+            let orderListProduct = globalState.cartUser.chooseProduct.map((item: ProductCartItem, index: number) => {
+                return {
+                    "skuId": item.item.productsku as any,
+                    "productId": item.item.productId as any,
+                    "quantity": item.quantity as any,
+                    "optionId": item.item.optionId as any,
+                    "valuesId": item.item.valuesId as any
+                }
+            })
+            let newOrder: NewOrderInf = {
+                "customerId": userId,
+                "statusID": 2,
+                "shippingTypeID": 2,
+                "listproductOrdered": orderListProduct
+            }
+            console.log(
+                globalState.cartUser.chooseProduct
+            )
+            console.log(
+                newOrder
+            )
+            let result = await addNewOrder(newOrder)
+            
+        } catch (error) {
+
+        }
+    }
+
 
     return (
         <>
@@ -317,7 +348,9 @@ function CartProduct() {
 
                                     </div>
 
-                                    <div className='bg-yellow-500 rounded-md my-8'>
+                                    <div onClick={() => {
+                                        handleAddOrder()
+                                    }} className='bg-yellow-500 rounded-md my-8'>
                                         <p className='text-center py-3 text-white font-medium'>
                                             Đặt hàng ( {globalState.cartUser.chooseProduct.length} )
                                         </p>

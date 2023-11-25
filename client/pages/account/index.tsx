@@ -34,12 +34,12 @@ function AccountIndexPage() {
                                 <div>
                                     <p className='my-3 px-2 capitalize'>
                                         Họ và tên : {
-                                            `${globalState.auth.user.customer_first_name} ${globalState.auth.user.customer_last_name} `
+                                            `${globalState.auth.user.customerFirstName} ${globalState.auth.user.customerLastName} `
                                         }
                                     </p>
                                     <p className='my-3 px-2 capitalize'>
                                         Công ty :{
-                                            `${globalState.auth.user.customer_first_name} ${globalState.auth.user.customer_last_name} `
+                                            `${globalState.auth.user.customerFirstName} ${globalState.auth.user.customerLastName} `
                                         }
                                     </p>
                                 </div>
@@ -47,13 +47,13 @@ function AccountIndexPage() {
                                 <div>
                                     <p className='my-3 px-2 capitalize'>
                                         Địa chỉ email : {
-                                            `${globalState.auth.user.customer_email} `
+                                            `${globalState.auth.user.customerEmail} `
                                         }
                                     </p>
 
                                     <p>
                                         Số điện thoại :{
-                                            `${globalState.auth.user.customer_phone}`
+                                            `${globalState.auth.user.customerPhone ? globalState.auth.user.customerPhone :"Không Có"}`
                                         }
                                     </p>
 

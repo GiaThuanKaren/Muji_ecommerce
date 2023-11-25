@@ -34,7 +34,7 @@ function Header() {
     const [openLeftBarMobile, setOpenLeftBarMobile] = React.useState(false)
     const [openRightBarMobile, setOpenRightBarMobile] = React.useState(false)
     const { data, isLoading, isError } = useQuery("header_categories", FetchAllProductLine)
-    console.log(data)
+    // console.log(data)
     // const ListNavBarHeader: ItemNavBarHeaderCatologe[] = [
     //     {
     //         link: "",
@@ -204,29 +204,60 @@ function Header() {
                             <div onClick={() => {
                                 push(`${linkRouting.cart}`)
                             }} className='flex items-center hover:cursor-pointer group '>
+                                <ICON className='mx-3' icon={IconSolid.faBagShopping} />
 
                                 <div className='relative '>
                                     {/* <p className='h-3 w-3 bg-yellow-500 absolute top-0 right-0 z-[2]'>
         0
     </p> */}
-                                    <ICON className='mx-3' icon={IconSolid.faBagShopping} />
+                                    <div className='w-72 min-h-[252px]  max-h-[45vh] hidden bg-white absolute top-[calc(100%_+_20px)] left-0 group-hover:block overflow-y-auto'>
 
-                                    <div className='w-72 h-52 hidden bg-white absolute top-full left-0 group-hover:block'>
-                                        <div className="flex flex-col items-center">
-                                            <div>
-                                                <img
-                                                    src="http://bizweb.dktcdn.net/100/438/408/themes/904142/assets/blank_cart.svg?1687765708034"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <p>Giỏ hàng của bạn đang trống</p>
+                                        {
+                                            globalState.cartUser.listProduct.length > 0 ? <>
+                                                {
+                                                    globalState.cartUser.listProduct.map((item: ProductCartItem, index: number) => {
+                                                        return (
+                                                            <>
+                                                                <div className='w-full flex'>
+                                                                    <div>
+                                                                        <img
+                                                                            className='h-16 w-16'
+                                                                            src={item.item.image}
+                                                                            alt="" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <h3>{item.item.name}</h3>
+                                                                        <p>
+                                                                            {item.quantity}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        )
+                                                    })
+                                                }
 
-                                            <Link href={""} className='hover:text-yellow-300'>
-                                                <p>Đăng nhập / Đăng ký </p>
-                                            </Link>
+                                            </> : <>
+                                                <div className="flex flex-col items-center">
 
-                                        </div>
+                                                    <div>
+                                                        <img
+                                                            src="http://bizweb.dktcdn.net/100/438/408/themes/904142/assets/blank_cart.svg?1687765708034"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <p>Giỏ hàng của bạn đang trống</p>
 
+                                                    <Link href={""} className='hover:text-yellow-300'>
+                                                        <p>Đăng nhập / Đăng ký </p>
+                                                    </Link>
+
+                                                </div>
+
+
+
+                                            </>
+                                        }
                                     </div>
 
 
@@ -244,7 +275,7 @@ function Header() {
                                     globalState.auth.user ? <>
                                         <ICON className='mx-3' icon={IconRegular.faUser} />
                                         <Link href={`${linkRouting.account}`}>
-                                            {globalState.auth.user.customer_last_name}
+                                            {globalState.auth.user.customerLastName}
                                         </Link>
                                     </> : <>
                                         <span>

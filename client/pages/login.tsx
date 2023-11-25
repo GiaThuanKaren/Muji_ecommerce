@@ -4,7 +4,7 @@ import React from 'react'
 import { MainLayout } from 'src/Layouts'
 import { useGlobal } from 'src/hook'
 import { LoginCustomer } from 'src/service/api'
-import { _addUserToStore } from 'src/store/app/slices/authSlices'
+import { UserStoreInf, _addUserToStore } from 'src/store/app/slices/authSlices'
 import { ICON, IconBrand } from 'src/utils/icon'
 import { linkRouting } from 'src/utils/routelink'
 
@@ -38,7 +38,16 @@ function LoginPage() {
             setIsLoading(true)
             let result = await LoginCustomer(customerInfo);
             console.log(result[0])
-            dispatch(_addUserToStore(result[0]))
+            let user:UserStoreInf={
+                customerFirstName:result[0].customer_first_name,
+                customerLastName:result[0].customer_last_name,
+                customerPhone:result[0].customer_phone,
+                customerId:result[0].customer_id,
+                customerEmail:result[0].customer_email,
+
+
+            }
+            dispatch(_addUserToStore(user))
             if (result != false) {
                 push(linkRouting.home)
             }

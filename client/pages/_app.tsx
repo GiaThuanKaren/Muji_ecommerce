@@ -33,7 +33,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <Provider store={store}>
         <SessionProvider session={session}>
           <Component {...pageProps} />
-          <ToastContainer />
+          <ToastContainer autoClose={100} />
         </SessionProvider>
       </Provider>
     </QueryClientProvider>

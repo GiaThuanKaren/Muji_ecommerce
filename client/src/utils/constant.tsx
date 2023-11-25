@@ -27,6 +27,8 @@ export interface ProductCart {
     size: string
     name:string
     price:any
+    optionId:number,
+    valuesId:number
 }
 
 export interface ProductCartItem {
