@@ -20,10 +20,16 @@ public class OrderProductController {
     @Autowired
     private OrderService orderService;
 
-
     @GetMapping("/getall")
-    public ResponeModelJson getAllOrder(){
-        return orderService.getAllOrder();
+    public ResponeModelJson getAllOrder(
+            @RequestParam(required = false) Integer _page,
+            @RequestParam(required = false) Integer _limit
+    ){
+        if (_page != null && _limit != null) {
+            return orderService.FetchPaginationOrder(_page, _limit);
+        } else {
+            return orderService.getAllOrder();
+        }
     }
 
     @PostMapping("/addNew")
@@ -47,6 +53,12 @@ public class OrderProductController {
     ){
         return orderService.getAllOrderByIdCustomer(customerId);
 
+    }
+  
+  
+    @DeleteMapping("/delete/{id}")
+    private ResponeModelJson deleteProductById(@PathVariable("id") Long id){
+        return orderService.deleteOrder(id);
     }
 
 }

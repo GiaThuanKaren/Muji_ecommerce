@@ -38,6 +38,7 @@ public class SupplierImplementService implements SupplierService{
 
     @Override
     public ResponeModelJson createNewSupplier(SupplierModel supplierModel) {
+        System.out.println("Supplier name ->>>>>" + supplierModel.getSupplier_name());
         Supplier supplier = new Supplier();
         supplier.setSupplier_address(
                 supplierModel.getSupplier_address()

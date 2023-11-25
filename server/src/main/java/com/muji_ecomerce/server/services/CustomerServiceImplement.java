@@ -82,6 +82,12 @@ public class CustomerServiceImplement implements CustomerService{
         return new ResponeModelJson(HttpStatus.OK, "OKE", customers);
     }
 
+    @Override
+    public ResponeModelJson getCustomerByFirstNameAndLastName(String fullName) {
+        List<Customer> customerList = customerRepository.findByCustomerFirstNameContainingOrCustomerLastNameContaining(fullName, fullName);
+        return new ResponeModelJson(HttpStatus.OK, "OKE", customerList);
+    }
+
 
     @Override
     public void saveVerifycationToken(String token, Customer customer) {

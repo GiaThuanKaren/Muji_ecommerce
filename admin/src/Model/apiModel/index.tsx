@@ -10,6 +10,12 @@ export interface OptionModelRespone {
   optionName: string
 }
 
+export interface SupplierModelRespone {
+  supplier_id: number
+  supplier_name: string,
+  supplier_address: string
+}
+
 
 export interface ProductLineModel {
   productLineId?: number
@@ -28,6 +34,13 @@ export interface OptionModel {
   optionName: string
   optionID?: number
 }
+
+export interface SupplierModel {
+  supplier_id?: number
+  supplier_name: string,
+  supplier_address: string
+}
+
 
 
 export interface CategoriesResponeModel {
@@ -54,9 +67,12 @@ export interface ProductResponeModel {
   nameProduct: string
   quantityStock: number
   productDescription: string
-  productSkus: ProductSkuResponeModel[]
+  productSkus: any[]
   orderProducts: any[]
-  categorie: CategoriesResponeModel
+  // productSkus: ProductSkuResponeModel[]
+  // categories: CategoriesResponeModel
+  // products: Product[]
+  categories_id?: number
   list_option: number[]
 }
 
@@ -160,6 +176,29 @@ export interface OptionValueId {
   valueId: number
 }
 
+export interface OrderResponeModel {
+  orderId: number,
+  orderDate: string,
+  requiredDate: string,
+  shippedDate: string
+}
+
+export interface OrderDetailResponeModel {
+  order_date: string,
+  sku_id: number,
+  shipped_date: string,
+  shipping_type_id: number,
+  product_id: number,
+  quantity_ordered: number,
+  required_date: string,
+  employee_id: number,
+  status_order_id: number,
+  customer_id: number,
+  value_id: number,
+  option_id: number,
+  order_id: number
+}
+
 export interface OptionValueModel {
   product_id: string
   option_id: string
@@ -167,9 +206,50 @@ export interface OptionValueModel {
   value_name: string
 }
 
+export interface Top5EmployeeResponeModel {
+  employee_role_id: number,
+  employee_id: number,
+  total: number,
+  employee_last_name: string,
+  employee_email: string,
+  employee_password: string,
+  employee_adress: string,
+  employee_first_name: string,
+  employee_phone: string
+}
 
+export interface Top5CustomerResponeModel {
+  customer_last_name: string,
+  customer_first_name: string,
+  total: number,
+  customer_email: string,
+  password: string,
+  customer_phone: string,
+  customer_id: number,
+  enable_status: boolean
+}
 
+export interface Top10ProductResponeModel {
+  quantity_stock: number,
+  category_id: number,
+  name_product: string,
+  total: number,
+  product_description: string,
+  product_id: number
+}
 
+export interface RevenueInMonthResponeModel {
+  order_year: number,
+  order_month: number,
+  total_price: number
+}
+
+export interface RevenueInWeekResponeModel {
+  order_year: number,
+  order_month: number,
+  order_day_of_week: number,
+  total_price: number
+}
 
 // export interface SkuValueResponeModel {
 //   id: SkuValueId
@@ -234,4 +314,49 @@ export interface SkuValueModel {
   skuId: string
   optionId: string
   valuesId: string
+}
+
+export interface Categories {
+  catorgoryID: number
+  nameCategory: string
+  imageCategory: string
+  parentID: ParentId
+}
+
+export interface ParentId {
+  catorgoryID: number
+  nameCategory: string
+  imageCategory: any
+  parentID: any
+}
+
+export interface Product {
+  id: Id
+  option: Option
+}
+
+export interface Id { }
+
+export interface ProductPOSModel {
+  productId: number
+  nameProduct: string
+  quantityStock: number
+  productDescription: string
+  categories: Categories
+  products: Product[]
+  productSkus: ProductSkuPOSModel[]
+  orderProducts: any[]
+}
+
+export interface ProductSkuPOSModel {
+  id: ProductSkuId
+  skuName: string
+  quantityStock: number
+  imageProduct: string
+  price: number
+}
+
+export interface ProductSkuId {
+  productId: number
+  skuId: number
 }

@@ -9,13 +9,25 @@ interface Props {
 
 function Header({ handleCloseNav, stateSideBar }: Props) {
     const [openNavUser, setOpenNavUser] = React.useState(false);
+    const [loginInfo, setLoginInfo] = React.useState();
+
+    React.useEffect(() => {
+        const employeeInfo = JSON.parse(localStorage.getItem('employeeInfo'))
+        setLoginInfo(employeeInfo)
+    }, []);
+
+    console.log(loginInfo);
+    
+
     return (
         <>
-            <div className='flex items-center justify-between  bg-white px-4 py-4 w-full'>
+            <div className='flex items-center justify-between  bg-white px-4 py-4 w-full shadow-sm'>
 
                 <ICON onClick={() => {
                     handleCloseNav(!stateSideBar)
                 }} icon={IconSolid.faBars} />
+
+                    <h1>{loginInfo?.employeeEmail}</h1>
                 <div className='h-12 w-12 rounded-full bg-red-500 overflow-hidden'>
                     <img
                         className='h-full w-full '

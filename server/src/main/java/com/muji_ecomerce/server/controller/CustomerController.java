@@ -99,4 +99,9 @@ public class CustomerController {
 //    public ResponeModelJson createNewCutomer(CustomerModel customerModel){
 //        return customerService.registerNewCCustomer(customerModel);
 //    }
+
+    @GetMapping("/getCustomerByFirstNameAndLastName")
+    public ResponeModelJson getCustomerByFirstNameAndLastName(@RequestParam(required = false) String fullName) {
+        return customerService.getCustomerByFirstNameAndLastName(fullName);
+    }
 }

@@ -8,6 +8,8 @@ import com.muji_ecomerce.server.utils.Order_Product_Key;
 import com.muji_ecomerce.server.utils.Sku_Values_Key;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -137,7 +139,15 @@ public class OrderServiceImplement implements OrderService{
         return new ResponeModelJson(HttpStatus.OK,"DOne",orderRepository.findAll());
     }
 
+    public ResponeModelJson FetchPaginationOrder(int _page, int _limit) {
+        Long totalOrder;
+        Page<OrderProduct> orderProductPage = orderRepository.findAll(PageRequest.of(_page - 1, _limit));
+        totalOrder = orderProductPage.getTotalElements();
 
+        List<OrderProduct> orders = orderProductPage.getContent();
+
+        return new ResponeModelJson(HttpStatus.OK, "OKE", orders, totalOrder);
+    }
 
 
     @Override
@@ -150,5 +160,28 @@ public class OrderServiceImplement implements OrderService{
     public ResponeModelJson getAllOrderDetailByIdOrder(Long IdOrder) {
 
         return new ResponeModelJson(HttpStatus.CONFLICT,"Done",orderRepository.findAllOrderAndOrderDetailById(IdOrder));
+    }
+
+    @Override
+    public ResponeModelJson deleteOrder(Long id) {
+        Optional<OrderDetail> orderDetailFound = orderDetailRepository.findByOrderID(id);
+        Optional<OrderProduct> orderProductFound = orderRepository.findById(id);
+
+        if(orderDetailFound.isPresent()){
+            orderDetailRepository.deleteByOrderID(id);
+
+            if(orderProductFound.isPresent()){
+                orderRepository.deleteById(id);
+            }
+            return new ResponeModelJson(HttpStatus.OK,"OKE");
+        }
+
+        if(orderProductFound.isPresent()){
+            orderRepository.deleteById(id);
+            return new ResponeModelJson(HttpStatus.OK,"OKE NE");
+        }
+
+
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid option Value Key");
     }
 }

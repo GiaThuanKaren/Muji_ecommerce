@@ -18,7 +18,12 @@ export const routingLink = {
     addnewproductline: "/product/productline/addnewproductline",
     donhang: "/shipping",
     phanquyen: "/permission",
+    taorole: 'permission/createnew',
     logout: "/logout",
-    login: "/login"
+    login: "/login",
+    pos: "/pos",
+    statistic: "/statistic",
+    supplier: "/supplier",
+    taonhacungcap: "/supplier/createnew"
 }
 

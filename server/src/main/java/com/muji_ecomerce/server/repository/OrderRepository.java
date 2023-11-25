@@ -18,7 +18,16 @@ public interface OrderRepository extends JpaRepository<OrderProduct,Long> {
     List<Map<String,Object>> findAllOrderAndOrderDetailById(@Param("idorder") Long orderId);
 
 
+    @Query(value = "select employee.*, count(order_product.employee_id) as total from order_product, employee WHERE order_product.employee_id = employee.employee_id GROUP BY order_product.employee_id ORDER BY total LIMIT 5", nativeQuery = true)
+    List<Map<String, Object>> Top5EmployeeSale();
+
+    @Query(value = "select customer.*, count(order_product.customer_id) as total from order_product, customer WHERE order_product.customer_id = customer.customer_id GROUP BY order_product.customer_id ORDER BY total LIMIT 5", nativeQuery = true)
+    List<Map<String, Object>> Top5CustomerBuy();
+
+
+
 
     @Query(value = "select * from customer , order_product where order_product.customer_id = customer.customer_id and customer.customer_id = :idcustomer",nativeQuery = true)
     List<Map<String,Object>> findAllOrderByIdCustomer(@Param("idcustomer") Long customerId);
+
 }

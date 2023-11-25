@@ -4,10 +4,9 @@ import useAuth from "src/utils/useAuth";
 
 
 const Logout: React.FC = () =>  {
-    const { setAuth } = useAuth()
     const { push } = useRouter()
     
-    setAuth({})
+    localStorage.removeItem('role')
 
     push(routingLink.login)
 

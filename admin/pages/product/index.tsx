@@ -204,6 +204,7 @@ function GetAllProduct() {
                                                 setOpenModal(true)
                                                 setValue({
                                                     ...item,
+                                                    categories_id: item.categories_id,
                                                     list_option: []
                                                 })
                                             }} className='p-3 bg-yellow-300 mx-2 rounded-full' icon={IconSolid.faPenToSquare} />

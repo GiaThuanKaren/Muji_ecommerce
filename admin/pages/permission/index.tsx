@@ -7,6 +7,8 @@ import { DeleteFunctionById, FetchAllFunction, UpdateFunctionById } from 'src/se
 import { CreatePermission, DeletePermissionById, FetchAllPermission, UpdatePermissionById } from 'src/services/api/permission'
 import { ICON, IconSolid } from 'src/utils'
 import { log } from 'console'
+import Link from 'next/link'
+import { routingLink } from 'src/utils/routingLink'
 
 
 function GetAllPermission() {
@@ -25,24 +27,21 @@ function GetAllPermission() {
 
     const [roles, setRoles] = React.useState<RoleModel[]>([]);
     const [functions, setFunctions] = React.useState<FunctionModel[]>([]);
-    const [permissions , setPermissions ] = React.useState<PermissionModel[]>([]);
+    const [permissions, setPermissions] = React.useState<PermissionModel[]>([]);
     const [selectedRole, setSelectedRole] = React.useState<number>();
     const [checked, setChecked] = React.useState([]);
-  
+
     const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedRoleId = event.target.value;
         setSelectedRole(selectedRoleId);
     };
 
-    console.log('Function with role -> ', permissions);
-    
-
     const HandlePermission = async function (id: number) {
 
-        const isChecked = permissions.some((permission) => 
-                permission.permission.roleId == selectedRole && 
-                permission.permission.functionId == id
-            )
+        const isChecked = permissions.some((permission) =>
+            permission.permission.roleId == selectedRole &&
+            permission.permission.functionId == id
+        )
 
         setPermissions(prev => {
 
@@ -53,11 +52,11 @@ function GetAllPermission() {
             }
         })
 
-        
+
 
         try {
             if (isChecked) {
-    
+
                 await DeletePermissionById(selectedRole, id)
                 await FetchApi()
             } else {
@@ -67,31 +66,36 @@ function GetAllPermission() {
                 await FetchApi()
             }
         } catch (error) {
-            
+
         }
 
     }
-    const HandleUpdate = async function (isChecked: Boolean, functionId: any) {
-        // try {
-        //     await UpdatePermissionById({ permission: { functionId: functionId } })
-        //     await FetchApi();
-        //     setOpenModal(false)
-        // } catch (error) {
+    const HandleUpdate = async function () {
+        try {
+            await UpdateRoleById(value)
+            await FetchApi();
+            setOpenModal(false)
+        } catch (error) {
 
-        // }
+        }
+    }
+    const HandleDelete = async function (id: number) {
+        try {
+            await DeleteRoleById(id)
+            await FetchApi();
+        } catch (error) {
+
+        }
     }
     async function FetchApi() {
         try {
-
-            // let result = await FetchAllRole()
-            // setProperties(result?.data as RoleModel[])
 
             let [role, func, permission] = await Promise.all([FetchAllRole(), FetchAllFunction(), FetchAllPermission()])
 
             setRoles(role?.data as RoleModel[])
             setFunctions(func?.data as FunctionModel[])
             setPermissions(permission?.data as PermissionModel[])
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -103,18 +107,27 @@ function GetAllPermission() {
     return (
         <>
             <MainLayout>
+                <div className='flex justify-between px-5'>
+                    <div className='flex items-center'>
+                        <Link className='mx-3' href={`${routingLink.taorole}`}>
+                            <div className='bg-blue-300 px-3 py-2 rounded-md hover:cursor-pointer '>
+                                <h3 className='text-white font-medium'>Create New</h3>
+                            </div>
+                        </Link>
+                    </div>
+
+                </div>
                 {
                     openModal && <>
                         <ModalWrapper openModalState={openModal} handleOpenModalState={setOpenModal} >
-                            {/* <h3 className='text-center font-medium py-2'>
+                            <h3 className='text-center font-medium py-2'>
                                 Chỉnh sửa thuộc tính
                             </h3>
 
-                            <InputComp disable valueInput={value?.roleId} leftText='Option ID' widthFull />
+                            <InputComp disable valueInput={value?.roleId} leftText='Role ID' widthFull />
                             <InputComp handleOnchange={(e) => {
-                                handleInput("customerFirstName", e.target.value)
+                                handleInput("roleName", e.target.value)
                             }} valueInput={value?.roleName} leftText='Role name' widthFull />
-
                             <div className='flex items-center justify-end px-5'>
                                 <div onClick={HandleUpdate} className='mx-2 h-12 bg-blue-500 text-white text-center flex items-center justify-center rounded-lg '>
                                     <p className='  text-white text-center  px-4'>
@@ -129,18 +142,18 @@ function GetAllPermission() {
                                         Cancel
                                     </p>
                                 </div>
-                            </div> */}
+                            </div>
                         </ModalWrapper>
                     </>
                 }
-                {/* {properties && <TableComp handleDelete={() => { } } handleEdit={() => { } } headerRow={[
+                {roles && <TableComp h1='Role' handleDelete={() => { } } handleEdit={() => { } } headerRow={[
                     "ID",
                     "Role Name",
-                ]} totalData={properties.length} displayEachPage={4} >
+                ]} totalData={roles.length} displayEachPage={4} >
 
                     <tbody>
                         {
-                            properties.map((item: RoleModel, index: number) => {
+                            roles.map((item: RoleModel, index: number) => {
                                 return <>
                                     <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                                         <td className="whitespace-nowrap px-6 py-4 font-medium">
@@ -169,7 +182,7 @@ function GetAllPermission() {
                         }
 
                     </tbody>
-                </TableComp>} */}
+                </TableComp>}
                 <div>
                     <label>Chọn vai trò:</label>
                     <select onChange={handleRoleChange} value={selectedRole}>
@@ -178,31 +191,31 @@ function GetAllPermission() {
                             <option key={role.roleId} value={role.roleId}>{role.roleName}</option>
                         ))}
                     </select>
-                <div>
-                    {selectedRole && (
-                        <div>
-                            <h2>Danh sách chức năng cho vai trò {selectedRole}</h2>
-                            <ul>
-                                {functions.map((func) => (
-                                    <li key={func.functionId}>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                onChange={() => HandlePermission(func.functionId)}
-                                                checked={permissions.some((permission) => 
-                                                    permission.permission.roleId == selectedRole && 
-                                                    permission.permission.functionId == func.functionId
-                                                )}
-                                            />  
-                                            {func.functionName}
-                                        </label>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    <div>
+                        {selectedRole && (
+                            <div>
+                                <h2>Danh sách chức năng cho vai trò {selectedRole}</h2>
+                                <ul>
+                                    {functions.map((func) => (
+                                        <li key={func.functionId}>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    onChange={() => HandlePermission(func.functionId)}
+                                                    checked={permissions.some((permission) =>
+                                                        permission.permission.roleId == selectedRole &&
+                                                        permission.permission.functionId == func.functionId
+                                                    )}
+                                                />
+                                                {func.functionName}
+                                            </label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
             </MainLayout>
         </>
     )

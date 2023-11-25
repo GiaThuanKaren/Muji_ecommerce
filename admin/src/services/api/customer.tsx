@@ -9,10 +9,22 @@ export const FetchAllCustomer = async function (currentPage?: number, limit?: nu
             _page: currentPage,
             _limit: limit
         }
-        let { data } = await axios.get<ResponeModel<CustomerResponeModel>>(`${BASE_DEV}/customer/fetch_all`, { params })
+        let { data } = await axios.get<ResponeModel<CustomerResponeModel>>(`${BASE_DEV}/customer/fetch_all`, { params } )
         return data
     } catch (error) {
         ShowToast("Failed To Get All Customer ", "ERROR")
+    }
+}
+
+export const GetCustomerByFullName = async function (fullName?: string) {
+    try {
+        const params = {
+            fullName
+        }
+        let { data } = await axios.get<ResponeModel<CustomerResponeModel>>(`${BASE_DEV}/customer/getCustomerByFirstNameAndLastName`, { params })
+        return data
+    } catch (error) {
+        ShowToast("Failed To Get Customer By FullName", "ERROR")
     }
 }
 
