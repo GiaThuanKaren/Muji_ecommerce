@@ -2,11 +2,11 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import { CommentCompononent } from 'src/Components';
 import { MainLayout } from 'src/Layouts'
-import { OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model';
+import { OptionValueListWithProductIdINF, OptionValues, Product, ProductModel, ProductSkuModel } from 'src/Model';
 import { useGlobal } from 'src/hook';
-import { AddProductToLocalStorage, GetDetailProductById } from 'src/service/api';
+import { AddProductToLocalStorage, GetDetailProductById, getAllOptionByProductIdAndSkuId } from 'src/service/api';
 import { _addProductToCart } from 'src/store/app/slices/cartSlices';
-import { ProductCartItem } from 'src/utils/constant';
+import { ProductCartItem, ShowToast } from 'src/utils/constant';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 
 
@@ -17,6 +17,9 @@ interface ProductSkuChooseInf {
     skuName: string
     productId?: string,
     price: number
+    valuesId: string,
+    optionId: string
+
 }
 
 
@@ -31,8 +34,13 @@ function DetailProductById() {
         size: "",
         skuName: "",
         productId: "",
-        price: 0
+        price: 0,
+        valuesId: "",
+        optionId: ""
     })
+    const [optionValue, setOptionValue] = React.useState<OptionValueListWithProductIdINF[]>(
+        []
+    )
     const [product, setProduct] = React.useState<ProductModel>()
     // const [currentProductSku, setCurrentProductSku] = React.useState<ProductSkuModel>()
     const ratingStart: string[] = ["Tất Cả", "5 Sao", "4 Sao", "3 Sao", "2 Sao"];
@@ -44,20 +52,33 @@ function DetailProductById() {
     async function FetchApi() {
         try {
             let result = await GetDetailProductById(query?.idproduct as string);
+            let listoptionValue = await getAllOptionByProductIdAndSkuId(
+                query?.idproduct as string
+            )
             console.log(result?.data)
+            console.log("List Option Value")
+            console.log(
+                listoptionValue
+            )
+            setOptionValue(
+                listoptionValue
+            )
             setProductSkuChoose({
                 img: result?.data.productSkus[0].imageProduct.toString().trim().startsWith("https://") ? result?.data.productSkus[0].imageProduct : `https://drive.google.com/uc?export=view&id=${result?.data.productSkus[0].imageProduct}` as string,
                 productSkuId: result?.data.productSkus[0].id.skuId.toString() as string,
                 size: "",
                 skuName: result?.data.productSkus[0].skuName as string,
                 productId: query.idproduct as string,
-                price: result?.data.productSkus[0].price as number
+                price: result?.data.productSkus[0].price as number,
+                valuesId: "",
+                optionId: "",
             })
             setProduct(result?.data as ProductModel)
         } catch (error) {
 
         }
     }
+    console.log(productSkuChoose)
     const handleAddCart = async function () {
         try {
 
@@ -68,13 +89,16 @@ function DetailProductById() {
                     productsku: productSkuChoose.productSkuId,
                     size: productSkuChoose.size,
                     name: product?.nameProduct as string,
-                    price: productSkuChoose.price
+                    price: productSkuChoose.price,
+                    optionId: productSkuChoose.optionId.toString(),
+                    valuesId: productSkuChoose.valuesId.toString()
                 },
                 quantity: numberProductAddToCard
             }
             console.log(productAddCart)
+            // ShowToast("Added To Cart", "INFO")
             dispatch(_addProductToCart(productAddCart))
-            // AddProductToLocalStorage(productAddCart)
+
         } catch (error) {
 
         }
@@ -85,7 +109,7 @@ function DetailProductById() {
             FetchApi()
         }
     }, [isReady])
-    console.log(product)
+    // console.log(product)
     return (
         <>
             <MainLayout>
@@ -206,50 +230,8 @@ function DetailProductById() {
                                         })
                                     }
                                 </div>
-                                {
-                                    product?.products.map((item: Product, index: number) => {
-                                        if (
-                                            item.option.optionID == 252
-                                        ) {
-                                            return <>
-                                                {/* `${ item.option.optionName} 123  ${ productSkuChoose.size}` */}
-                                                <h3 className='font-medium '>
 
-                                                    {
-                                                        item.option.optionName
-                                                    }
 
-                                                    {
-                                                        productSkuChoose.size
-                                                    }
-
-                                                </h3>
-                                                <div className='flex flex-wrap  my-3 '>
-                                                    {
-                                                        item.option.optionValues.map((item1: OptionValues) => {
-                                                            return <>
-                                                                <div onClick={() => {
-
-                                                                    setProductSkuChoose({
-                                                                        ...productSkuChoose,
-                                                                        size: item1.valuesName,
-
-                                                                    })
-                                                                    setChooseSize(item1.valuesName)
-                                                                }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-600"}`}>
-                                                                    <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
-                                                                        {item1.valuesName}
-                                                                    </p>
-                                                                </div>
-                                                            </>
-                                                        })
-                                                    }
-                                                </div>
-                                            </>
-                                        }
-
-                                    })
-                                }
 
 
                                 <div className='flex items-center border-2 border-[#a5a4a4] w-fit px-3 py-1'>
@@ -491,13 +473,19 @@ function DetailProductById() {
                                 product?.productSkus.map((item: ProductSkuModel) => {
                                     return <>
                                         <div onClick={() => {
+                                            console.log(
+                                                item.id.skuId
+                                            )
                                             setProductSkuChoose({
                                                 ...productSkuChoose,
                                                 img: item.imageProduct,
                                                 productSkuId: item.id.skuId.toString() as string,
                                                 size: "",
                                                 skuName: item.skuName,
-                                                price: item.price
+                                                price: item.price,
+                                                optionId: "",
+                                                productId: query.idproduct as string,
+
                                             })
                                         }} className={'h-16 w-12 my-2 mx-2 border-[3px] hover:border-yellow-500  ' + `${item.id.skuId.toString() == productSkuChoose.productSkuId ? " border-[2px] border-yellow-500  " : " "}`}>
                                             <img className='w-full h-full object-contain'
@@ -508,50 +496,52 @@ function DetailProductById() {
                                 })
                             }
                         </div>
+
+
+
+
+                        {/* Option value start */}
+
+
+
                         {
-                            product?.products.map((item: Product, index: number) => {
+                            optionValue.map((item: OptionValueListWithProductIdINF, index: number) => {
                                 if (
-                                    item.option.optionID == 252
+                                    item.sku_id.toString() == productSkuChoose.productSkuId
                                 ) {
                                     return <>
-                                        <h3 className='font-medium '>
-                                            {
-                                                item.option.optionName
-                                            }
+                                        <div onClick={() => {
+                                            console.log(
+                                                item.values_name
+                                            )
+                                            setProductSkuChoose({
+                                                ...productSkuChoose,
+                                                valuesId: item.values_id.toString(),
+                                                optionId: item.option_id.toString()
 
-                                            {
-                                                productSkuChoose.size
-                                            }
-
-                                        </h3>
-                                        <div className='flex flex-wrap  my-3 '>
-                                            {
-                                                item.option.optionValues.map((item1: OptionValues) => {
-                                                    return <>
-                                                        <div onClick={() => {
-                                                            console.log(
-                                                                item1.valuesName
-                                                            )
-                                                            setProductSkuChoose({
-                                                                ...productSkuChoose,
-                                                                size: item1.valuesName
-
-                                                            })
-                                                            setChooseSize(item1.valuesName)
-                                                        }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-300"}`}>
-                                                            <p className={'font-medium  ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
-                                                                {item1.valuesName}
-                                                            </p>
-                                                        </div>
-                                                    </>
-                                                })
-                                            }
+                                            })
+                                            setChooseSize(item.values_name)
+                                        }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item.values_name ? " bg-slate-200" : " bg-yellow-300"}`}>
+                                            <p className={'font-medium  text-center ' + `${chooseSize !== item.values_name ? " text-black " : " text-white"}`}>
+                                                {item.values_name}
+                                                {/* {item.option.optionID} {item1.id.optionId} {item1.id.productId} {item1.id.valueId} {item.} */}
+                                            </p>
                                         </div>
+                                        {/* {item.values_name} */}
                                     </>
                                 }
 
                             })
                         }
+
+
+
+
+                        {/* Option value end */}
+
+
+
+
 
 
                         <div className='flex items-center border-2 border-[#a5a4a4] w-fit px-3 py-1'>
@@ -598,3 +588,51 @@ function DetailProductById() {
 }
 
 export default DetailProductById
+
+
+
+// product?.products.map((item: Product, index: number) => {
+//     if (
+//         item.option.optionID == 2
+//     ) {
+//         return <>
+//             {/* <h3 className='font-medium '>
+//                 {
+//                     item.option.optionName
+//                 }
+
+//                 {
+//                     productSkuChoose.size
+//                 }
+
+//             </h3> */}
+//             <div className='flex flex-wrap  my-3 '>
+//                 {
+//                     item.option.optionValues.map((item1: OptionValues) => {
+//                         if (item1.id.productId == query.idproduct?.toString() as number)
+//                             return <>
+//                                 <div onClick={() => {
+//                                     console.log(
+//                                         item1.valuesName
+//                                     )
+//                                     setProductSkuChoose({
+//                                         ...productSkuChoose,
+//                                         valuesId: item1.id.valueId.toString(),
+//                                         optionId: item1.id.optionId.toString()
+
+//                                     })
+//                                     setChooseSize(item1.valuesName)
+//                                 }} className={'hover:cursor-pointer flex items-center justify-center w-16 mx-2 my-2 py-3 ' + `${chooseSize !== item1.valuesName ? " bg-slate-200" : " bg-yellow-300"}`}>
+//                                     <p className={'font-medium  text-center ' + `${chooseSize !== item1.valuesName ? " text-black " : " text-white"}`}>
+//                                         {item1.valuesName}
+//                                         {/* {item.option.optionID} {item1.id.optionId} {item1.id.productId} {item1.id.valueId} {item.} */}
+//                                     </p>
+//                                 </div>
+//                             </>
+//                     })
+//                 }
+//             </div>
+//         </>
+//     }
+
+// })

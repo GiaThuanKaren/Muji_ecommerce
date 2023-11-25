@@ -2,6 +2,8 @@ import { icon } from '@fortawesome/fontawesome-svg-core';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
+import { useGlobal } from 'src/hook';
+import { _removeUserFromStore } from 'src/store/app/slices/authSlices';
 import { ICON, IconRegular, IconSolid } from 'src/utils/icon'
 import { linkRouting } from 'src/utils/routelink';
 
@@ -16,6 +18,13 @@ interface ItemSideBarInf {
 }
 
 function AccountLayouts({ children }: Props) {
+    const {
+        dispatch,
+        globalState
+    } = useGlobal()
+    const {
+        push
+    } = useRouter()
     const ItemsideBar: ItemSideBarInf[] = [
         {
             icon: <ICON className='mr-4' icon={IconRegular.faCircleUser} />,
@@ -89,7 +98,14 @@ function AccountLayouts({ children }: Props) {
                                             </>
                                         })
                                     }
-
+                                    <li className='hover:cursor-pointer' onClick={() => {
+                                        dispatch(_removeUserFromStore())
+                                        push(`${linkRouting.home}`)
+                                    }}>
+                                        <h3 className='font-medium'>
+                                            Đăng Xuất
+                                        </h3>
+                                    </li>
 
                                 </ul>
                             </div>

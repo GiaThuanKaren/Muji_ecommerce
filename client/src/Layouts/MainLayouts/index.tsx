@@ -27,7 +27,7 @@ function MainLayout({ children, isLoading = false }: Props) {
                 </div>
             </div>
 
-            {/* <Footer /> */}
+            <Footer />
         </>
     )
 }

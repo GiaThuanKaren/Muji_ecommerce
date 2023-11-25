@@ -15,7 +15,7 @@ function InputComp({ type, onChangeCallBack, defaultValue, leftText, placeholder
                 <h3 className='font-medium my-3'>
                     {leftText}
                 </h3>
-                <input className='border-[1px] rounded-md outline-none w-full py-3 px-2' value={value} placeholder={placeholder} defaultValue={defaultValue} type={type ? type : "text"} onChange={onChangeCallBack} />
+                <input className='border-[1px] rounded-md outline-none w-full py-3 px-2' value={value} placeholder={placeholder}  type={type ? type : "text"} onChange={onChangeCallBack} />
             </div>
         </>
     )

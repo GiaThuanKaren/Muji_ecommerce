@@ -22,6 +22,10 @@ public interface ProductService {
             String[] _sort
     );
 
+    ResponeModelJson getSkuValueByIdProductAndIdSkuId(Long productId);
+
+
+
     ResponeModelJson updateProductById(ProductModal productModal);
 
     ResponeModelJson deleteProductById(Long productId);

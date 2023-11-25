@@ -64,6 +64,13 @@ public class CustomerController {
         return customerService.updateCustomerById(customerModel);
     }
 
+
+    @PutMapping("/update_customerbyid_withoutstatus")
+    public ResponeModelJson updateCustomerWithouStatus(@RequestBody CustomerModel customerModel){
+        System.out.println(customerModel.toString());
+        return customerService.updateCustomerByIdWithoutStatus(customerModel);
+    }
+
     @DeleteMapping("/delete_customer_byid")
     public ResponeModelJson deleteCustomerById(@RequestParam("id") Long id){
         return customerService.deleteCustomerById(id);

@@ -103,3 +103,32 @@ export interface LoginModel {
     customerEmail: string
     password: string
 }
+
+
+
+export interface NewOrderInf {
+    customerId: number
+    statusID: number
+    shippingTypeID: number
+    employeeId: number
+    listproductOrdered: ListproductOrdered[]
+}
+
+export interface ListproductOrdered {
+    skuId: number
+    productId: number
+    quantity: number
+    optionId: string
+    valuesId: string
+}
+
+
+export interface OptionValueListWithProductIdINF {
+    values_name: string
+    product_id: number
+    values_id: number
+    quantity: number
+    option_id: number
+    value_id: number
+    sku_id: number
+}

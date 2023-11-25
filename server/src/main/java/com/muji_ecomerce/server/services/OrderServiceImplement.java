@@ -5,6 +5,8 @@ import com.muji_ecomerce.server.model.OrderProductModel;
 import com.muji_ecomerce.server.model.ResponeModelJson;
 import com.muji_ecomerce.server.repository.*;
 import com.muji_ecomerce.server.utils.Order_Product_Key;
+import com.muji_ecomerce.server.utils.Sku_Values_Key;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,9 @@ public class OrderServiceImplement implements OrderService{
     @Autowired
     private CustomerRepository customerRepository;
 
+
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
     @Autowired
@@ -37,9 +42,12 @@ public class OrderServiceImplement implements OrderService{
 
 
     @Autowired
+    private SkuValuesRepository skuValuesRepository;
+
+    @Autowired
     private EmployeeRepository employeeRepository;
     @Override
-    public ResponeModelJson addNewOrder(OrderProductModel orderProductModel) {
+    public ResponeModelJson addNewOrder(OrderProductModel orderProductModel) throws MessagingException {
         Optional<Customer> customerFound = customerRepository.findById(orderProductModel.getCustomerId());
         Optional<ShippingType> shippingTypeFound = shippingTypeRepository.findById(orderProductModel.getShippingTypeID());
         Optional<Status> statusFound = statusOrderRepository.findByNameStatus("Ordered");
@@ -73,6 +81,17 @@ public class OrderServiceImplement implements OrderService{
             if(!productFound.isPresent())
                 return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Product Id");
 
+            Optional<Sku_values> skuValuesFound = skuValuesRepository
+                    .findById(new Sku_Values_Key(
+                            orderProductModel.getListproductOrdered().get(i).getProductId(),
+                            orderProductModel.getListproductOrdered().get(i).getSkuId(),
+                            orderProductModel.getListproductOrdered().get(i).getOptionId(),
+                            orderProductModel.getListproductOrdered().get(i).getValuesId()
+                    ));
+
+            if(!skuValuesFound.isPresent())
+                return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Sku Values");
+
 
             OrderDetail orderDetailMew=
                     new OrderDetail(
@@ -97,8 +116,20 @@ public class OrderServiceImplement implements OrderService{
             orderDetailsList.add(
                     orderDetailMew
             );
+
+            skuValuesFound.get().setQuantity(
+                    skuValuesFound.get().getQuantity()-
+                            orderProductModel.getListproductOrdered().get(i).getQuantity()
+            );
+
+            skuValuesRepository.save(skuValuesFound.get());
+
         }
+
+
+
         orderDetailRepository.saveAll(orderDetailsList);
+        emailService.sendMailVerifyOrder(customerFound.get().getCustomerEmail());
 
         return new ResponeModelJson(HttpStatus. OK,"Product ordered",orderProductNew);
     }
@@ -121,8 +152,8 @@ public class OrderServiceImplement implements OrderService{
 
     @Override
     public ResponeModelJson getAllOrderByIdCustomer(Long customerId) {
-//        return new ResponeModelJson(HttpStatus.OK,"Done",);
-    return  null;
+        return new ResponeModelJson(HttpStatus.OK,"Done",orderRepository.findAllOrderByIdCustomer(customerId));
+
     }
 
     @Override

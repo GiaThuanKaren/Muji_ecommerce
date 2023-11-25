@@ -6,12 +6,13 @@ import { Pagination, Navigation } from "swiper";
 
 import styles from '../styles/Home.module.css'
 import { MainLayout } from 'src/Layouts'
-import { HorizontalProductList, SliderHome } from 'src/Components'
+import { HorizontalProductList, SliderHome, Spinner } from 'src/Components'
 import { useQueryClient, useQuery } from "react-query"
 import { FetchAllProductLine } from 'src/service/api';
 import { CategoriesModel, ProductLineModel } from 'src/Model';
 import Link from 'next/link';
 import { linkRouting } from 'src/utils/routelink';
+import { useRouter } from 'next/router';
 
 type Tab = {
   tabslug: "nu" | "nam" | "tre_em",
@@ -110,18 +111,19 @@ function TabNavigationHome() {
 
 
 export default function Home() {
+  const {
+    isReady
+  } = useRouter()
+
   return (
     <>
       <MainLayout >
         <SliderHome />
         <TabNavigationHome />
-        <HorizontalProductList link='' title='' />
-        <HorizontalProductList link='' title='' />
-        <HorizontalProductList link='' title='' />
-        <HorizontalProductList link='' title='' />
-        <HorizontalProductList link='' title='' />
-        <HorizontalProductList link='' title='' />
-        <HorizontalProductList link='' title='' />
+        <HorizontalProductList id='1179' link={`${linkRouting.listproduct}/${1179}`} title='' />
+        <HorizontalProductList id='1179' link={`${linkRouting.listproduct}/${1179}`} title='' />
+        <HorizontalProductList id='1179' link={`${linkRouting.listproduct}/${1179}`} title='' />
+        <HorizontalProductList id='1179' link={`${linkRouting.listproduct}/${1179}`} title='' />
       </MainLayout>
     </>
   )

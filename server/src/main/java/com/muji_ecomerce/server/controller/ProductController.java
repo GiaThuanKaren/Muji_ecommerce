@@ -88,4 +88,11 @@ public class ProductController {
             );
         }
     }
+
+
+    @GetMapping("/getalloption_byproductid_skuid")
+    public ResponeModelJson getAllOptionByProductIdAndSkuId(@RequestParam("productid") Long productid ){
+        return productService.getSkuValueByIdProductAndIdSkuId(productid);
+
+    }
 }

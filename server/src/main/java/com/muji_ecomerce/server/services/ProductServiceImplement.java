@@ -390,4 +390,11 @@ public class ProductServiceImplement implements  ProductService{
         return new ResponeModelJson(HttpStatus.NOT_FOUND,"Can not find any product with this productID");
 //        return new ResponeModelJson<>();
     }
+
+
+
+    @Override
+    public ResponeModelJson getSkuValueByIdProductAndIdSkuId(Long productId) {
+        return new ResponeModelJson(HttpStatus.OK,"Done",productRepository.getAllOptonValueByIdProductAndSkuId(productId));
+    }
 }

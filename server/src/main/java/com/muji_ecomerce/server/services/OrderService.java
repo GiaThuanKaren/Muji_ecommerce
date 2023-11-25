@@ -4,12 +4,16 @@ import com.muji_ecomerce.server.entity.Product;
 import com.muji_ecomerce.server.model.OrderProductModel;
 import com.muji_ecomerce.server.model.ProductModal;
 import com.muji_ecomerce.server.model.ResponeModelJson;
+
 import com.muji_ecomerce.server.utils.Order_Product_Key;
+
+import jakarta.mail.MessagingException;
+
 import org.springframework.stereotype.Service;
 
 
 public interface OrderService {
-    ResponeModelJson addNewOrder(OrderProductModel orderProductModel);
+    ResponeModelJson addNewOrder(OrderProductModel orderProductModel) throws MessagingException;
 
     ResponeModelJson getAllOrder();
 
@@ -18,8 +22,10 @@ public interface OrderService {
 
     ResponeModelJson getAllOrderDetailByIdOrder(Long IdOrder);
 
+
     ResponeModelJson FetchPaginationOrder(int _page, int _limit);
 
     ResponeModelJson deleteOrder(Long id);
+
 
 }

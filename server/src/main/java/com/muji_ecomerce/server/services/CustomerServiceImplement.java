@@ -61,7 +61,7 @@ public class CustomerServiceImplement implements CustomerService{
         if(password.trim().equals(customerModel.getPassword().trim())==false ){
            return  new ResponeModelJson(HttpStatus.CONFLICT,"Wrong Password");
         }
-        return new ResponeModelJson(HttpStatus.ACCEPTED,"Authenticated");
+        return new ResponeModelJson(HttpStatus.ACCEPTED,"Authenticated",customer);
 //        return new ResponeModelJson(HttpStatus.OK,"DOne",customer.get(0).get("enable_status"));
 
 
@@ -102,14 +102,18 @@ public class CustomerServiceImplement implements CustomerService{
             return new ResponeModelJson<>(HttpStatus.CONFLICT,"Invalid Token");
         Customer customerFromToken = verificationTokenCustomerFound.getCustomer();
         Calendar calendar = Calendar.getInstance();
+        verifyTokenRepository.delete(
+                verificationTokenCustomerFound
+        );
         if(verificationTokenCustomerFound.getExpirationDate().getTime() - calendar.getTime().getTime() <=0){
-            verifyTokenRepository.delete(verificationTokenCustomerFound);
-            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Token Expired");
+
+            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Token Expired",verificationTokenCustomerFound.getVerificationTokenCustomerID());
         }
+
         customerFromToken.setEnableStatus(true);
         customerRepository.save(customerFromToken);
 
-        return new ResponeModelJson(HttpStatus.OK,"Done");
+        return new ResponeModelJson(HttpStatus.OK,"Done",verificationTokenCustomerFound.getVerificationTokenCustomerID());
     }
 
 
@@ -128,6 +132,7 @@ public class CustomerServiceImplement implements CustomerService{
     @Override
     public ResponeModelJson updateCustomerById(CustomerModel customerModel) {
         Optional<Customer> customerFound= customerRepository.findById(customerModel.getCustomerId());
+
         if(customerFound.isPresent()){
             if(customerModel.getCustomerLastName() != null){
                 customerFound.get().setCustomerLastName(customerModel.getCustomerLastName());
@@ -155,6 +160,35 @@ public class CustomerServiceImplement implements CustomerService{
 
     }
 
+
+    @Override
+    public ResponeModelJson updateCustomerByIdWithoutStatus(CustomerModel customerModel) {
+
+        Optional<Customer> customerFound= customerRepository.findById(customerModel.getCustomerId());
+
+        if(customerFound.isPresent()){
+            if(customerModel.getCustomerLastName() != null){
+                customerFound.get().setCustomerLastName(customerModel.getCustomerLastName());
+            }
+            if(customerModel.getCustomerFirstName() != null){
+                customerFound.get().setCustomerFirstName(customerModel.getCustomerFirstName());
+            }
+            if(customerModel.getCustomerPhone() != null){
+                customerFound.get().setCustomerPhone(customerModel.getCustomerPhone());
+            }
+            if(customerModel.getCustomerEmail() != null){
+                customerFound.get().setCustomerEmail(customerModel.getCustomerEmail());
+            }
+
+
+            if(customerModel.getPassword() != null){
+                customerFound.get().setPassword(customerModel.getPassword());
+            }
+            return new ResponeModelJson(HttpStatus.OK,"Updated Successfully",customerRepository.save(customerFound.get()));
+        }
+
+        return new ResponeModelJson(HttpStatus.CONFLICT,"Invalid Customer Id");
+    }
 
     @Override
     public ResponeModelJson deleteCustomerById(Long id) {
