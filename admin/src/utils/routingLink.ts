@@ -23,6 +23,7 @@ export const routingLink = {
     login: "/login",
     pos: "/pos",
     statistic: "/statistic",
-    supplier: "/supplier"
+    supplier: "/supplier",
+    taonhacungcap: "/supplier/createnew"
 }
 

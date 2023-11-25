@@ -10,6 +10,12 @@ export interface OptionModelRespone {
   optionName: string
 }
 
+export interface SupplierModelRespone {
+  supplier_id: number
+  supplier_name: string,
+  supplier_address: string
+}
+
 
 export interface ProductLineModel {
   productLineId?: number
@@ -28,6 +34,13 @@ export interface OptionModel {
   optionName: string
   optionID?: number
 }
+
+export interface SupplierModel {
+  supplier_id?: number
+  supplier_name: string,
+  supplier_address: string
+}
+
 
 
 export interface CategoriesResponeModel {
