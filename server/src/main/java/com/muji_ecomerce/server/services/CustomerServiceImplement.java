@@ -96,14 +96,18 @@ public class CustomerServiceImplement implements CustomerService{
             return new ResponeModelJson<>(HttpStatus.CONFLICT,"Invalid Token");
         Customer customerFromToken = verificationTokenCustomerFound.getCustomer();
         Calendar calendar = Calendar.getInstance();
+        verifyTokenRepository.delete(
+                verificationTokenCustomerFound
+        );
         if(verificationTokenCustomerFound.getExpirationDate().getTime() - calendar.getTime().getTime() <=0){
-            verifyTokenRepository.delete(verificationTokenCustomerFound);
-            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Token Expired");
+
+            return new ResponeModelJson<>(HttpStatus.CONFLICT,"Token Expired",verificationTokenCustomerFound.getVerificationTokenCustomerID());
         }
+
         customerFromToken.setEnableStatus(true);
         customerRepository.save(customerFromToken);
 
-        return new ResponeModelJson(HttpStatus.OK,"Done");
+        return new ResponeModelJson(HttpStatus.OK,"Done",verificationTokenCustomerFound.getVerificationTokenCustomerID());
     }
 
 
