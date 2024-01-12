@@ -8,6 +8,13 @@ interface Props {
 
 
 function MainLayout({ children, isLoading = false }: Props) {
+
+
+    function scrollToTop() {
+        const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
+        if (!isBrowser()) return;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     return (
         <>
             <Header />
@@ -20,8 +27,12 @@ function MainLayout({ children, isLoading = false }: Props) {
                 </>
 
             }
-            <div className=' w-screen h-full'>\
+            <div className=' w-screen h-full relative'>
+                {/* <div className=''>
+                    <div>
 
+                    </div>
+                </div> */}
                 <div className='bg-[#ffffff] mt-32 px-3  2xl:mx-[200px] '>
                     {children}
                 </div>

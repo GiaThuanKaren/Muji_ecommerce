@@ -29,14 +29,18 @@ function HorizontalProductList({ id, link, title }: Props) {
         }
         FetchApi()
     }, [])
-    console.log(data,"Fetch")
+    console.log(data, "Fetch")
 
 
     return (
         <>
             <div className='w -full h-fit mt-3 mb-10'>
                 <div className='flex items-center justify-between my-3'>
-                    <p className='font-medium'>Breast Cancer Semantic Segmentation (BCSS) dataset</p>
+                    <p className='font-bold uppercase text-lg'>
+                        {
+                            `Yody - ${title} `
+                        }
+                    </p>
                     <Link className='flex items-center' href={link}>
                         <p className='font-medium '>Xem Thêm </p>
                         <ICON className='ml-3' icon={IconSolid.faChevronRight} />

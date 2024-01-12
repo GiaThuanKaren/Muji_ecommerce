@@ -39,7 +39,7 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
     const { ListProductApi, FetchType } = handle()
 
     const size: string[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "2", "4", "6", "8", "10", "12"]
-    const color: {name: string, hex: string, icon: string} [] = [
+    const color: { name: string, hex: string, icon: string }[] = [
         { name: "Đen", hex: "#000000", icon: "den" },
         { name: "Trắng", hex: "#FFFFFF", icon: "trang" },
         { name: "Xanh navy", hex: "#03204C", icon: "xanh-navy" },
@@ -52,14 +52,14 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
     async function FetchApi(idCategories: number) {
         try {
             let listProductFilter = await GetAllProductByIdCategories(
-                    idCategories,
-                    ListProductApi.onCurrentPage,
-                    PRODUCT_PER_PAGE,
-                    selectedPrice,
-                    name,
-                    selectedSize,
-                    selectedColor
-                );
+                idCategories,
+                ListProductApi.onCurrentPage,
+                PRODUCT_PER_PAGE,
+                selectedPrice,
+                name,
+                selectedSize,
+                selectedColor
+            );
 
             ListProductApi.setListProduct(listProductFilter)
             ListProductApi.setGetTotalCount(listProductFilter?.total)
@@ -71,13 +71,13 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
     async function FetchApi2() {
         try {
             let result = await GetAllProduct(
-                    ListProductApi.onCurrentPage,
-                    PRODUCT_PER_PAGE,
-                    selectedPrice,
-                    name,
-                    selectedSize,
-                    selectedColor
-                );
+                ListProductApi.onCurrentPage,
+                PRODUCT_PER_PAGE,
+                selectedPrice,
+                name,
+                selectedSize,
+                selectedColor
+            );
 
             ListProductApi.setListProduct(result)
             ListProductApi.setGetTotalCount(result?.total)
@@ -86,7 +86,7 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
         }
     }
 
-    const HandleSelectedSize = (checked: boolean , size: string) => {
+    const HandleSelectedSize = (checked: boolean, size: string) => {
         if (checked) {
             setSelectedSize((prev) => [...prev, size])
         } else {
@@ -94,7 +94,7 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
         }
     }
 
-    const HandleSelectedColor = (checked: boolean , color: any) => {
+    const HandleSelectedColor = (checked: boolean, color: any) => {
         if (checked) {
             setSelectedColor((prev) => [...prev, color.name])
         } else {
@@ -102,14 +102,14 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
         }
     }
 
-    const HandleSelectedPrice = (checked: boolean , price: any) => {
+    const HandleSelectedPrice = (checked: boolean, price: any) => {
         if (checkedPrice === price) {
-            setCheckedPrice(null); 
+            setCheckedPrice(null);
             setSelectedPrice('')
-          } else {
+        } else {
             setCheckedPrice(price);
             setSelectedPrice(price)
-          }
+        }
     }
 
     React.useEffect(() => {
@@ -161,8 +161,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                                 <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
                                     <span>
                                         <label className='relative flex'>
-                                            <input 
-                                                type="checkbox" 
+                                            <input
+                                                type="checkbox"
                                                 className='hidden w-5 h-5 peer'
                                                 onChange={(e) => HandleSelectedSize(e.target.checked, item)}
                                             />
@@ -176,13 +176,13 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                     </DropoutComp>
 
                     <DropoutComp title='Màu Sắc' >
-                    <ul className='flex flex-wrap'>
+                        <ul className='flex flex-wrap'>
                             {color.map((item, index) => (
                                 <li key={index} className='bg-[#F2F2F2] rounded-[5px] text-[#7A7A9D] mr-2 mb-2 cursor-pointer flex items-center justify-center text-base border-[1px] border-transparent'>
                                     <span>
                                         <label className='relative flex'>
-                                            <input 
-                                                type="checkbox" 
+                                            <input
+                                                type="checkbox"
                                                 className='hidden w-5 h-5 peer'
                                                 onChange={(e) => HandleSelectedColor(e.target.checked, item)}
                                             />
@@ -223,8 +223,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             className='hidden w-5 h-5 peer'
                                             value="<100000"
                                             checked={checkedPrice === "<100000"}
@@ -246,8 +246,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             className='hidden w-5 h-5 peer'
                                             value=">=100000 AND <=200000"
                                             checked={checkedPrice === ">=100000 AND <=200000"}
@@ -269,8 +269,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             className='hidden w-5 h-5 peer'
                                             value=">=200000 AND <=350000"
                                             checked={checkedPrice === ">=200000 AND <=350000"}
@@ -292,8 +292,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             className='hidden w-5 h-5 peer'
                                             value=">=350000 AND <=500000"
                                             checked={checkedPrice === ">=350000 AND <=500000"}
@@ -315,8 +315,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             className='hidden w-5 h-5 peer'
                                             value=">=500000 AND <=700000"
                                             checked={checkedPrice === ">=500000 AND <=700000"}
@@ -338,8 +338,8 @@ export function DisplayProductBySludPage2({ children, handle }: DisplayProductBy
                             <li className='cursor-pointer mb-2.5 mr-2.5'>
                                 <span>
                                     <label className='relative pl-7'>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             className='hidden w-5 h-5 peer'
                                             value=">700000"
                                             checked={checkedPrice === ">700000"}
@@ -439,15 +439,15 @@ function DisplayProductBySludPage() {
     const FetchData = (currentPage: number,
         setListProduct: (listProduct: ResponeModel<ProductModel>) => void,
         setGetTotalCount: (getTotalCount: number) => void
-    ) : FilterAPI => {
+    ): FilterAPI => {
         const ProductApi: IProduct = {
-            onCurrentPage: currentPage, 
-            setListProduct: setListProduct ,
+            onCurrentPage: currentPage,
+            setListProduct: setListProduct,
             setGetTotalCount: setGetTotalCount
         }
 
         const FetchType = 'FetchApi'
-            
+
         return { ListProductApi: ProductApi, FetchType }
     }
 
@@ -455,23 +455,23 @@ function DisplayProductBySludPage() {
         <>
             <MainLayout>
                 {layoutPage == 1 && <DisplayProductBySludPage1 />}
-                {layoutPage == 2 && 
+                {layoutPage == 2 &&
                     <>
-                    <DisplayProductBySludPage2 handle={() => FetchData(currentPage, setListProduct, setGetTotalCount)}>
-                        <div className='flex-1 px-2 py-3'>
-                            <div className='w-full  flex flex-wrap'>
-                                {
-                                    listProduct?.data &&
+                        <DisplayProductBySludPage2 handle={() => FetchData(currentPage, setListProduct, setGetTotalCount)}>
+                            <div className='flex-1 px-2 py-3'>
+                                <div className='w-full  flex flex-wrap'>
+                                    {
+                                        listProduct?.data &&
 
-                                        listProduct?.data.length > 0 ? <>
-                                        {
-                                            listProduct.data.map((item: ProductModel, index: number) => {
-                                                return <>
-                                                    <CardProduct key={index} {...item} />
-                                                </>
-                                            })
-                                        }
-                                        {/* {
+                                            listProduct?.data.length > 0 ? <>
+                                            {
+                                                listProduct.data.map((item: ProductModel, index: number) => {
+                                                    return <>
+                                                        <CardProduct key={index} {...item} />
+                                                    </>
+                                                })
+                                            }
+                                            {/* {
                                             Array.from(Array(8).keys()).map(() => {
                                                 return (
                                                     <>
@@ -480,24 +480,28 @@ function DisplayProductBySludPage() {
                                                 )
                                             })
                                         } */}
-                                        <Pagination
-                                            currentPage={currentPage}
-                                            totalCount={getTotalCount}
-                                            pageCount={PRODUCT_PER_PAGE}
-                                            onPageChange={onPageChange}
-                                        />
+
                                         </>
-                                        :      
-                                        <>
-                                            <h3 className='text-center w-full font-medium '>
-                                                {/* {listProduct?.message} */}
-                                                <p>Can't find product</p>
-                                            </h3>
-                                        </>
-                                }
+                                            :
+                                            <>
+                                                <h3 className='text-center w-full font-medium '>
+                                                    {/* {listProduct?.message} */}
+                                                    <p>Can't find product</p>
+                                                </h3>
+                                            </>
+                                    }
+                                </div>
+                                <div >
+
+                                </div>
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalCount={getTotalCount}
+                                    pageCount={PRODUCT_PER_PAGE}
+                                    onPageChange={onPageChange}
+                                />
                             </div>
-                        </div>
-                    </DisplayProductBySludPage2></>}
+                        </DisplayProductBySludPage2></>}
             </MainLayout>
         </>
     )

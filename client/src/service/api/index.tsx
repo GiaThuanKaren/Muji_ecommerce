@@ -379,3 +379,9 @@ export const getAllOptionByProductIdAndSkuId = async function (productId: string
         )
     }
 }
+
+
+
+export const Changepassword = async function (){
+    
+}

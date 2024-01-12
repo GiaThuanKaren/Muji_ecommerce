@@ -4,7 +4,9 @@ import { Pagination, Navigation } from "swiper";
 import { Product, ProductModel, ProductSkuModel } from 'src/Model';
 import Link from 'next/link';
 import { linkRouting } from 'src/utils/routelink';
-
+import { ICON, IconSolid } from 'src/utils/icon';
+// import { Navigation } from 'swiper/modules';
+import queryString from 'query-string';
 
 
 function CardProduct({ nameProduct, productId, productSkus, productDescription }: ProductModel) {
@@ -31,8 +33,8 @@ function CardProduct({ nameProduct, productId, productSkus, productDescription }
     // }, []);
     return (
         <>
-            <div className='h-fit  basis-1/2 md:basis-1/4 lg:basis-1/5 p-1 px-2 my-10 overflow-hidden'>
-                <div className='h-full w-full'>
+            <div className='h-[480px]   basis-1/2 md:basis-1/3 lg:basis-1/4 p-1 px-2 my-10 '>
+                <div className='h-full w-full relative  '>
                     <Link className='block' href={`${linkRouting.detailproduct}/${productId}`}>
                         <div className='h-[80%] w-full '>
                             <img
@@ -47,63 +49,97 @@ function CardProduct({ nameProduct, productId, productSkus, productDescription }
                             />
                         </div>
                         <div className='h-[20%] w-full'>
-                            <p>
+                            <p
+                                className='font-medium line-clamp-2 '
+                            >
                                 {nameProduct}
                             </p>
-                            <p className='font-medium'>329.000đ</p>
+
 
                         </div>
                     </Link>
-                    <Swiper
-                        ref={sliderRef}
-                        slidesPerView={5}
-                        spaceBetween={30}
 
-                    // navigation={true}
-                    // pagination={{
-                    //     el: ".swiper-pagination", // Use a valid DOM element here
-                    //     type: "bullets",
-                    //     clickable: true,
-                    //     bulletClass: "bg-amber-400",
-                    //     bulletActiveClass: "bg-green-400",
-                    // }}
-                    // modules={[Pagination, Navigation]}
-                    // className="mySwiper"
-                    >
-                        {
-                            productSkus.map((item: ProductSkuModel, index) => {
-                                console.log(item.imageProduct)
-                                return <>
-                                    <SwiperSlide onClick={(e) => {
-                                        e.stopPropagation();
-                                        setImageProductSku(() => {
+                    <div className='flex w-full absolute top-0 justify-between '>
 
-                                            return item.imageProduct?.startsWith("https://") ? item.imageProduct
-                                                : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`
+                        <p className=' bg-[#565858] flex items-center py-1 px-2 '>
+                            <p className='flex items-center '>
+                                <ICON className='text-yellow-400' icon={IconSolid.faStar} />
+                                <p className='text-white text-xs'>
+                                    4.9
+                                </p>
+                            </p>
+                            <p className='w-1 border-white border-r-2 mx-1 h-full'>
 
-                                        });
-                                        console.log("Choose Product Sku")
-                                    }} key={index}>
-                                        <div className='h-full  w-full p-2 my-2 '>
-                                            <div className=' bg-red-500 rounded-full overflow-hidden border-[1px] border-gray-200  h-8 w-8'>
-                                                <img
-                                                    className='w-full h-max object-cover'
-                                                    src=
-                                                    {
+                            </p>
+                            <p className='text-white font-medium text-xs'>
+                                Đã bán 543k
+                            </p>
+                        </p>
 
-                                                        item.imageProduct?.startsWith("https://") ? item.imageProduct
-                                                            : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`
+                        <p className='text-center bg-red-600 text-white w-20 py-2 text-xs'>
+                            50%
+                        </p>
 
-                                                    }
-                                                    alt=""
-                                                />
+                    </div>
+
+                    <div className='absolute bottom-0 w-full '>
+                        <span className='flex items-center'>
+                            <p className='font-bold mr-5'>329.000đ</p>
+                            <p className=' line-through  text-gray-400'>329.000đ</p>
+                        </span>
+
+                        <Swiper
+                            className=''
+                            ref={sliderRef}
+                            slidesPerView={5}
+                            spaceBetween={30}
+                            navigation={true} modules={[Navigation]}
+                        // navigation={true}
+                        // pagination={{
+                        //     el: ".swiper-pagination", // Use a valid DOM element here
+                        //     type: "bullets",
+                        //     clickable: true,
+                        //     bulletClass: "bg-amber-400",
+                        //     bulletActiveClass: "bg-green-400",
+                        // }}
+                        // modules={[Pagination, Navigation]}
+                        // className="mySwiper"
+                        >
+                            {
+                                productSkus.map((item: ProductSkuModel, index) => {
+                                    console.log(item.imageProduct)
+                                    return <>
+                                        <SwiperSlide onClick={(e) => {
+                                            e.stopPropagation();
+                                            setImageProductSku(() => {
+
+                                                return item.imageProduct?.startsWith("https://") ? item.imageProduct
+                                                    : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`
+
+                                            });
+                                            console.log("Choose Product Sku")
+                                        }} key={index}>
+                                            <div className='h-full  w-full p-2 my-2 '>
+                                                <div className=' bg-red-500 rounded-full overflow-hidden border-[1px] border-gray-200  h-8 w-8'>
+                                                    <img
+                                                        className='w-full h-max object-cover'
+                                                        src=
+                                                        {
+
+                                                            item.imageProduct?.startsWith("https://") ? item.imageProduct
+                                                                : `https://drive.google.com/uc?export=view&id=${item.imageProduct}`
+
+                                                        }
+                                                        alt=""
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </SwiperSlide>
-                                </>
-                            })
-                        }
-                    </Swiper>
+                                        </SwiperSlide>
+                                    </>
+                                })
+                            }
+                        </Swiper>
+                    </div>
                     {/* <div className="prev-arrow" onClick={handlePrev} />
                     <div className="next-arrow" onClick={handleNext} /> */}
                 </div>
